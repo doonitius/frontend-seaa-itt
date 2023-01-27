@@ -1,5 +1,4 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import logoForBlack2 from '../images/Logo_ForBlack2.png'
 import logoForWhite1 from '../images/Logo_ForWhite1.png'
 import userIcon from '../images/user-icon.png'
