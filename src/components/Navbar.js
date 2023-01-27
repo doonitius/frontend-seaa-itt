@@ -1,6 +1,6 @@
 import logoForBlack2 from '../images/Logo_ForBlack2.png';
 import searchIcon from '../images/search-icon.png';
-import menuIcon from '../images/menu-icon.png';
+// import menuIcon from '../images/menu-icon.png';
 import searchIconWhite from '../images/search-icon-white.png';
 import hamburgerIconWhite from '../images/Hamburger_MD-white.png';
 
