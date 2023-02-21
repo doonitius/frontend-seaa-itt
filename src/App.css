@@ -8,6 +8,7 @@
   --gray1: #afafaf;
   --red1: #FF5252;
   --green1: #2edd54;
+  --black3: #222222;
 }
 
 .App {
@@ -151,9 +152,13 @@
   background-color: white;
   display: flex;
   padding: 0px 0px 0px 15px;
-  width: 76%;
   border-radius: 5px;
   margin-right: 10px;
+  color: black;
+}
+
+.search-input:focus {
+  border: 0px solid;
 }
 
 ::placeholder{
@@ -386,3 +391,108 @@ h5 {
   z-index: 9;
 }
 
+.filter-popup {
+  /* margin: 80px 0px 0px 330px; */
+  width: 1000px;
+}
+
+.smallAlert-popup {
+  width: 420px;
+}
+
+.popup-header {
+  /* width: 50px; */
+  background-color:  var(--black3);
+  display: flex;
+  border-radius: 20px 20px 0px 0px;
+  align-items: center;
+  text-align: center;
+}
+
+.popup-content {
+  /* width: 50px; */
+  background-color:  var(--black1);
+  border-radius: 0px 0px 20px 20px;
+  padding: 20px 30px 20px 30px;
+}
+
+.popup {
+  color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+
+input[type="radio"] {
+  width: 15px;
+  height: 15px;
+}
+
+input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--blue1);
+}
+
+.filter-input-area {
+  display: flex;
+  flex-wrap: wrap;
+  grid-row-gap: 10px;
+  grid-column-gap: 30px;
+  align-items: center;
+}
+
+.hambergur-menu {
+  /* absolute z-10 bg-white rounded-lg shadow-md mt-12 py-2 */
+  position: absolute;
+  z-index: 10;
+  background-color: var(--black1);
+  color: white;
+  border-radius: 10px;
+  font-size: 16px;
+  width: 150px;
+}
+
+.hambergur-menu-list:hover {
+  background-color: var(--black2);
+}
+
+.confirmation-button {
+  width: 145px;
+  height: 35px;
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+
+.hightlight-red {
+  color: var(--red1);
+  font-weight: 600;
+}
+
+
+button.red-button{
+  color: white;
+  background-color: var(--red1);
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  background-color: #4a4a4a65;
+}
+
+    /* Disable scrolling on the parent screen */
+.popup-open {
+  position: fixed;
+  /* width: 100%; */
+  /* height: 100%; */
+  overflow-y: scroll;
+}
