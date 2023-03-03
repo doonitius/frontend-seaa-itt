@@ -3,6 +3,11 @@ import {  Route, Link, Routes } from "react-router-dom";
 import Login from "./pages/LoginPage"
 import Home from "./pages/HomePage"
 import './App.css';
+// import { useState, useEffect } from 'react';
+// import axios from 'axios';
+
+// const baseURL = "{{url}}/project/63a01bb05e3f4a14e4790d7b"
+// const baseURL = "http://localhost:3000/project/63a01bb05e3f4a14e4790d7b"
 
 // const Login = () => (
 //   <div>
@@ -23,17 +28,27 @@ const NotFound = () => (
 )
 
 function App() {
+
+  // const [ post, setPost ] = useState(null);
+
+  // useEffect(() => {
+  //   axios.get(baseURL).then((response) => {
+  //     setPost(response.data);
+  //     console.log(response.data);
+  //   });
+  // }, []);
+
   return (
     <div>
       <nav>
-        <ul>
+        {/* <ul>
           <li>
             <Link to="/">Login</Link>
           </li>
           <li>
             <Link to="/home">Home</Link>
           </li>
-        </ul>
+        </ul> */}
       </nav>
       <Routes>
         <Route exact path="/" element={<Login />}/>

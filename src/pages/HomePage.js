@@ -1,19 +1,34 @@
 // import '../App.css';
 import Navbar from '../components/Navbar.js';
-import plusIcon from '../images/Add_Plus_Square.png';
 import Banner from '../components/Banner.js';
 import AddEditFilter from '../components/AddEditFilter.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function HomePage() {
 
     const [popupStatus, setPopupStatus] = useState(false);
     const [popupComponent,setPopupComponent] = useState("");
+    const baseURL = "https://api-seai-general.cyclic.app/general/project/63a01bb05e3f4a14e4790d7b"
     
     function clickExitFromPopup () {
         setPopupStatus(!popupStatus);
     }
 
+    const [ post, setPost ] = useState(null);
+
+    useEffect(() => {
+        axios
+        .get(baseURL).then((response) => {
+            setPost(response.data);
+            console.log(response.data);
+        })
+        .catch(error => console.log(error));
+    }, []);
+    
     return <div>
         <Navbar/>
         {
@@ -64,13 +79,20 @@ function HomePage() {
                         <span className='hightlight-blue'>&nbsp; / &nbsp;</span> 
                         Tags
                     </div>
-                    <div className='project-menu-add' onClick={() => {setPopupStatus(true); setPopupComponent("addProject");}}>
-                        <img src={plusIcon} alt="" className="w-5"/>
+                    <div className='project-menu-add items-center' onClick={() => {setPopupStatus(true); setPopupComponent("addProject");}}>
+                        <FontAwesomeIcon icon={faPlus}/>
                         <div>Add New Project</div>
                     </div>
                 </div>
                 <div className='projectlist-space'>
-                    <Banner/><Banner/><Banner/><Banner/><Banner/>
+                <Banner projectId = {post?.data?._id}/>
+                    <Banner/>
+                    {/* <Banner/><Banner/><Banner/><Banner/> */}
+
+
+                    {/* pro ject 3 
+
+                    run 1 - 2 - 3 */}
                 </div>
             </div>
             
