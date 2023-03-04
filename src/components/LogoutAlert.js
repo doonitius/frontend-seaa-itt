@@ -1,15 +1,12 @@
-import logoutIconBlue from '../images/logout-icon-blue.png'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 function LogoutAlert(props) {
 
     return <div className="popup">
         <div className="smallAlert-popup">
-            <div className="popup-header hightlight-blue text-xl justify-center py-5">
-                <img 
-                src={logoutIconBlue} 
-                alt="" 
-                className="w-7 object-contain mr-2"
-                />
+            <div className="popup-header hightlight-blue text-lg justify-center py-5 item-center">
+            <FontAwesomeIcon className='fa-xl mr-4' icon={faRightFromBracket}/>
                 Logout ?
             </div>
             <div className="popup-content justify-center text-center text-sm">

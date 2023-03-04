@@ -56,46 +56,48 @@ function HomePage() {
             )
         } */}
         <div className={`${popupStatus ? 'popup-open' : null}`}>
-            <div className='sidenav'>
-                <h5>Project Number</h5>
-                <div className='text-sm'>
-                    <span className='hightlight-blue'>Thesis project</span>
-                    <br/>
-                    <span className='hightlight-blue'>: &nbsp;</span>
-                    18
-                    <br/><br/>
-                    <span className='hightlight-blue'>Senior project</span><br></br>
-                    <span className='hightlight-blue'>: &nbsp;</span>
-                    30
-                </div>
-            </div>
-            <div className='main'>
-                <div className="homepage-menu-space">
-                    <div className='menu-button-filter' onClick={() => {setPopupStatus(true); setPopupComponent("searchFilter");}}>
-                        <span className='hightlight-blue'>Filter:&nbsp;&nbsp;</span>
-                        Years
-                        <span className='hightlight-blue'>&nbsp; / &nbsp;</span>
-                        Advisors 
-                        <span className='hightlight-blue'>&nbsp; / &nbsp;</span> 
-                        Tags
-                    </div>
-                    <div className='project-menu-add items-center' onClick={() => {setPopupStatus(true); setPopupComponent("addProject");}}>
-                        <FontAwesomeIcon icon={faPlus}/>
-                        <div>Add New Project</div>
+            <div className='wrapper'>
+                <div className='sidenav'>
+                    <h5>Project Number</h5>
+                    <div className='text-sm'>
+                        <span className='hightlight-blue'>Thesis project</span>
+                        <br/>
+                        <span className='hightlight-blue'>: &nbsp;</span>
+                        18
+                        <br/><br/>
+                        <span className='hightlight-blue'>Senior project</span><br></br>
+                        <span className='hightlight-blue'>: &nbsp;</span>
+                        30
                     </div>
                 </div>
-                <div className='projectlist-space'>
-                <Banner projectId = {post?.data?._id}/>
-                    <Banner/>
-                    {/* <Banner/><Banner/><Banner/><Banner/> */}
+                <div className='main w-full'>
+                    <div className="homepage-menu-space flex justify-between">
+                        <div className='menu-button-filter' onClick={() => {setPopupStatus(true); setPopupComponent("searchFilter");}}>
+                            <span className='hightlight-blue'>Filter:&nbsp;&nbsp;</span>
+                            Years
+                            <span className='hightlight-blue'>&nbsp; / &nbsp;</span>
+                            Advisors 
+                            <span className='hightlight-blue'>&nbsp; / &nbsp;</span> 
+                            Tags
+                        </div>
+                        <div className='project-menu-add items-center' onClick={() => {setPopupStatus(true); setPopupComponent("addProject");}}>
+                            <FontAwesomeIcon icon={faPlus}/>
+                            <div>Add New Project</div>
+                        </div>
+                    </div>
+                    <div className='projectlist-space'>
+                    <Banner projectId = {post?.data?._id}/>
+                    <Banner projectId = {post?.data?._id}/>
+                        <Banner/>
+                        {/* <Banner/><Banner/><Banner/><Banner/> */}
 
 
-                    {/* pro ject 3 
+                        {/* pro ject 3 
 
-                    run 1 - 2 - 3 */}
+                        run 1 - 2 - 3 */}
+                    </div>
                 </div>
             </div>
-            
         </div>
     </div>
 }

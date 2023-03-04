@@ -1,11 +1,10 @@
 import logoForBlack2 from '../images/Logo_ForBlack2.png';
-import searchIcon from '../images/search-icon.png';
-// import menuIcon from '../images/menu-icon.png';
-import searchIconWhite from '../images/search-icon-white.png';
-import hamburgerIconWhite from '../images/Hamburger_MD-white.png';
-import logoutIcon from '../images/logout-icon.png'
 import LogoutAlert from './LogoutAlert';
 import { useState } from 'react';
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass, faBars, faRightFromBracket, faBookmark } from "@fortawesome/free-solid-svg-icons";
+
 
 function Navbar() {
 
@@ -32,40 +31,38 @@ function Navbar() {
         }
         <img src={logoForBlack2} alt="" className="w-36 object-contain"/>
         <div className='navBar-withSearch-menu'>
-            <div className='search-input w-3/4'>
-                <img 
-                src={searchIcon} 
-                alt="" 
-                className="w-4 object-contain mr-3"
-                />
-                <input placeholder="Search project name, related tags or keywords"/>
+            <div className='search-input w-3/4 items-center space-x-2'>
+                <FontAwesomeIcon className='fa-sm' icon={faMagnifyingGlass}/>
+                <input className='pl-1' placeholder="Search project name, related tags or keywords"/>
             </div>
-            <button className='blue-button w-28 mr-4'>
-                <img 
-                src={searchIconWhite} 
-                alt="" 
-                className="w-5 object-contain mr-2"
-                />
+            <button className='blue-button w-28'>
+                <div className='items-center'>
+                <FontAwesomeIcon className='fa-sm pr-2' icon={faMagnifyingGlass}/>
                 Search
+                </div>
             </button>
-            <img 
-            src={hamburgerIconWhite} 
-            alt="" 
-            className="w-7 object-contain mr-2"
+            <FontAwesomeIcon 
+            className='fa-xl self-center mr-3 ml-5' 
+            icon={faBars}
             onClick={toggleDropdown}
+            style = {{ color: "white" }}
             />
             {isOpenMenu && (
                 <ul className="hambergur-menu shadow-md mt-12 py-2 items-center">
                     <div 
-                    className="px-6 py-2 hambergur-menu-list flex items-center"
+                    className="px-3 py-2 hambergur-menu-list flex items-center"
                     onClick={() => {setPopupStatus(true); setPopupComponent("logout");}}
                     >
-                        <img 
-                        src={logoutIcon} 
-                        alt="" 
-                        className="w-5 object-contain mr-2"
-                        />
-                        Log out</div>
+                        <FontAwesomeIcon className='fa-sm basis-1/4 justify-center' icon={faBookmark}/>
+                        <div className='text-sm basis-3/4'>My Bookmarks</div>
+                    </div>
+                    <div 
+                    className="px-3 py-2 hambergur-menu-list flex items-center"
+                    onClick={() => {setPopupStatus(true); setPopupComponent("logout");}}
+                    >
+                        <FontAwesomeIcon className='fa-sm basis-1/4 justify-center' icon={faRightFromBracket}/>
+                        <div className='text-sm basis-3/4'>Log out</div>
+                    </div>
                 </ul>
             )}
         </div>

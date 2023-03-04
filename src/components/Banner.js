@@ -6,7 +6,7 @@ import axios from 'axios';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { solid, regular, brands, icon } from '@fortawesome/fontawesome-svg-core/import.macro' // <-- import styles to be used
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faFile, faPenToSquare, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faFile, faPenToSquare, faTrashCan, faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 
 
 const Tags = () => (
@@ -50,7 +50,9 @@ function Banner(props) {
     }, [props.projectId]);
 
     if (!post) {
-        return <div>Loading...</div>;
+        return <div class="loader-container">
+        <div class="loader"></div>
+        </div>
     }
     
     function clickExitFromPopup () {
@@ -71,71 +73,69 @@ function Banner(props) {
                 )
             }
                 <div>
-                    <div className="project-banner">
-                        <div className="project-banner-color"></div>
-                        <div className="project-banner-content">
-                        {/* <span className='hightlight-blue text-sm'>Solving Vehicle Routing Problem with Hard Time Windows by Genetic Algorithm</span> */}
-                        <span className='hightlight-blue text-sm'>{post.data.project_name}</span>
-                        <div className="text-xs pt-4">
-                            <div className="flex">
-                                <span className="hightlight-gray pr-3">Year: </span>
-                                <span>{post.data.academic_year} </span>
-                                <span className="hightlight-gray pr-3 pl-10">Advisor: </span>
-                                <span className='pr-2'>Asst. Prof. Dr. Jumpol</span>
-                                <span>Polvichai ???</span>
-                            </div>
-                            <div className="flex pt-3">
-                                <span className="hightlight-gray pr-3 pt-1">Tags: </span>
-                                <div className="tagsArea">
-                                    <Tags/><Tags/><Tags/><Tags/><Tags/><Tags/><Tags/><Tags/><Tags/><Tags/>
-                                </div>
-                            </div>
-                            {/* <div className="flex pt-3" className={`${viewAbstractStatus ? 'popup-open' : null}`}> */}
-                            <div className='flex pt-3'>
-                            <span className='hightlight-gray pr-3'>Abstract: </span>
-                                <div>
-                                    <div className={`project-abstract ${abstractStatus ? 'hidden' : ''}`}>
-                                        <span> {post.data.project_abstract} </span>
+                    <div className="project-banner justify-between">
+                        <div className='flex'>
+                            <div className="project-banner-color"></div>
+                            <div className="project-banner-content">
+                            {/* <span className='hightlight-blue text-sm'>Solving Vehicle Routing Problem with Hard Time Windows by Genetic Algorithm</span> */}
+                                <span className='hightlight-blue text-sm'>{post.data.project_name}</span>
+                                <div className="text-xs pt-4">
+                                    <div className="flex">
+                                        <span className="hightlight-gray pr-3">Year: </span>
+                                        <span>{post.data.academic_year} </span>
+                                        <span className="hightlight-gray pr-3 pl-10">Advisor: </span>
+                                        <span className='pr-2'>Asst. Prof. Dr. Jumpol</span>
+                                        <span>Polvichai ???</span>
                                     </div>
-                                    <button 
-                                        className='hightlight-blue justify-start underline decoration-1 underline-offset-2'
-                                        onClick={() => {clickShowAbstract(true);}}>
-                                        {abstractStatus ? 'view abstract' : 'hide abstract'}
-                                    </button>
+                                    <div className="flex pt-3">
+                                        <span className="hightlight-gray pr-3 pt-1">Tags: </span>
+                                        <div className="tagsArea">
+                                            <Tags/><Tags/><Tags/><Tags/><Tags/>
+                                            {/* <Tags/><Tags/><Tags/><Tags/><Tags/>
+                                            <Tags/><Tags/><Tags/><Tags/><Tags/> */}
+                                        </div>
+                                    </div>
+                                    {/* <div className="flex pt-3" className={`${viewAbstractStatus ? 'popup-open' : null}`}> */}
+                                    <div className='flex pt-3'>
+                                    <span className='hightlight-gray pr-3'>Abstract: </span>
+                                        <div>
+                                            <div className={`project-abstract ${abstractStatus ? '' : 'hidden'}`}>
+                                                <span> {post.data.project_abstract} </span>
+                                            </div>
+                                            <button 
+                                                className='hightlight-blue justify-start underline decoration-1 underline-offset-2 flex items-center'
+                                                onClick={() => {clickShowAbstract(true);}}>
+                                                {abstractStatus ? 'hide abstract' : 'view abstract'}
+                                                <FontAwesomeIcon 
+                                                icon={abstractStatus ? faEyeSlash : faEye} 
+                                                className="ml-1"
+                                                />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className='project-banner-menu content-between grid'>
-                        { isAdmin && ( <div className='space-y-2'>
-                        <div 
-                            className='project-banner-menu-edit items-center'
-                            onClick={() => {setPopupStatus(true); setPopupComponent("editProject");}}
-                            >
-                            <FontAwesomeIcon icon={faPenToSquare}/>
-                            Edit
+                        <div className='project-banner-menu content-between grid justify-items-end'>
+                            { isAdmin && ( <div className='space-y-2'>
+                                <div 
+                                    className='project-banner-menu-edit items-center flex'
+                                    onClick={() => {setPopupStatus(true); setPopupComponent("editProject");}}>
+                                    <FontAwesomeIcon className='justify-center' icon={faPenToSquare}/>
+                                    <div className=''>Edit</div>
+                                </div>
+                                <div 
+                                    className='project-banner-menu-delete items-center flex'
+                                    onClick={() => {setPopupStatus(true); setPopupComponent("deleteProject");}}>
+                                    <FontAwesomeIcon className='justify-center' icon={faTrashCan}/>
+                                    <div className=''>Delete</div>
+                                </div>
+                            </div> )}
+                            <div className='project-banner-menu-viewPDF inset-x-0 bottom-0 items-center'>
+                                <FontAwesomeIcon icon={faFile}/>
+                                View Project Report
+                            </div>
                         </div>
-                        {/* <div className='project-banner-menu-edit-hover'>
-                            <img src={editIconWhite} alt="" className="w-4"/>
-                            <div>Edit</div>
-                        </div> */}
-                        <div 
-                            className='project-banner-menu-delete items-center'
-                            onClick={() => {setPopupStatus(true); setPopupComponent("deleteProject");}}
-                            >
-                            <FontAwesomeIcon icon={faTrashCan}/>
-                            Delete
-                        </div>
-                        {/* <div className='project-banner-menu-edit-hover'>
-                            <img src={deleteIconWhite} alt="" className="w-4"/>
-                            <div>Edit</div>
-                        </div> */} 
-                        </div> )}
-                        <div className='project-banner-menu-viewPDF inset-x-0 bottom-0 items-center'>
-                        <FontAwesomeIcon icon={faFile}/>
-                        View PDF file
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>

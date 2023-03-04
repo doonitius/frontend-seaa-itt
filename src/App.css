@@ -9,6 +9,7 @@
   --red1: #FF5252;
   --green1: #26d44c;
   --black3: #222222;
+  --black4: #3a3a3a;
 }
 
 .App {
@@ -216,19 +217,26 @@ button.blue-button{
   border-style: solid;
   border-width: 1.5px;
   padding: 5px 15px 5px 15px;
+  transition-property: color;
+  transition-duration: 0.3s;
 }
 
 .homepage-menu-space{
-  display: flex;
   padding: 30px 30px 20px 30px;
   grid-column-gap: 15px;
   border-bottom: var(--lightgray1);
   border-bottom-style: solid;
   border-bottom-width: 1px;
   position: fixed;
-  background-color: white;
-  width: 100%;
+  background-color: rgb(255, 255, 255);
   align-content: center;
+  width: 100%;
+}
+
+.wrapper {
+  display: flex;
+  padding-top: 50px;
+  width: 100%;
 }
 
 input {
@@ -243,13 +251,15 @@ input {
   z-index: -1;
   top: 0;
   left: 0;
-  background-color: white;
-  overflow-x: hidden;
+  background-color: var(--black4);
+  /* overflow-x: hidden; */
   padding-top: 80px;
   padding-left: 40px;
   border-right: var(--lightgray1);
   border-right-style: solid;
   border-right-width: 1px;
+  overflow-y: auto;
+  color: white;
 }
 
 @media (max-width: 1200px) {
@@ -257,13 +267,15 @@ input {
     display: none;
   }
   .main {
-    margin-left: 0px !important;
+    padding-left: 0px !important;
+  }
+  .project-menu-add{
+    margin-right: 30px !important;
   }
 }
 
 .main {
-  margin: 50px 0px 0px 0px;
-  margin-left: 300px;
+  padding-left: 300px;
   z-index: 0;
 }
 
@@ -275,6 +287,7 @@ h5 {
 
 .projectlist-space {
   padding: 110px 30px 0px 30px;
+  width: 100%;
 }
 
 .project-banner {
@@ -284,10 +297,11 @@ h5 {
   border-color: var(--lightgray1);
   display: flex;
   margin-bottom: 20px;
+  width: 100%;
 }
 
 .project-banner-content {
-  padding: 20px 20px 20px 40px;
+  padding: 20px 40px 20px 40px;
 }
 
 .tagsBox, .project-banner-menu-viewPDF, .project-banner-menu-edit, .project-banner-menu-delete, .project-menu-add {
@@ -328,10 +342,12 @@ h5 {
 
 .project-banner-menu, .project-banner-menu-viewPDF, .project-banner-menu-edit, .project-banner-menu-delete, .project-menu-add, .project-banner-menu-edit-hover, .project-banner-menu-delete-hover, .project-menu-add-hover {
   margin: 10px;
-  font-size: 14px;
+  font-size: 12px;
   justify-content: center;
   grid-column-gap: 8px;
   font-weight: 600;
+  transition-property: color;
+  transition-duration: 0.3s;
   /* opacity: 0.6; */
 }
 
@@ -342,6 +358,7 @@ h5 {
   color: var(--black1);
   font-size: 12px;
   bottom: 0 !important; 
+  min-width: 160px;
 }
 
 .project-banner-menu-viewPDF:hover {
@@ -368,6 +385,8 @@ h5 {
   border-width: 1px;
   color: white;
   background-color: var(--green1);
+  font-size: 12px;
+  margin-right: 330px;
 }
 
 .project-banner-menu-delete:hover {
@@ -386,6 +405,7 @@ h5 {
   border-width: 1px;
   color: var(--blue1);
   font-size: 12px;
+  width: 80px;
   /* position: absolute; */
 }
 
@@ -395,6 +415,7 @@ h5 {
   border-width: 1px;
   color: var(--red1);
   font-size: 12px;
+  width: 80px;
   /* position: absolute; */
 }
 
@@ -404,15 +425,10 @@ h5 {
   padding: 5px 20px 5px 20px;
   border-width: 1px;
   color: var(--green1);
+  margin-right: 330px;
 }
-/* 
-.project-banner-menu-edit:hover .project-banner-menu-edit-hover {
-  display: inline;
-  z-index: 9;
-} */
 
 .filter-popup {
-  /* margin: 80px 0px 0px 330px; */
   width: 1000px;
 }
 
@@ -475,11 +491,16 @@ input[type="checkbox"]:checked {
   color: white;
   border-radius: 10px;
   font-size: 16px;
-  width: 150px;
+  width: 160px;
 }
 
 .hambergur-menu-list:hover {
   background-color: var(--black2);
+}
+
+.hambergur-menu-list {
+  transition-property: color;
+  transition-duration: 0.4s;
 }
 
 .confirmation-button {
@@ -521,4 +542,27 @@ button.red-button{
   line-height: 1.8;
   letter-spacing: 0.3px;
   padding-bottom: 10px;
+  width: 1200px;
+}
+
+.web-intro {
+  letter-spacing: 0.05em;
+  word-spacing: 0.1em;
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+
+.loader {
+  border: 5px solid #eeeeee;
+  border-top: 5px solid var(--blue1);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0%  { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
