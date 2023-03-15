@@ -2,6 +2,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 function LogoutAlert(props) {
+    
+    // const history = useHistory();
+    
+    // function handleLogout() {
+    //     // perform any necessary logout logic here
+    //     history.push('/');
+    // }
+
+    function handleLogout() {
+        // perform any necessary logout logic here
+        // redirect the user to the homepage
+        window.location.href = '/';
+    }
 
     return <div className="popup">
         <div className="smallAlert-popup">
@@ -20,7 +33,10 @@ function LogoutAlert(props) {
                     </button>
                     <button 
                     className='w-28 blue-button confirmation-button'
-                    onClick={props.closePopup}
+                    onClick={() => {
+                        props.closePopup();
+                        handleLogout();
+                    }}
                     >
                     Logout
                     </button>
