@@ -29,7 +29,9 @@ function LoginPage() {
                 <input className="pl-1" placeholder="Password"/>
               </div>
             </form>
-            <button className='black-button'>Log in</button>
+              <a href="/home">
+                <button className='black-button'>Log in</button>
+              </a>
           </div>
           <div className='web-introduce-space'>
               <img src={logoForWhite1} alt="" className="w-48 pr-3.5 object-contain"/>
