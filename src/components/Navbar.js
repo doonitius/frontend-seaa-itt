@@ -1,13 +1,16 @@
 import logoForBlack2 from "../images/Logo_ForBlack2.png";
 import LogoutAlert from "./LogoutAlert";
 import { useState } from "react";
+import AddEditFilter from "./AddEditFilter.js";
+import AddEditProject from "./AddEditProject.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faBars,
   faRightFromBracket,
-  faBookmark,
+  faFilter,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar(props) {
@@ -33,21 +36,41 @@ function Navbar(props) {
       {popupStatus && popupComponent === "logout" && (
         <LogoutAlert closePopup={clickExitFromPopup} />
       )}
+      {popupStatus && popupComponent === "searchFilter" && (
+        <AddEditFilter closePopup={clickExitFromPopup} />
+      )}
+      {popupStatus && popupComponent === "addProject" && (
+        <AddEditProject closePopup={clickExitFromPopup} addCase={true} />
+      )}
       <img src={logoForBlack2} alt="" className="w-36 object-contain" />
       <div className="navBar-withSearch-menu">
-        <div className="search-input w-3/4 items-center space-x-2">
+        <div
+          className={
+            props.searchFunction === true
+              ? "search-input-area w-3/4 items-center space-x-2"
+              : "hidden"
+          }
+        >
           <FontAwesomeIcon className="fa-sm" icon={faMagnifyingGlass} />
           <input
-            className="pl-1"
+            className="pl-1 search-input"
             placeholder="Search text related to project"
             onChange={handleSearchInputChange}
           />
         </div>
-        <button className="blue-button w-28">
-          <div className="items-center">
-            <FontAwesomeIcon className="fa-sm pr-2" icon={faMagnifyingGlass} />
-            Search
-          </div>
+        <button
+          className={
+            props.searchFunction === true
+              ? "menu-button-filter space-x-2 items-center"
+              : "hidden"
+          }
+          onClick={() => {
+            setPopupStatus(true);
+            setPopupComponent("searchFilter");
+          }}
+        >
+          <div>Add Filter</div>
+          <FontAwesomeIcon className="fa-sm justify-center" icon={faFilter} />
         </button>
         <FontAwesomeIcon
           className="fa-xl self-center mr-3 ml-5"
@@ -56,19 +79,21 @@ function Navbar(props) {
           style={{ color: "white" }}
         />
         {isOpenMenu && (
-          <ul className="hambergur-menu shadow-md mt-12 py-2 items-center">
-            <div
-              className="px-3 py-2 hambergur-menu-list flex items-center"
-              onClick={() => {
-                setPopupStatus(true);
-                setPopupComponent("logout");
-              }}
-            >
-              <FontAwesomeIcon
-                className="fa-sm basis-1/4 justify-center"
-                icon={faBookmark}
-              />
-              <div className="text-sm basis-3/4">My Bookmarks</div>
+          <ul className="hambergur-menu shadow-md mt-12 py-2 px-1 items-center">
+            <div className=" flex ">
+              <button
+                className="project-menu-add items-center "
+                onClick={() => {
+                  setPopupStatus(true);
+                  setPopupComponent("addProject");
+                }}
+              >
+                <FontAwesomeIcon
+                  className="basis-1/6 justify-center"
+                  icon={faPlus}
+                />
+                <div className="basis-5/6">Add New Project</div>
+              </button>
             </div>
             <div
               className="px-3 py-2 hambergur-menu-list flex items-center"
@@ -78,10 +103,10 @@ function Navbar(props) {
               }}
             >
               <FontAwesomeIcon
-                className="fa-sm basis-1/4 justify-center"
+                className="fa-sm basis-1/5 pl-2 justify-center"
                 icon={faRightFromBracket}
               />
-              <div className="text-sm basis-3/4">Log out</div>
+              <div className="text-sm basis-4/5">Log out</div>
             </div>
           </ul>
         )}

@@ -2,6 +2,7 @@
 import DeleteProjectAlert from "./DeleteAlert.js";
 import AddEditProject from "./AddEditProject.js";
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,6 +15,7 @@ import {
   faTrashCan,
   faEyeSlash,
   faEye,
+  faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Tags = () => (
@@ -72,6 +74,12 @@ function Banner(props) {
   //     </div>
   // }
 
+  // function handleOpenProjectPage() {
+  //   // perform any necessary logout logic here
+  //   // redirect the user to the homepage
+  //   window.location.href = `/project/${props.projectId}`;
+  // }
+
   function clickExitFromPopup() {
     setPopupStatus(!popupStatus);
   }
@@ -84,6 +92,7 @@ function Banner(props) {
         <DeleteProjectAlert closePopup={clickExitFromPopup} />
       )}
       <div>
+        {/* <Link to={`/project/${props.projectId}`}> */}
         <div className="project-banner justify-between">
           <div className="flex">
             <div className="project-banner-color"></div>
@@ -175,12 +184,15 @@ function Banner(props) {
                 </div>
               </div>
             )}
-            <div className="project-banner-menu-viewPDF inset-x-0 bottom-0 items-center">
-              <FontAwesomeIcon icon={faFile} />
-              View Project Report
-            </div>
+            <Link to={`/project/${props.projectId}`}>
+              <div className="project-banner-menu-viewProject inset-x-0 bottom-0 items-center">
+                View Project
+                <FontAwesomeIcon icon={faArrowRight} />
+              </div>
+            </Link>
           </div>
         </div>
+        {/* </Link> */}
       </div>
     </div>
   );

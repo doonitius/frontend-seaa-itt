@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar.js';
 import Banner from '../components/Banner.js';
 import AddEditFilter from '../components/AddEditFilter.js';
 import AddEditProject from "../components/AddEditProject.js";
+import SideBar from "../components/SideBar.js";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -10,18 +11,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function HomePage(props) {
-  const [popupStatus, setPopupStatus] = useState(false);
-  const [popupComponent, setPopupComponent] = useState("");
   const [searchText, setSearchText] = useState("");
-  // const baseURL = "https://api-seai-general.cyclic.app/general/project/filter";
   const baseURL = "https://api-seai-general.cyclic.app/general/project/filter/";
   const searchURL = `https://api-seai-general.cyclic.app/general/project/filter?search=${searchText}`;
   // const baseURL = "https://api-seai-general.cyclic.app//project/filter?search=ใบหน้า";
   const [post, setPost] = useState(null);
-
-  function clickExitFromPopup() {
-    setPopupStatus(!popupStatus);
-  }
 
   function handleSearching() {
     setSearchText(searchText);
@@ -48,13 +42,7 @@ function HomePage(props) {
 
   return (
     <div>
-      <Navbar setSearchText={setSearchText} />
-      {popupStatus && popupComponent === "searchFilter" && (
-        <AddEditFilter closePopup={clickExitFromPopup} />
-      )}
-      {popupStatus && popupComponent === "addProject" && (
-        <AddEditProject closePopup={clickExitFromPopup} addCase={true} />
-      )}
+      <Navbar setSearchText={setSearchText} searchFunction={true} />
       {/* {
             popupStatus && popupComponent === 'searchFilter' && ( 
                 <SearchFilter closePopup = {clickExitFromPopup}/>
@@ -65,50 +53,10 @@ function HomePage(props) {
                 <div className='popup-background'></div>
             )
         } */}
-      <div className={`${popupStatus ? "popup-open" : null}`}>
+      <div className="">
         <div className="wrapper">
-          <div className="sidenav">
-            <h5>Project Number</h5>
-            <div className="text-sm">
-              <span className="hightlight-blue">Thesis project</span>
-              <br />
-              <span className="hightlight-blue">: &nbsp;</span>
-              18
-              <br />
-              <br />
-              <span className="hightlight-blue">Senior project</span>
-              <br></br>
-              <span className="hightlight-blue">: &nbsp;</span>
-              30
-            </div>
-          </div>
+          <SideBar />
           <div className="main w-full">
-            <div className="homepage-menu-space flex justify-between">
-              <div
-                className="menu-button-filter"
-                onClick={() => {
-                  setPopupStatus(true);
-                  setPopupComponent("searchFilter");
-                }}
-              >
-                <span className="hightlight-blue">Filter:&nbsp;&nbsp;</span>
-                Years
-                <span className="hightlight-blue">&nbsp; / &nbsp;</span>
-                Advisors
-                <span className="hightlight-blue">&nbsp; / &nbsp;</span>
-                Tags
-              </div>
-              <div
-                className="project-menu-add items-center"
-                onClick={() => {
-                  setPopupStatus(true);
-                  setPopupComponent("addProject");
-                }}
-              >
-                <FontAwesomeIcon icon={faPlus} />
-                <div>Add New Project</div>
-              </div>
-            </div>
             <div className="projectlist-space">
               {post?.data?.map((project, index) => (
                 <Banner projectId={project._id} />
