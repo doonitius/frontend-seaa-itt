@@ -18,14 +18,14 @@ import {
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Tags = () => (
+const keywordsBox = (keywords) => (
   <div className="tagsBox">
     <span className="hightlight-blue">#</span>
-    <span>Artificial_Intelligence</span>
+    <span>{keywords}</span>
   </div>
 );
 
-function Banner(props) {
+function Banner({ eng, thai, year, projectId }) {
   // props.projectId
   const [popupStatus, setPopupStatus] = useState(false);
   const [popupComponent, setPopupComponent] = useState("");
@@ -47,32 +47,39 @@ function Banner(props) {
   }
 
   const [post, setPost] = useState(null);
-  const project_name = post?.data?.eng.document.title || "loading...";
-  const project_year = post?.data?.academic_year || "loading...";
-  const project_abstract = post?.data?.eng.document.abstract || "loading...";
-  const project_advisorPrefix =
-    post?.data?.eng.advisor[0].prefix || "loading...";
-  const project_advisorName =
-    post?.data?.eng.advisor[0].first_name || "loading...";
-  const project_keyword = post?.data?.eng.document.keywords || "-";
-  const project_advisorMidname = post?.data?.eng.advisor[0].middle_name;
-  const project_AdvisorLastName = post?.data?.eng.advisor[0].last_name;
-  const url = `https://api-seai-general.cyclic.app/general/project/${props.projectId}`;
+  // console.log("aaaaaaa " + eng.document.title);
+  const project_name = eng.document.title || "loading...";
+  const project_year = year || "loading...";
+  const project_abstract = eng.document.abstract || "loading...";
+  const project_advisorPrefix = eng.advisor[0].prefix || "loading...";
+  const project_advisorName = eng.advisor[0].first_name || "loading...";
+  const project_keyword =
+    eng.document.keywords &&
+    eng.document.keywords.length != 0 &&
+    eng.document.keywords != [""] &&
+    eng.document.keywords != []
+      ? eng.document.keywords
+      : "-";
+  const project_advisorMidname = eng.advisor[0].middle_name;
+  const project_AdvisorLastName = eng.advisor[0].last_name;
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // setLoadingResult(true);
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
-        const response = await axios.get(url);
-        setPost(response.data);
-        // setLoadingResult(false);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchData();
-  }, [props.projectId]);
+  // console.log("project_keyword: " + project_keyword);
+  // const url = `https://api-seai-general.cyclic.app/general/project/${props.projectId}`;
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       // setLoadingResult(true);
+  //       // await new Promise((resolve) => setTimeout(resolve, 2000));
+  //       const response = await axios.get(url);
+  //       setPost(response.data);
+  //       // setLoadingResult(false);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, [props.projectId]);
 
   // if (!post) {
   //     return <div class="loader-container">
@@ -95,7 +102,7 @@ function Banner(props) {
         <AddEditProject
           closePopup={clickExitFromPopup}
           // addCase={false}
-          projectID={post?.data?.project_id}
+          projectID={projectId}
         />
       )}
       {popupStatus && popupComponent === "deleteProject" && (
@@ -135,10 +142,28 @@ function Banner(props) {
                 </div> */}
                 {}
                 <div className="flex pt-3">
-                  <div className="hightlight-gray pr-3">Keywords</div>
-                  <div className="flex">
+                  <div className="hightlight-gray pr-3 items-center">
+                    Keywords
+                  </div>{" "}
+                  {project_keyword.length > 1 ? (
+                    <div className="flex flex-wrap space-y-1 items-center">
+                      {Array.isArray(project_keyword) &&
+                        project_keyword.map((keywords, index) => (
+                          <div className="flex flex-wrap items-center">
+                            <button
+                              className="tagsBox items-center mr-1"
+                              key={index}
+                              name="keywords"
+                            >
+                              <span className="hightlight-blue">#</span>
+                              <span>{keywords}</span>
+                            </button>
+                          </div>
+                        ))}
+                    </div>
+                  ) : (
                     <div className="">{project_keyword}</div>
-                  </div>
+                  )}
                 </div>
                 {/* <div className="flex pt-3" className={`${viewAbstractStatus ? 'popup-open' : null}`}> */}
                 <div className="flex pt-3">
@@ -199,7 +224,7 @@ function Banner(props) {
                 </div>
               </div>
             )}
-            <Link to={`/project/${props.projectId}`}>
+            <Link to={`/project/${projectId}`}>
               <div className="project-banner-menu-viewProject inset-x-0 bottom-0 items-center">
                 View Project
                 <FontAwesomeIcon icon={faArrowRight} />
