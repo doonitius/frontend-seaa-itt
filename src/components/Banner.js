@@ -54,18 +54,24 @@ function Banner(props) {
     post?.data?.eng.advisor[0].prefix || "loading...";
   const project_advisorName =
     post?.data?.eng.advisor[0].first_name || "loading...";
+  const project_keyword = post?.data?.eng.document.keywords || "-";
   const project_advisorMidname = post?.data?.eng.advisor[0].middle_name;
   const project_AdvisorLastName = post?.data?.eng.advisor[0].last_name;
+  const url = `https://api-seai-general.cyclic.app/general/project/${props.projectId}`;
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api-seai-general.cyclic.app/general/project/${props.projectId}`
-      )
-      .then((response) => {
+    async function fetchData() {
+      try {
+        // setLoadingResult(true);
+        // await new Promise((resolve) => setTimeout(resolve, 2000));
+        const response = await axios.get(url);
         setPost(response.data);
-      })
-      .catch((error) => console.log(error));
+        // setLoadingResult(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
   }, [props.projectId]);
 
   // if (!post) {
@@ -86,7 +92,11 @@ function Banner(props) {
   return (
     <div>
       {popupStatus && popupComponent === "editProject" && (
-        <AddEditProject closePopup={clickExitFromPopup} addCase={false} />
+        <AddEditProject
+          closePopup={clickExitFromPopup}
+          // addCase={false}
+          projectID={post?.data?.project_id}
+        />
       )}
       {popupStatus && popupComponent === "deleteProject" && (
         <DeleteProjectAlert closePopup={clickExitFromPopup} />
@@ -113,7 +123,7 @@ function Banner(props) {
                   </span>
                   <span>{project_AdvisorLastName}</span>
                 </div>
-                <div className="flex pt-3">
+                {/* <div className="flex pt-3">
                   <span className="hightlight-gray pr-3 pt-1">Tags: </span>
                   <div className="tagsArea">
                     <Tags />
@@ -121,8 +131,13 @@ function Banner(props) {
                     <Tags />
                     <Tags />
                     <Tags />
-                    {/* <Tags/><Tags/><Tags/><Tags/><Tags/>
-                                            <Tags/><Tags/><Tags/><Tags/><Tags/> */}
+                  </div>
+                </div> */}
+                {}
+                <div className="flex pt-3">
+                  <div className="hightlight-gray pr-3">Keywords</div>
+                  <div className="flex">
+                    <div className="">{project_keyword}</div>
                   </div>
                 </div>
                 {/* <div className="flex pt-3" className={`${viewAbstractStatus ? 'popup-open' : null}`}> */}
