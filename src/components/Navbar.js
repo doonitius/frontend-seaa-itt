@@ -3,6 +3,7 @@ import LogoutAlert from "./LogoutAlert";
 import { useState } from "react";
 import AddEditFilter from "./AddEditFilter.js";
 import AddEditProject from "./AddEditProject.js";
+import InputWIcon from "./InputWIcon";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -37,26 +38,33 @@ function Navbar(props) {
         <LogoutAlert closePopup={clickExitFromPopup} />
       )}
       {popupStatus && popupComponent === "searchFilter" && (
-        <AddEditFilter closePopup={clickExitFromPopup} />
+        <AddEditFilter
+          closePopup={clickExitFromPopup}
+          filterApply={props.filterFunction}
+        />
       )}
       {popupStatus && popupComponent === "addProject" && (
         <AddEditProject closePopup={clickExitFromPopup} addCase={true} />
       )}
-      <img src={logoForBlack2} alt="" className="w-36 object-contain" />
+      <img src={logoForBlack2} alt="" className="w-32 object-contain" />
       <div className="navBar-withSearch-menu">
         <div
           className={
-            props.searchFunction === true
-              ? "search-input-area w-3/4 items-center space-x-2"
-              : "hidden"
+            props.searchFunction === true ? "w-3/4 items-center pr-4" : "hidden"
           }
         >
-          <FontAwesomeIcon className="fa-sm" icon={faMagnifyingGlass} />
+          <InputWIcon
+            color="blue1"
+            icon={faMagnifyingGlass}
+            placeholderInput="Search text related to project"
+            onChange={handleSearchInputChange}
+          />
+          {/* <FontAwesomeIcon className="fa-sm" icon={faMagnifyingGlass} />
           <input
             className="pl-1 search-input"
             placeholder="Search text related to project"
             onChange={handleSearchInputChange}
-          />
+          /> */}
         </div>
         <button
           className={
@@ -69,7 +77,7 @@ function Navbar(props) {
             setPopupComponent("searchFilter");
           }}
         >
-          <div>Add Filter</div>
+          <div>Filter</div>
           <FontAwesomeIcon className="fa-sm justify-center" icon={faFilter} />
         </button>
         <FontAwesomeIcon
@@ -79,7 +87,7 @@ function Navbar(props) {
           style={{ color: "white" }}
         />
         {isOpenMenu && (
-          <ul className="hambergur-menu shadow-md mt-12 py-2 px-1 items-center">
+          <ul className="hambergur-menu shadow-md mt-14 py-2 px-1 items-center">
             <div className=" flex ">
               <button
                 className="project-menu-add items-center "
