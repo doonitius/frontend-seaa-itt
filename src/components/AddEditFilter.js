@@ -43,20 +43,20 @@ function AddEditFilter(props) {
   // const [applyFilter, setApplyFilter] = useState(false);
 
   const applyFilter = () => {
-    deleteSpace();
+    // deleteSpace();
     const filterDataString = JSON.stringify(filterData);
     localStorage.setItem("filterData", filterDataString);
     props.filterApply();
   };
 
-  const deleteSpace = () => {
-    filterData.keywords_name?.map(
-      (keywords, index) =>
-        (filterData.keywords_name[index] = filterData.keywords_name[
-          index
-        ].replace(/ /g, "%20"))
-    );
-  };
+  // const deleteSpace = () => {
+  //   filterData.keywords_name?.map(
+  //     (keywords, index) =>
+  //       (filterData.keywords_name[index] = filterData.keywords_name[
+  //         index
+  //       ].replace(/ /g, "%20"))
+  //   );
+  // };
 
   const handleFilterDataChange = (event) => {
     // const { target } = event;

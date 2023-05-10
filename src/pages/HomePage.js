@@ -15,6 +15,7 @@ import {
   faChevronRight,
   faCircleChevronLeft,
   faCircleChevronRight,
+  faMagnifyingGlass,
   faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -138,6 +139,8 @@ function HomePage(props) {
     async function fetchData() {
       let url = URLpageWithFilter;
 
+      url = url.replace(/ /g, "%20");
+
       // if (searchText === "") {
       //   url = URLpageWithFilter;
       // } else {
@@ -208,61 +211,84 @@ function HomePage(props) {
               </div>
             ) : (
               <div>
-                <div className="projectlist-space">
-                  {post?.data?.map((project, index) => (
-                    <Banner
-                      eng={project.eng}
-                      thai={project.thai}
-                      year={project.academic_year}
-                      projectId={project.project_id}
-                    />
-                  ))}
-                </div>
-                <div className="items-center text-center">
-                  <div
-                    className={
-                      "pt-2 flex text-center space-x-2 justify-center items-center "
-                    }
-                  >
-                    <button
-                      className={
-                        "page-PrevNext " + (pageNumber == 1 ? "hidden" : "")
-                      }
-                      onClick={() => {
-                        setPageNumber((prevPageNumber) => prevPageNumber - 1);
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        className=" self-center mr-2"
-                        icon={faChevronLeft}
-                      />
-                      Prev
-                    </button>
-                    <button
-                      className={
-                        "page-current text-center " +
-                        (pageNumber == 1 ? "hidden" : "")
-                      }
-                    >
-                      Page {pageNumber}
-                    </button>
-                    <button
-                      className={
-                        "page-PrevNext " +
-                        (pageNumber == post?.total_page ? "hidden" : "")
-                      }
-                      onClick={() => {
-                        setPageNumber((prevPageNumber) => prevPageNumber + 1);
-                      }}
-                    >
-                      Next
-                      <FontAwesomeIcon
-                        className=" self-center ml-2"
-                        icon={faChevronRight}
-                      />
-                    </button>
+                {post?.data?.length > 0 ? (
+                  <div>
+                    <div className="projectlist-space">
+                      {post?.data?.map((project, index) => (
+                        <Banner
+                          eng={project.eng}
+                          thai={project.thai}
+                          year={project.academic_year}
+                          projectId={project.project_id}
+                        />
+                      ))}
+                    </div>
+                    <div className="items-center text-center">
+                      <div
+                        className={
+                          "pt-2 flex text-center space-x-2 justify-center items-center "
+                        }
+                      >
+                        <button
+                          className={
+                            "page-PrevNext " + (pageNumber == 1 ? "hidden" : "")
+                          }
+                          onClick={() => {
+                            setPageNumber(
+                              (prevPageNumber) => prevPageNumber - 1
+                            );
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            className=" self-center mr-2"
+                            icon={faChevronLeft}
+                          />
+                          Prev
+                        </button>
+                        <button
+                          className={
+                            "page-current text-center " +
+                            (post?.total_page == 1 ? "hidden" : "")
+                          }
+                        >
+                          Page {pageNumber}
+                        </button>
+                        <button
+                          className={
+                            "page-PrevNext " +
+                            (pageNumber == post?.total_page ? "hidden" : "")
+                          }
+                          onClick={() => {
+                            setPageNumber(
+                              (prevPageNumber) => prevPageNumber + 1
+                            );
+                          }}
+                        >
+                          Next
+                          <FontAwesomeIcon
+                            className=" self-center ml-2"
+                            icon={faChevronRight}
+                          />
+                        </button>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="no-project-found text-center align-middle pt-28">
+                    <FontAwesomeIcon
+                      className=" self-center text-6xl"
+                      icon={faMagnifyingGlass}
+                    />
+                    <br />
+                    <br />
+                    <span className="font-bold text-lg">No Projects Found</span>
+                    <br />
+                    <span className="font-medium">
+                      There are no Projects that match with current filters or
+                      searching text.
+                    </span>
+                  </div>
+                )}
               </div>
             )}
           </div>
