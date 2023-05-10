@@ -14,8 +14,11 @@ import { faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 function AddEditFilter(props) {
   const dropdownRef = useRef(null);
   const [advisorList, setAdvisorList] = useState(null);
+  const [keywordsList, setKeywordsList] = useState(null);
   const [searchAdvisorInput, setSearchAdvisorInput] = useState("");
+  const [searchKeywordsInput, setSearchKeywordsInput] = useState("");
   const [selectedAdvisor, setSelectedAdvisor] = useState([]);
+  const [selectedAdvisorName, setSelectedAdvisorName] = useState([]);
 
   const tagsList = ["Tag 1", "Tag A", "Tag test", "zzz", "test2"];
   const [searchTagsInput, setSearchTagsInput] = useState("");
@@ -26,85 +29,156 @@ function AddEditFilter(props) {
   // const selectorYear = document.querySelector(".custom-selector");
   const [selectedProjectType, setSelectedProjectType] = useState([]);
   const [selectedDegree, setSelectedDegree] = useState([]);
+  const [selectedKeywords, setSelectedKeywords] = useState([]);
+  const [selectedKeywordsName, setSelectedKeywordsName] = useState([]);
   const [filterData, setFilterData] = useState({
     academic_year: "",
     degree: "",
     project_type: "",
-    advisor_id: "",
+    advisor_id: [""],
+    advisor_name: [""],
+    keywords: [""],
+    keywords_name: [""],
   });
   // const [applyFilter, setApplyFilter] = useState(false);
 
   const applyFilter = () => {
+    // deleteSpace();
     const filterDataString = JSON.stringify(filterData);
     localStorage.setItem("filterData", filterDataString);
-
     props.filterApply();
   };
+
+  // const deleteSpace = () => {
+  //   filterData.keywords_name?.map(
+  //     (keywords, index) =>
+  //       (filterData.keywords_name[index] = filterData.keywords_name[
+  //         index
+  //       ].replace(/ /g, "%20"))
+  //   );
+  // };
 
   const handleFilterDataChange = (event) => {
     // const { target } = event;
     // const { name } = target;
+    // const currentValue = prevFilterData[name];
     // if (
     //   name == "academic_year" ||
     //   name == "degree" ||
     //   name == "project_type" ||
-    //   name == "advisor_id"
+    //   name == "advisor_id" ||
+    //   name == "keywords"
     // ) {
-    //   setFilterData({
-    //     ...filterData,
-    //     [name]: event.target.value,
-    //   });
-    // }
+    //   if (currentValue === "") {
+    //     return {
+    //       ...prevFilterData,
+    //       [name]: event.target.value,
+    //     };
+    //   } else {
+    //     return {
+    //       ...prevFilterData,
+    //       [name]: `${currentValue},${event.target.value}`,
+    //     };
+    //   };
+    // };
   };
-
-  // const confirmFilter = () => {
-  //   setFilterData({
-  //     ...filterData,
-  //     academic_year: selectedYearOption ?? "",
-  //     degree: selectedDegree[0] ?? "",
-  //     project_type: selectedProjectType[0] ?? "",
-  //     advisor_id: selectedAdvisor[0] ?? "",
-  //   });
-
-  //   console.log("FUK");
-  // };
 
   useEffect(() => {
     setFilterData((prevState) => ({
       ...filterData,
       academic_year: selectedYearOption ?? "",
-      degree: selectedDegree[0] ?? "",
-      project_type: selectedProjectType[0] ?? "",
-      advisor_id: selectedAdvisor[0] ?? "",
+      degree: selectedDegree ?? [""],
+      project_type: selectedProjectType ?? [""],
+      advisor_id: selectedAdvisor ?? [""],
+      advisor_name: selectedAdvisorName ?? [""],
+      keywords: selectedKeywords ?? [""],
+      keywords_name: selectedKeywordsName ?? [""],
     }));
   }, [
     selectedYearOption,
     selectedDegree,
     selectedProjectType,
     selectedAdvisor,
+    selectedKeywords,
   ]);
 
-  // useEffect(() => {
-  //   setFilterData((prevState) => ({
-  //     ...filterData,
-  //     academic_year: selectedYearOption ?? "",
-  //     degree: selectedDegree[0] ?? "",
-  //     project_type: selectedProjectType[0] ?? "",
-  //     advisor_id: selectedAdvisor[0] ?? "",
-  //   }));
-  //   console.log("confirmFilter change");
-  // }, [applyFilter]);z
+  // const changeFormatFilterData = (event) => {
+  //   const { target } = event;
+  //   const { name } = target;
+
+  //   console.log("prevFilterData + name: " + " " + name);
+
+  //   if (
+  //     name == "academic_year" ||
+  //     name == "degree" ||
+  //     name == "project_type" ||
+  //     name == "advisor_id" ||
+  //     name == "keywords"
+  //   )
+  //     setFilterData((prevFilterData) => {
+  //       const currentValue = prevFilterData[name];
+  //       if (currentValue === "") {
+  //         return {
+  //           ...prevFilterData,
+  //           [name]: event.target.value,
+  //         };
+  //       } else {
+  //         return {
+  //           ...prevFilterData,
+  //           [name]: `${currentValue},${event.target.value}`,
+  //         };
+  //       }
+  //     });
+
+  // const changeFormatFilterDataAdvisor = (event) => {
+  //   setFilterData((prevFilterData) => {
+  //     const currentValue = prevFilterData.advisor_id;
+  //     if (currentValue === "") {
+  //       return {
+  //         ...prevFilterData,
+  //         advisor_id: event.target.value,
+  //       };
+  //     } else {
+  //       return {
+  //         ...prevFilterData,
+  //         advisor_id: `${currentValue},${event.target.value}`,
+  //       };
+  //     }
+  //   });
+
+  //   console.log("prevFilterData + name: " + filterData.advisor_id);
+  // };
 
   useEffect(() => {
     const storedFilterDataString = localStorage.getItem("filterData");
     const storedFilterData = storedFilterDataString
       ? JSON.parse(storedFilterDataString)
       : null;
-    setFilterData(storedFilterData);
-    setSelectedAdvisor([storedFilterData.advisor_id]);
-    setSelectedDegree(storedFilterData.degree);
-    setSelectedYearOption(storedFilterData.academic_year);
-    setSelectedProjectType(storedFilterData.project_type);
+    if (storedFilterData) {
+      setFilterData(storedFilterData);
+      console.log("เข้ามาทำไมเห้ย");
+      if (storedFilterData.advisor_id) {
+        setSelectedAdvisor(storedFilterData.advisor_id);
+      }
+      if (storedFilterData.degree) {
+        setSelectedDegree(storedFilterData.degree);
+      }
+      if (storedFilterData.academic_year) {
+        setSelectedYearOption(storedFilterData.academic_year);
+      }
+      if (storedFilterData.project_type) {
+        setSelectedProjectType(storedFilterData.project_type);
+      }
+      if (storedFilterData.advisor_name) {
+        setSelectedAdvisorName(storedFilterData.advisor_name);
+      }
+      if (storedFilterData.keywords) {
+        setSelectedKeywords(storedFilterData.keywords);
+      }
+      if (storedFilterData.keywords_name) {
+        setSelectedKeywordsName(storedFilterData.keywords_name);
+      }
+    }
   }, []);
 
   // useEffect(() => {
@@ -123,33 +197,36 @@ function AddEditFilter(props) {
   //   saveFilterData();
   // }, [applyFilter]);
 
-  // const printAllSelected = () => {
-  //   console.log(
-  //     "print all selected: \n" +
-  //       "Year: " +
-  //       selectedYearOption +
-  //       "\n" +
-  //       "Degree: " +
-  //       selectedDegree +
-  //       "\n" +
-  //       "PJtype: " +
-  //       selectedProjectType +
-  //       "\n" +
-  //       "Advisor: " +
-  //       selectedAdvisor +
-  //       "\n" +
-  //       "tags: " +
-  //       selectedTags +
-  //       "\n"
-  //   );
-  // };
+  const printAllSelected = () => {
+    console.log(
+      "print all selected: \n" +
+        "Year: " +
+        selectedYearOption +
+        "\n" +
+        "Degree: " +
+        selectedDegree +
+        "\n" +
+        "PJtype: " +
+        selectedProjectType +
+        "\n" +
+        "Advisor: " +
+        selectedAdvisor +
+        "\n" +
+        "tags: " +
+        selectedTags +
+        "\n"
+    );
+  };
 
   const handleResetFilter = () => {
     setSelectedYearOption("");
     setSelectedAdvisor([]);
+    setSelectedAdvisorName([]);
     setSelectedTags([]);
     setSelectedProjectType([]);
     setSelectedDegree([]);
+    setSelectedKeywords([]);
+    setSelectedKeywordsName([]);
   };
 
   const handleProjectTypeChange = (event) => {
@@ -186,13 +263,47 @@ function AddEditFilter(props) {
       .catch((error) => console.log(error));
   }, [searchAdvisorInput]);
 
+  useEffect(() => {
+    axios
+      .get(
+        `https://api-seai-general.cyclic.app/general/keyword?search=${searchKeywordsInput}`
+      )
+      .then((response) => {
+        setKeywordsList(response.data);
+        console.log(advisorList);
+      })
+      .catch((error) => console.log(error));
+  }, [searchKeywordsInput]);
+
   function handleSearchAdvisorChange(event) {
     setSearchAdvisorInput(event.target.value);
   }
 
-  function handleSearchTagsChange(event) {
-    setSearchTagsInput(event.target.value);
+  function handleSearchKeywordsChange(event) {
+    setSearchKeywordsInput(event.target.value);
   }
+
+  const handleKeywordsChange = (value) => {
+    if (!selectedKeywords.includes(value)) {
+      setSelectedKeywords((prevSelectedKeywords) => [
+        ...prevSelectedKeywords,
+        value,
+      ]);
+    } else {
+      console.log("already select this keyword");
+    }
+  };
+
+  const handleKeywordsNameChange = (value) => {
+    if (!selectedKeywordsName.includes(value)) {
+      setSelectedKeywordsName((prevSelectedKeywordsName) => [
+        ...prevSelectedKeywordsName,
+        value,
+      ]);
+    } else {
+      console.log("already select this keywordName");
+    }
+  };
 
   const handleSelectAdvisor = (value) => {
     if (!selectedAdvisor.includes(value)) {
@@ -203,29 +314,71 @@ function AddEditFilter(props) {
     } else {
       console.log("already select this advisor");
     }
-
     // console.log("(add value advisor) : " + value);
   };
 
-  const handleSelectTags = (value) => {
-    if (!selectedTags.includes(value)) {
-      setSelectedTags((prevSelectedTags) => [...prevSelectedTags, value]);
+  const handleSelectAdvisorName = (value) => {
+    if (!selectedAdvisorName.includes(value)) {
+      setSelectedAdvisorName((prevSelectedAdvisor) => [
+        ...prevSelectedAdvisor,
+        value,
+      ]);
     } else {
-      console.log("already select this tag");
+      console.log("already select this advisorName");
     }
-
-    // console.log("(add value tags) : " + value);
+    // console.log("(add value advisor) : " + value);
   };
+
+  // const spitSelectAdvisor = (value) => {
+  //   const splitValue = value.spit("/");
+  //   const partName = splitValue[0];
+  //   const partID = splitValue[1];
+  //   if (!selectedAdvisor.includes(partID)) {
+  //     setSelectedAdvisor((prevSelectedAdvisor) => [
+  //       ...prevSelectedAdvisor,
+  //       partID,
+  //     ]);
+  //   }
+
+  //   if (!selectedAdvisorName.includes(partName)) {
+  //     setSelectedAdvisorName((prevSelectedAdvisorName) => [
+  //       ...prevSelectedAdvisorName,
+  //       partName,
+  //     ]);
+  //   } else {
+  //     console.log("already select this advisor");
+  //   }
+
+  //   // console.log("(add value advisor) : " + value);
+  // };
+
   const handleYearChange = (event) => {
     // console.log("add year : " + event.target.value);
     setSelectedYearOption(event.target.value);
   };
+
+  function deleteSelectKeywords(index) {
+    const newSelectedKeywords = [...selectedKeywords];
+    newSelectedKeywords.splice(index, 1);
+    setSelectedKeywords(newSelectedKeywords);
+  }
+
+  function deleteSelectKeywordsName(index) {
+    const newSelectedKeywordsName = [...selectedKeywordsName];
+    newSelectedKeywordsName.splice(index, 1);
+    setSelectedKeywordsName(newSelectedKeywordsName);
+  }
+
   function deleteSelectAdvisor(index) {
     const newSelectedAdvisor = [...selectedAdvisor];
-    // console.log("selectAdvisortodel : " + selectedAdvisor[index]);
     newSelectedAdvisor.splice(index, 1);
     setSelectedAdvisor(newSelectedAdvisor);
-    // console.log("after del advisor : " + newSelectedAdvisor);
+  }
+
+  function deleteSelectAdvisorName(index) {
+    const newSelectedAdvisorName = [...selectedAdvisorName];
+    newSelectedAdvisorName.splice(index, 1);
+    setSelectedAdvisorName(newSelectedAdvisorName);
   }
 
   function deleteSelectTags(index) {
@@ -253,7 +406,7 @@ function AddEditFilter(props) {
       <div className="filter-popup">
         <div className="popup-header justify-between items-center py-1 px-8">
           <div>
-            <span className="hightlight-gray text-lg">Search Filter</span>
+            <span className="hightlight-gray text-lg">Filter</span>
           </div>
           <div className="flex items-center space-x-3 p-2 w-100">
             <FontAwesomeIcon
@@ -296,10 +449,10 @@ function AddEditFilter(props) {
                   <div className="pr-10 flex items-center">
                     <input
                       type="checkbox"
-                      id="master's degree"
+                      id="master"
                       name="degree"
-                      value="master's degree"
-                      checked={selectedDegree.includes("master's degree")}
+                      value="master"
+                      checked={selectedDegree.includes("master")}
                       onChange={(e) => {
                         handleDegreeChange(e);
                         handleFilterDataChange(e);
@@ -310,10 +463,10 @@ function AddEditFilter(props) {
                   <div className=" flex items-center">
                     <input
                       type="checkbox"
-                      id="bachelor's degree"
+                      id="bachelor"
                       name="degree"
-                      value="bachelor's degree"
-                      checked={selectedDegree.includes("bachelor's degree")}
+                      value="bachelor"
+                      checked={selectedDegree.includes("bachelor")}
                       onChange={(e) => {
                         handleDegreeChange(e);
                         handleFilterDataChange(e);
@@ -332,10 +485,10 @@ function AddEditFilter(props) {
                   <div className="pr-10 flex items-center">
                     <input
                       type="checkbox"
-                      id="Thesis"
+                      id="thesis"
                       name="project_type"
-                      value="Thesis"
-                      checked={selectedProjectType.includes("Thesis")}
+                      value="thesis"
+                      checked={selectedProjectType.includes("thesis")}
                       onChange={(e) => {
                         handleProjectTypeChange(e);
                         handleFilterDataChange(e);
@@ -348,8 +501,8 @@ function AddEditFilter(props) {
                       type="checkbox"
                       id="senior"
                       name="project_type"
-                      value="Senior"
-                      checked={selectedProjectType.includes("Senior")}
+                      value="senior"
+                      checked={selectedProjectType.includes("senior")}
                       onChange={(e) => {
                         handleProjectTypeChange(e);
                         handleFilterDataChange(e);
@@ -361,12 +514,10 @@ function AddEditFilter(props) {
                 <div className="pr-10 flex items-center flex-warp">
                   <input
                     type="checkbox"
-                    id="Work-Integrated Learning"
+                    id="wil"
                     name="project_type"
-                    value="Work-Integrated Learning"
-                    checked={selectedProjectType.includes(
-                      "Work-Integrated Learning"
-                    )}
+                    value="wil"
+                    checked={selectedProjectType.includes("wil")}
                     onChange={(e) => {
                       handleProjectTypeChange(e);
                       handleFilterDataChange(e);
@@ -406,10 +557,16 @@ function AddEditFilter(props) {
                           {advisorList?.data?.map((advisor, index) => (
                             <div
                               className="dropdown-searchResult-each"
-                              key={advisor._id}
+                              key={index}
+                              name="advisor_id"
                               onClick={() => {
                                 handleSelectAdvisor(advisor._id);
-                                handleFilterDataChange(advisor._id);
+                                handleSelectAdvisorName(
+                                  advisor.eng.prefix +
+                                    " " +
+                                    advisor.eng.full_name
+                                );
+                                // changeFormatFilterDataAdvisor(advisor._id);
                               }}
                             >
                               <span className="pr-2">
@@ -433,16 +590,22 @@ function AddEditFilter(props) {
               <div className="basis-2/12">Selected :</div>
               <div className="basis-10/12 selected-filter-area">
                 <div className="selected-list-area">
-                  {selectedAdvisor.map((item, index) => (
+                  {selectedAdvisorName.map((item, index) => (
                     <div
-                      className="selected-filter flex items-center mr-3"
+                      className={
+                        "selected-filter flex items-center mr-3 " +
+                        (item == "" ? "" : "")
+                      }
                       key={item}
                     >
                       <div className="px-3"> {item} </div>
                       <FontAwesomeIcon
                         className="pr-3"
                         icon={faXmark}
-                        onClick={() => deleteSelectAdvisor(index)}
+                        onClick={() => {
+                          deleteSelectAdvisor(index);
+                          deleteSelectAdvisorName(index);
+                        }}
                       />
                     </div>
                   ))}
@@ -450,21 +613,21 @@ function AddEditFilter(props) {
               </div>
             </div>
           </fieldset>
-          {/* <fieldset className="overlay-filter-area">
-            <legend className="hightlight-blue text-lg">Tags</legend>
+          <fieldset className="overlay-filter-area">
+            <legend className="hightlight-blue text-lg">Keywords</legend>
             <div className="flex mb-5">
               <div className="basis-1/4">Search To Add :</div>
               <div className="basis-3/4">
-                <div className=" items-center space-x-3 ">
-                  <div className="items-center">
-                    <div className="flex">
+                <div className=" items-center space-x-3 w-fill">
+                  <div className="items-center w-full">
+                    <div className="flex w-full">
                       <div className="popup-input-area flex items-center space-x-3 w-full h-8">
                         <input
                           type="text"
-                          className="outline-none popup-input pl-3"
-                          placeholder="Search Tags for adding."
-                          value={searchTagsInput}
-                          onChange={handleSearchTagsChange}
+                          className="popup-input pl-3 outline-none"
+                          placeholder="Search Keywords for adding."
+                          value={searchKeywordsInput}
+                          onChange={handleSearchKeywordsChange}
                         />
                         <FontAwesomeIcon
                           className="search-filter-icon fa-sm pr-5"
@@ -473,19 +636,26 @@ function AddEditFilter(props) {
                       </div>
                     </div>
                     <div className="dropdown-searchResult">
-                      {
+                      {keywordsList?.data?.length > 0 ? (
                         <div className=" px-2" ref={dropdownRef}>
-                          {tagsList.map((tags, index) => (
+                          {keywordsList?.data?.map((keywords, index) => (
                             <div
                               className="dropdown-searchResult-each"
-                              key={tags}
-                              onClick={() => handleSelectTags(tags)}
+                              key={index}
+                              name="keyword_id"
+                              onClick={() => {
+                                handleKeywordsChange(keywords._id);
+                                handleKeywordsNameChange(keywords.keyword);
+                                // changeFormatFilterDataAdvisor(advisor._id);
+                              }}
                             >
-                              <span className="">{tags}</span>
+                              <span className="pr-2">{keywords.keyword}</span>
                             </div>
                           ))}
                         </div>
-                      }
+                      ) : (
+                        <span className="pl-3">No result</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -495,74 +665,44 @@ function AddEditFilter(props) {
               <div className="basis-2/12">Selected :</div>
               <div className="basis-10/12 selected-filter-area">
                 <div className="selected-list-area">
-                  {selectedTags.map((item, index) => (
+                  {selectedKeywordsName.map((item, index) => (
                     <div
-                      className="selected-filter flex items-center mr-3"
-                      key={index}
+                      className={
+                        "selected-filter flex items-center mr-3 " +
+                        (item == "" ? "" : "")
+                      }
+                      key={item}
                     >
                       <div className="px-3"> {item} </div>
                       <FontAwesomeIcon
                         className="pr-3"
                         icon={faXmark}
-                        onClick={() => deleteSelectTags(index)}
+                        onClick={() => {
+                          deleteSelectKeywords(index);
+                          deleteSelectKeywordsName(index);
+                        }}
                       />
                     </div>
                   ))}
                 </div>
               </div>
             </div>
-          </fieldset> */}
-          {/* <fieldset className="overlay-filter-area">
-            <legend className="hightlight-blue text-lg">Tags</legend>
-            <div className="flex mb-5">
-              <div className="basis-1/4">Search To Add :</div>
-              <div className="basis-3/4">
-                <div className=" items-center space-x-3 w-fill">
-                  <SearchBarwithResult
-                    dataSet={tagsList}
-                    onSelect={(value) => handleSelectTags(value)}
-                    placeholderText="Search Tags name for adding"
-                  />
-                  
-                </div>
-              </div>
-            </div>
-            <div className="flex">
-              <div className="basis-1/4">Selected :</div>
-              <div className="basis-3/4 selected-filter-area">
-                <div className="selected-list-area">
-                  {selectedTags.map((item, index) => (
-                    <div
-                      className="selected-filter flex items-center mr-5"
-                      key={index}
-                    >
-                      <div className="px-5"> {item} </div>
-                      <FontAwesomeIcon
-                        className="pr-3"
-                        icon={faXmark}
-                        onClick={() => deleteSelectTags(index)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </fieldset> */}
+          </fieldset>
         </div>
         <div className="popup-tailer justify-between items-center py-1 px-8">
           <div></div>
           <div className="flex items-center space-x-3 p-2 w-100">
-            <div
-              className="border-2 rounded-lg px-3 py-2 text-sm"
+            <button
+              className="border-2 rounded-lg px-3 py-2 text-sm w-15"
               onClick={handleResetFilter}
             >
               Reset Change
-            </div>
+            </button>
             <button
-              className="blue-button text-sm py-2 px-4 w-28"
+              className="blue-button text-sm py-2 px-10 w-28"
               onClick={() => {
                 props.closePopup();
-                // printAllSelected();
+                printAllSelected();
                 applyFilter();
                 // setApplyFilter(true);
               }}

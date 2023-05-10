@@ -28,7 +28,8 @@ function Navbar(props) {
     setIsOpenMenu(!isOpenMenu);
   };
 
-  function handleSearchInputChange(event) {
+  async function handleSearchInputChange(event) {
+    await new Promise((resolve) => setTimeout(resolve, 100));
     props.setSearchText(event.target.value);
   }
 
