@@ -14,6 +14,7 @@ import {
   faPlus,
   faTrashCan,
 } from "@fortawesome/free-solid-svg-icons";
+import jwt_decode from "jwt-decode";
 
 function ProjectPage(props) {
   const { projectId } = useParams();
@@ -27,23 +28,33 @@ function ProjectPage(props) {
   const [projectPDFLink, setProjectPDFLink] = useState(
     "a357ab9e-f1d7-4b7a-90ba-15fed36082aa.pdf"
   );
-  const isAdmin = true;
+  const isAdmin0 = true;
+  const aToken = localStorage.getItem("Access_Token");
+  const rToken = localStorage.getItem("Refresh_Token");
+  const isAdmin = localStorage.getItem("Check_admin");
 
-  const Tags = () => (
-    <div className="tagsBox">
-      <span className="hightlight-blue">#</span>
-      <span>Artificial_Intelligence</span>
-    </div>
-  );
+  // const AccessToken = jwt_decode(localStorage.getItem("Access_Token"));
+  // const RefreshToken = jwt_decode(localStorage.getItem("Refresh_Token"));
+  // const [accessToken, setAccessToken] = useState();
+  // const AccessToken = JSON.parse(localStorage.getItem("Access_Token"));
+  // const RefreshToken = localStorage.getItem("Refresh_Token");
+  // const Access
+  // const AccessTokenValue = AccessToken["AccessToken"];
+  // const RefreshTokenValue = RefreshToken.RefreshToken;
+  // const [jwtAccessToken, setJwtAccessToken] = useState({
+  //   username: "",
+  //   access_token: "",
+  //   refresh_token: "",
+  // });
 
   function handleGoBack() {
-    window.location.href = "/home";
+    window.location.href = "/";
   }
 
   function handleViewFile() {
     console.log(project_attachment_file);
     window.open(
-      `https://api-seai-general.cyclic.app/general/project/${project_attachment_file}/preview`,
+      `https://api-seai-general.cyclic.app/general/search/${project_attachment_file}/preview`,
       "_blank"
     );
   }
@@ -52,14 +63,44 @@ function ProjectPage(props) {
     setPopupStatus(!popupStatus);
   }
 
+  // useEffect(() => {
+  //   setAccessToken(JSON.parse(localStorage.getItem("Access_Token")));
+  //   jwt.decode(accessToken);
+  // }, []);
+
+  const getAccessToken = () => {
+    // setAccessToken(JSON.parse(localStorage.getItem("Access_Token")));
+    // var jwtAccessToken = jwt_decode(accessToken);
+  };
+
+  // useEffect(() => {
+  //   setAccessToken(JSON.parse(localStorage.getItem("Access_Token")));
+  //   console.log("accessToken123 " + accessToken);
+  //   if (accessToken) {
+  //     // setAccessToken(JSON.parse(localStorage.getItem("Access_Token")));
+  //     var jwtAccessToken = jwt_decode(accessToken);
+  //     console.log({ jwtAccessToken });
+  //   }
+  // }, [accessToken]);
+
   useEffect(() => {
-    console.log("projectid from param +++ " + projectId);
+    // setAccessToken(JSON.parse(localStorage.getItem("Access_Token")));
+    // var jwtAccessToken = jwt_decode(accessToken);
+    // console.log("accessToken123 " + accessToken);
+    // console.log({ AccessToken });
+    // console.log({ RefreshToken });
+    // console.log({ jwtAccessToken });
+    // console.log("projectid from param +++ " + projectId);
     axios
-      .get(`https://api-seai-general.cyclic.app/general/project/${projectId}`)
+      .get(`https://api-seai-general.cyclic.app/general/search/${projectId}`, {
+        headers: {
+          access_token: aToken,
+          refresh_token: rToken,
+        },
+      })
       .then((response) => {
+        console.log("pass get from project page");
         setPost(response.data);
-        console.log("get projectId: " + projectId);
-        console.log("get response: " + response.data);
       })
       .catch((error) => {
         console.log("An error occurred get projectId in ProjectPage");
@@ -302,33 +343,37 @@ function ProjectPage(props) {
                     )}
                   </div>
                   <div className="flex flex-wrap">
-                    <div className=" flex" style={{ width: "180px" }}>
-                      <button
-                        className="view-attachment-button"
-                        onClick={handleViewFile}
-                      >
-                        <FontAwesomeIcon
-                          className="pr-0 text-lg self-center"
-                          icon={faFilePdf}
-                        />
-                        View attachment file
-                      </button>
-                    </div>
-                    <div className="flex" style={{ width: "175px" }}>
-                      <button
-                        className="edit-attachment-button"
-                        onClick={() => {
-                          setPopupStatus(true);
-                          setPopupComponent("editFile");
-                        }}
-                      >
-                        <FontAwesomeIcon
-                          className="pr-0 text-lg self-center"
-                          icon={faPenToSquare}
-                        />
-                        Edit attachment file
-                      </button>
-                    </div>
+                    {project_attachment_file != null && (
+                      <div className=" flex" style={{ width: "180px" }}>
+                        <button
+                          className="view-attachment-button"
+                          onClick={handleViewFile}
+                        >
+                          <FontAwesomeIcon
+                            className="pr-0 text-lg self-center"
+                            icon={faFilePdf}
+                          />
+                          View attachment file
+                        </button>
+                      </div>
+                    )}
+                    {isAdmin && (
+                      <div className="flex" style={{ width: "175px" }}>
+                        <button
+                          className="edit-attachment-button"
+                          onClick={() => {
+                            setPopupStatus(true);
+                            setPopupComponent("editFile");
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            className="pr-0 text-lg self-center"
+                            icon={faPenToSquare}
+                          />
+                          Edit attachment file
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {/* <div className="flex items-center">

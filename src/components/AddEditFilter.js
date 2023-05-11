@@ -40,6 +40,8 @@ function AddEditFilter(props) {
     keywords: [""],
     keywords_name: [""],
   });
+  const aToken = localStorage.getItem("Access_Token");
+  const rToken = localStorage.getItem("Refresh_Token");
   // const [applyFilter, setApplyFilter] = useState(false);
 
   const applyFilter = () => {
@@ -254,7 +256,13 @@ function AddEditFilter(props) {
   useEffect(() => {
     axios
       .get(
-        `https://api-seai-general.cyclic.app/general/advisor?search=${searchAdvisorInput}`
+        `https://api-seai-general.cyclic.app/general/advisor?search=${searchAdvisorInput}`,
+        {
+          headers: {
+            access_token: aToken,
+            refresh_token: rToken,
+          },
+        }
       )
       .then((response) => {
         setAdvisorList(response.data);
@@ -266,7 +274,13 @@ function AddEditFilter(props) {
   useEffect(() => {
     axios
       .get(
-        `https://api-seai-general.cyclic.app/general/keyword?search=${searchKeywordsInput}`
+        `https://api-seai-general.cyclic.app/general/keyword?search=${searchKeywordsInput}`,
+        {
+          headers: {
+            access_token: aToken,
+            refresh_token: rToken,
+          },
+        }
       )
       .then((response) => {
         setKeywordsList(response.data);
