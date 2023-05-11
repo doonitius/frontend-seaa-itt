@@ -20,9 +20,9 @@ const NotFound = () => (
 
 function App() {
   const navigate = useNavigate();
-  useEffect(() => {
-    navigate("/home");
-  }, []);
+  // useEffect(() => {
+  //   navigate("/home");
+  // }, []);
 
   // useEffect(() => {
   //   axios
@@ -40,7 +40,7 @@ function App() {
       <nav></nav>
       <Routes>
         <Route exact path="/login" element={<Login />} />
-        <Route exact path="/home" element={<Home />} />
+        <Route exact path="/" element={<Home />} />
         <Route exact path="/*" element={<NotFound />} />
         <Route exact path={"/project/:projectId"} element={<ProjectPage />} />
       </Routes>

@@ -17,6 +17,8 @@ function SideBar(props) {
     keywords: "",
     keywords_name: "",
   });
+  const aToken = localStorage.getItem("Access_Token");
+  const rToken = localStorage.getItem("Refresh_Token");
 
   const handleKeywordsNameChange = (value) => {
     setFilterData((prevState) => ({
@@ -65,7 +67,12 @@ function SideBar(props) {
 
   useEffect(() => {
     axios
-      .get("https://api-seai-general.cyclic.app/general/advisor?search=")
+      .get("https://api-seai-general.cyclic.app/general/advisor?search=", {
+        headers: {
+          access_token: aToken,
+          refresh_token: rToken,
+        },
+      })
       .then((response) => {
         setAdvisorList(response.data);
         console.log(advisorList);
@@ -75,7 +82,12 @@ function SideBar(props) {
 
   useEffect(() => {
     axios
-      .get("https://api-seai-general.cyclic.app/general/keyword?search=")
+      .get("https://api-seai-general.cyclic.app/general/keyword?search=", {
+        headers: {
+          access_token: aToken,
+          refresh_token: rToken,
+        },
+      })
       .then((response) => {
         setKeywordsList(response.data);
         console.log("keywordddd " + keywordsList);
@@ -85,7 +97,7 @@ function SideBar(props) {
 
   return (
     <div className="">
-      <div className="sidenav space-y-10">
+      <div className="sidenav space-y-7">
         <div className="px-5 pt-3">
           <button
             className="reset-filter-sideBar"

@@ -16,7 +16,7 @@ function EditPDFFile(props) {
           <FontAwesomeIcon className="fa-xl mr-4" icon={faFileEdit} />
           Edit Attachment file
         </div>
-        <div className="popup-content justify-center text-center text-sm">
+        <div className="popup-content-small justify-center text-center text-sm">
           <div className="text-start pb-2">Present Attachment file</div>
           <div className="gray-area flex justify-between">
             <div className="flex">

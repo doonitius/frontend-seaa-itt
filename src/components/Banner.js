@@ -226,8 +226,10 @@ function Banner({ eng, thai, year, projectId }) {
               </div>
             </div>
           </div>
-          <div className="project-banner-menu content-between grid justify-items-end">
-            {isAdmin && (
+          <div className="project-banner-menu content-end grid justify-items-end">
+            {/* content-end / content-between */}
+
+            {/* {isAdmin && (
               <div className="space-y-2">
                 <div
                   className="project-banner-menu-edit items-center flex"
@@ -256,7 +258,8 @@ function Banner({ eng, thai, year, projectId }) {
                   <div className="">Delete</div>
                 </div>
               </div>
-            )}
+            )} */}
+            {/* <div></div> */}
             <Link to={`/project/${projectId}`}>
               <div className="project-banner-menu-viewProject inset-x-0 bottom-0 items-center">
                 View Project

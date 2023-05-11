@@ -23,11 +23,6 @@ function HomePage(props) {
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const baseURL = "https://api-seai-general.cyclic.app/general/project/filter/";
-  const URLpage = `https://api-seai-general.cyclic.app/general/project/filter?search=${searchText}&page_no=${pageNumber}&page_size=${itemsPerPage}`;
-  const URLpageNoTextSearch = `https://api-seai-general.cyclic.app/general/project/filter?search=&page_no=${pageNumber}&page_size=${itemsPerPage}`;
-  const searchURL = `https://api-seai-general.cyclic.app/general/project/filter?search=${searchText}`;
-  // const baseURL = "https://api-seai-general.cyclic.app//project/filter?search=ใบหน้า";
   const [post, setPost] = useState(null);
   const [loadingResult, setLoadingResult] = useState(true);
   // const storedFilterDataString = localStorage.getItem("filterData");
@@ -43,6 +38,8 @@ function HomePage(props) {
     keywords: "",
     keywords_name: "",
   });
+  const aToken = localStorage.getItem("Access_Token");
+  const rToken = localStorage.getItem("Refresh_Token");
 
   // const [localStorageData, setLocalStorageData] = useState(
   //   localStorage.getItem("filterData")
@@ -133,7 +130,7 @@ function HomePage(props) {
   //     window.removeEventListener("storage", handleStorageChange);
   //   };
   // }, [localStorage.getItem("filterData")]);
-  const URLpageWithFilter = `https://api-seai-general.cyclic.app/general/project/filter?search=${searchText}&page_no=${pageNumber}&page_size=${itemsPerPage}&academic_year=${filterData.academic_year}&degree=${filterData.degree}&project_type=${filterData.project_type}&advisor_id=${filterData.advisor_id}&keyword=${filterData.keywords_name}`;
+  const URLpageWithFilter = `https://api-seai-general.cyclic.app/general/search/filter?search=${searchText}&page_no=${pageNumber}&page_size=${itemsPerPage}&academic_year=${filterData.academic_year}&degree=${filterData.degree}&project_type=${filterData.project_type}&advisor_id=${filterData.advisor_id}&keyword=${filterData.keywords_name}`;
 
   useEffect(() => {
     async function fetchData() {
@@ -150,7 +147,12 @@ function HomePage(props) {
       try {
         setLoadingResult(true);
         await new Promise((resolve) => setTimeout(resolve, 500));
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          headers: {
+            access_token: aToken,
+            refresh_token: rToken,
+          },
+        });
         setPost(response.data);
         // console.log("response data is = " + response.data);
         setLoadingResult(false);

@@ -277,10 +277,13 @@ input {
     display: none;
   }
 
-
   .main {
     padding-left: 0px !important;
     margin-right: 0px !important;
+  }
+
+  .project-info-space {
+    padding: 30px 50px 10px 50px !important;
   }
 }
 
@@ -293,6 +296,10 @@ input {
 @media (max-width: 650px) {
   .handle-bottom {
     padding-bottom: 10px;
+  }
+
+  .project-info-space {
+    padding: 30px 30px 10px 30px !important;
   }
 }
 
@@ -517,11 +524,15 @@ h5 {
 }
 
 
-.popup-content {
+.popup-content, .popup-content-small {
   /* width: 50px; */
   background-color: var(--black1);
   padding: 20px 30px 20px 30px;
   overflow: auto;
+}
+
+.popup-content-small {
+  border-radius: 0px 0px 10px 10px;
 }
 
 .popup {
@@ -797,7 +808,7 @@ input[type="file"] {
 }
 
 .project-info-space {
-  padding: 30px 150px 10px 50px;
+  padding: 30px 250px 10px 250px;
   font-size: 14px;
 }
 
@@ -950,4 +961,44 @@ input[type="file"] {
   color: black;
   transition-property: color;
   transition-duration: 0.6s;
+}
+
+.hambergur-menu-login {
+  color: white;
+  background-color: var(--black3);
+  border: 1px solid var(--gray2);
+  border-radius: 8px;
+  padding: 1px 7px 1px 7px;
+}
+
+.hambergur-menu-login::placeholder {
+  color: var(--gray1)
+}
+
+.hambergur-menu-login-button {
+  border-radius: 5px;
+  padding: 3px 15px 3px 15px;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  background-color: var(--blue1);
+  font-weight: 500;
+}
+
+.hambergur-menu-register-button {
+  font-size: 14px;
+  border: 1px white solid;
+  border-radius: 6px;
+  padding: 5px 0px 5px 0px;
+  font-weight: 400;
+}
+
+.hambergur-menu-logOut-button {
+  font-weight: 400;
+  font-size: 12px;
+  border-radius: 6px;
+  padding: 5px 0px 5px 0px;
+  border: 1px white solid;
+  border-radius: 6px;
+  width: 80px;
 }

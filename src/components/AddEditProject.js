@@ -20,10 +20,17 @@ function AddEditProject({ closePopup, addCase, projectID }) {
   const printAllInput = () => {
     console.log("printAllInput : " + JSON.stringify(projectData));
   };
+  const aToken = localStorage.getItem("Access_Token");
+  const rToken = localStorage.getItem("Refresh_Token");
 
   useEffect(() => {
     axios
-      .get("https://api-seai-general.cyclic.app/general/advisor?search=")
+      .get("https://api-seai-general.cyclic.app/general/advisor?search=", {
+        headers: {
+          access_token: aToken,
+          refresh_token: rToken,
+        },
+      })
       .then((response) => {
         setAdvisorList(response.data);
         console.log("projectID: " + projectID);
@@ -34,7 +41,15 @@ function AddEditProject({ closePopup, addCase, projectID }) {
   useEffect(() => {
     if (projectID) {
       axios
-        .get(`https://api-seai-general.cyclic.app/general/project/${projectID}`)
+        .get(
+          `https://api-seai-general.cyclic.app/general/project/${projectID}`,
+          {
+            headers: {
+              access_token: aToken,
+              refresh_token: rToken,
+            },
+          }
+        )
         .then((response) => {
           setDataBeforeEdit(response.data);
           console.log("projectID: " + projectID);
@@ -53,7 +68,16 @@ function AddEditProject({ closePopup, addCase, projectID }) {
 
   const postProjectData = () => {
     axios
-      .post("https://api-seai-general.cyclic.app/general/project/", projectData)
+      .post(
+        "https://api-seai-general.cyclic.app/general/project/",
+        {
+          headers: {
+            access_token: aToken,
+            refresh_token: rToken,
+          },
+        },
+        projectData
+      )
       .then((response) => {
         console.log(response);
       })
