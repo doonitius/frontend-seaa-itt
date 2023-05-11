@@ -59,9 +59,18 @@ function Banner({ eng, thai, year, projectId }) {
     eng.document.keywords != [""] &&
     eng.document.keywords != []
       ? eng.document.keywords
-      : "-";
+      : "";
+  const project_keywordTh =
+    thai.document.keywords &&
+    thai.document.keywords.length != 0 &&
+    thai.document.keywords != [""] &&
+    thai.document.keywords != []
+      ? thai.document.keywords
+      : "";
   const project_advisorMidname = eng.advisor[0].middle_name;
   const project_AdvisorLastName = eng.advisor[0].last_name;
+  // const no_keyword =
+  //   project_keyword === "" || project_keywordTh === "" ? "-" : "";
 
   // console.log("project_keyword: " + project_keyword);
   // const url = `https://api-seai-general.cyclic.app/general/project/${props.projectId}`;
@@ -117,18 +126,23 @@ function Banner({ eng, thai, year, projectId }) {
               {/* <span className='hightlight-blue text-sm'>Solving Vehicle Routing Problem with Hard Time Windows by Genetic Algorithm</span> */}
               <span className="hightlight-blue text-sm">{project_name}</span>
               <div className="text-xs pt-4">
-                <div className="flex">
-                  <span className="hightlight-gray pr-3">Year: </span>
-                  <span>{project_year} </span>
-                  <span className="hightlight-gray pr-3 pl-10">Advisor: </span>
-                  <span className="pr-2">{project_advisorPrefix}</span>
-                  <span className="pr-2">{project_advisorName}</span>
-                  <span
-                    className={project_advisorMidname === null ? "" : "pr-2"}
-                  >
-                    {project_advisorMidname}
-                  </span>
-                  <span>{project_AdvisorLastName}</span>
+                <div className="check-screen-width">
+                  <div className="pr-10 handle-bottom">
+                    <span className="hightlight-gray pr-3">Year: </span>
+                    <span>{project_year} </span>
+                  </div>
+                  <div>
+                    <span className="hightlight-gray pr-3">Advisor: </span>
+                    <span className="pr-2">{project_advisorPrefix}</span>
+                    <span className="pr-2">{project_advisorName}</span>
+
+                    <span
+                      className={project_advisorMidname === null ? "" : "pr-2"}
+                    >
+                      {project_advisorMidname}
+                    </span>
+                    <span>{project_AdvisorLastName}</span>
+                  </div>
                 </div>
                 {/* <div className="flex pt-3">
                   <span className="hightlight-gray pr-3 pt-1">Tags: </span>
@@ -142,28 +156,47 @@ function Banner({ eng, thai, year, projectId }) {
                 </div> */}
                 {}
                 <div className="flex pt-3">
-                  <div className="hightlight-gray pr-3 items-center">
+                  <div className="hightlight-gray pr-3 self-center">
                     Keywords
                   </div>{" "}
-                  {project_keyword.length > 1 ? (
-                    <div className="flex flex-wrap space-y-1 items-center">
-                      {Array.isArray(project_keyword) &&
-                        project_keyword.map((keywords, index) => (
-                          <div className="flex flex-wrap items-center">
-                            <button
-                              className="tagsBox items-center mr-1"
-                              key={index}
-                              name="keywords"
-                            >
-                              <span className="hightlight-blue">#</span>
-                              <span>{keywords}</span>
-                            </button>
-                          </div>
-                        ))}
-                    </div>
-                  ) : (
-                    <div className="">{project_keyword}</div>
-                  )}
+                  <div>
+                    {
+                      <div className="flex flex-wrap space-y-1 items-center">
+                        {Array.isArray(project_keyword) &&
+                          project_keyword.map((keywords, index) => (
+                            <div className="flex flex-wrap items-center">
+                              <button
+                                className="tagsBox items-center mr-1"
+                                key={index}
+                                name="keywords"
+                              >
+                                <span className="hightlight-blue">#</span>
+                                <span>{keywords}</span>
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    }
+                    {
+                      <div className="flex flex-wrap space-y-1 items-center">
+                        {Array.isArray(project_keywordTh) &&
+                          project_keywordTh.map((keywords, index) => (
+                            <div className="flex flex-wrap items-center">
+                              <button
+                                className="tagsBox items-center mr-1"
+                                key={index}
+                                name="keywords"
+                              >
+                                <span className="hightlight-blue">#</span>
+                                <span>{keywords}</span>
+                              </button>
+                            </div>
+                          ))}
+                      </div>
+                    }
+                    {project_keyword.length < 1 &&
+                      project_keywordTh.length < 1 && <div>-</div>}
+                  </div>
                 </div>
                 {/* <div className="flex pt-3" className={`${viewAbstractStatus ? 'popup-open' : null}`}> */}
                 <div className="flex pt-3">

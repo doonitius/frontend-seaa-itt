@@ -203,7 +203,7 @@ function HomePage(props) {
         } */}
       <div className="">
         <div className="wrapper">
-          <SideBar />
+          <SideBar filterFunction={functionFilter} />
           <div className="main w-full">
             {loadingResult ? (
               <div className="grid justify-items-center pt-36">

@@ -284,6 +284,23 @@ input {
   }
 }
 
+@media (min-width: 650px) {
+  .check-screen-width {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 650px) {
+  .handle-bottom {
+    padding-bottom: 10px;
+  }
+}
+
+/* 
+.check-screen-width {
+  display: flex;
+} */
+
 
 .main {
   padding-left: 400px;
@@ -320,7 +337,7 @@ h5 {
   padding: 20px 0px 20px 40px;
 }
 
-.tagsBox, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-menu-add {
+.tagsBox, .tagsBox-sidebar, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-menu-add {
   border-style: solid;
   border-radius: 15px;
   break-after: all;
@@ -332,6 +349,26 @@ h5 {
   padding: 5px 10px 5px 10px;
   border-width: 1px;
   font-weight: 400;
+}
+
+.tagsBox-sidebar {
+  border-color: var(--black3);
+  padding: 5px 10px 5px 10px;
+  border-width: 1px;
+  font-weight: 400;
+}
+
+.hover-sidebar {
+  color: var(--lightgray1);
+}
+
+.hover-sidebar:hover {
+  color: white;
+  font-weight: 500;
+}
+
+.tagsBox-sidebar:hover {
+  border-color: var(--lightgray1);
 }
 
 .tagsBox:hover {
@@ -901,4 +938,16 @@ input[type="file"] {
 .page-PrevNext:hover {
   border: 1px solid var(--blue1);
   border-radius: 20px;
+}
+
+.reset-filter-sideBar {
+  border: 1px solid var(--lightgray3);
+  padding: 10px 0px 10px 0px;
+}
+
+.reset-filter-sideBar:hover {
+  background-color: var(--lightgray3);
+  color: black;
+  transition-property: color;
+  transition-duration: 0.6s;
 }
