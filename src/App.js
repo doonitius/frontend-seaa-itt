@@ -4,7 +4,8 @@ import Login from "./pages/LoginPage"
 import Home from "./pages/HomePage"
 import ProjectPage from "./pages/ProjectPage";
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // import axios from 'axios';
 
@@ -18,7 +19,10 @@ const NotFound = () => (
 );
 
 function App() {
-  const [projectId, setProjectId] = useState("");
+  const navigate = useNavigate();
+  useEffect(() => {
+    navigate("/home");
+  }, []);
 
   // useEffect(() => {
   //   axios
@@ -35,7 +39,7 @@ function App() {
     <div>
       <nav></nav>
       <Routes>
-        <Route exact path="/" element={<Login />} />
+        <Route exact path="/login" element={<Login />} />
         <Route exact path="/home" element={<Home />} />
         <Route exact path="/*" element={<NotFound />} />
         <Route exact path={"/project/:projectId"} element={<ProjectPage />} />
