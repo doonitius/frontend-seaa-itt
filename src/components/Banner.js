@@ -51,8 +51,8 @@ function Banner({ eng, thai, year, projectId }) {
   const project_name = eng.document.title || "loading...";
   const project_year = year || "loading...";
   const project_abstract = eng.document.abstract || "loading...";
-  const project_advisorPrefix = eng.advisor[0].prefix || "loading...";
-  const project_advisorName = eng.advisor[0].first_name || "loading...";
+  const project_advisorPrefix = eng.advisor[0]?.prefix || "loading...";
+  const project_advisorName = eng.advisor[0]?.first_name || "loading...";
   const project_keyword =
     eng.document.keywords &&
     eng.document.keywords.length != 0 &&
@@ -67,8 +67,8 @@ function Banner({ eng, thai, year, projectId }) {
     thai.document.keywords != []
       ? thai.document.keywords
       : "";
-  const project_advisorMidname = eng.advisor[0].middle_name;
-  const project_AdvisorLastName = eng.advisor[0].last_name;
+  const project_advisorMidname = eng.advisor[0]?.middle_name;
+  const project_AdvisorLastName = eng.advisor[0]?.last_name;
   // const no_keyword =
   //   project_keyword === "" || project_keywordTh === "" ? "-" : "";
 

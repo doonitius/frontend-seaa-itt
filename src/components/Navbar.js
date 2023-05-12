@@ -143,8 +143,11 @@ function Navbar(props) {
       );
       const userNameDataString = JSON.stringify(response.data?.username);
 
-      localStorage.setItem("Access_Token", accessTokenDataString);
-      localStorage.setItem("Refresh_Token", refreshTokenDataString);
+      const aTokenNoQuotes = accessTokenDataString.replace(/"/g, "");
+      const rTokenNoQuotes = accessTokenDataString.replace(/"/g, "");
+
+      localStorage.setItem("Access_Token", aTokenNoQuotes);
+      localStorage.setItem("Refresh_Token", rTokenNoQuotes);
       localStorage.setItem("User_Name", userNameDataString);
       // const isAdmin = localStorage.getItem("Check_admin");
 
