@@ -133,7 +133,7 @@ function ProjectPage(props) {
         <AddEditProject
           closePopup={clickExitFromPopup}
           addCase={false}
-          projectID={post?.data?._id}
+          projectID={post?.data?.project_id}
         />
       )}
       {popupStatus && popupComponent === "deleteProject" && (

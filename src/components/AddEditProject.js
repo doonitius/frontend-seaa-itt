@@ -23,6 +23,9 @@ function AddEditProject({ closePopup, addCase, projectID }) {
   const aToken = localStorage.getItem("Access_Token");
   const rToken = localStorage.getItem("Refresh_Token");
 
+  // const aTokenNoQuotes = aToken.replace(/"/g, "");
+  // const rTokenNoQuotes = rToken.replace(/"/g, "");
+
   useEffect(() => {
     axios
       .get("https://api-seai-general.cyclic.app/general/advisor?search=", {
@@ -33,7 +36,7 @@ function AddEditProject({ closePopup, addCase, projectID }) {
       })
       .then((response) => {
         setAdvisorList(response.data);
-        console.log("projectID: " + projectID);
+        console.log("setAdvisorList success");
       })
       .catch((error) => console.log(error));
   }, []);
@@ -42,7 +45,7 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     if (projectID) {
       axios
         .get(
-          `https://api-seai-general.cyclic.app/general/project/${projectID}`,
+          `https://api-seai-general.cyclic.app/general/search/${projectID}`,
           {
             headers: {
               access_token: aToken,
@@ -52,7 +55,7 @@ function AddEditProject({ closePopup, addCase, projectID }) {
         )
         .then((response) => {
           setDataBeforeEdit(response.data);
-          console.log("projectID: " + projectID);
+          console.log("projectID from edit button: " + projectID);
         })
         .catch((error) => console.log(error));
     }
@@ -66,30 +69,57 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     }
   }, [dataBeforeEdit]);
 
-  const postProjectData = () => {
+  const postProjectCreate = () => {
     axios
       .post(
-        "https://api-seai-general.cyclic.app/general/project/",
+        "https://api-seai-general.cyclic.app/general/project",
+        projectData,
         {
           headers: {
             access_token: aToken,
             refresh_token: rToken,
           },
-        },
-        projectData
+        }
       )
       .then((response) => {
+        console.log("create project success");
         console.log(response);
       })
       .catch((error) => console.log(error));
+    console.log("aT and rT: " + aToken + "\n" + rToken);
   };
+
+  const postProjectEdit = () => {
+    axios
+      .patch(
+        `https://api-seai-general.cyclic.app/general/project${projectID}`,
+        projectData,
+        {
+          headers: {
+            access_token: aToken,
+            refresh_token: rToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log("edit project success");
+        console.log(response);
+      })
+      .catch((error) => console.log(error));
+    console.log("aT and rT: " + aToken + "\n" + rToken);
+  };
+
+  const [test, setTest] = useState({ IamTest: "" });
+
+  const [keywordsStringTh, setKeywordsStringTh] = useState("");
+  const [keywordsStringEn, setKeywordsStringEn] = useState("");
 
   const [projectData, setProjectData] = useState({
     thai: {
       document: {
         title: "",
         abstract: "",
-        keywords: "",
+        keywords: [],
       },
       advisor: [
         {
@@ -130,7 +160,7 @@ function AddEditProject({ closePopup, addCase, projectID }) {
       document: {
         title: "",
         abstract: "",
-        keywords: "",
+        keywords: [],
       },
       advisor: [
         {
@@ -174,87 +204,140 @@ function AddEditProject({ closePopup, addCase, projectID }) {
   });
 
   useEffect(() => {
+    // const fruits = [
+    //   "ABC",
+    //   "การค้นหาแบบกริด",
+    //   "การค้นหาแบบสุ่ม",
+    //   "การจำแนกประเภท",
+    //   "การปรับไฮเปอร์พารามิเตอร์",
+    //   "การวิเคราะห์ความแปรปรวน",
+    // ];
+    const separator = "/";
+
+    // const result = fruits.join(separator);
+
+    // console.log("re: " + result);
+
+    if (projectID && dataBeforeEdit?.data?.thai?.document?.keywords) {
+      const keywordsThString =
+        dataBeforeEdit?.data.thai.document.keywords.join(separator);
+
+      console.log("keywordsThString: " + keywordsThString);
+
+      setKeywordsStringTh(keywordsThString);
+    }
+
+    if (projectID && dataBeforeEdit?.data?.eng?.document?.keywords) {
+      const keywordsEnString =
+        dataBeforeEdit?.data.eng.document.keywords.join("/ ");
+
+      setKeywordsStringEn(keywordsEnString);
+    }
+
+    console.log("test th น้อง: " + keywordsStringTh);
+    console.log("test eng น้อง: " + keywordsStringEn);
+  }, [dataBeforeEdit]);
+
+  // useEffect(() => {
+  //   console.log("test th น้อง: " + projectData.thai.document.keywords);
+  //   console.log("test eng น้อง: " + projectData.eng.document.keywords);
+  //   console.log("-------------------");
+  // }, [projectData]);
+
+  useEffect(() => {
     if (projectID) {
-      console.log(
-        "dataBeforeEdit?.data.eng?.document?.title: " +
-          dataBeforeEdit?.data.eng?.document?.title
-      );
+      const authorLength = dataBeforeEdit?.data?.eng?.author.length;
+
       setProjectData((prevState) => ({
         ...prevState,
-        eng: {
-          ...prevState.eng,
-          document: {
-            ...prevState.eng.document,
-            title: dataBeforeEdit?.data.eng?.document?.title || "",
-            keywords: dataBeforeEdit?.data.eng?.document?.title || "",
-            abstract: dataBeforeEdit?.data.eng?.document?.abstract || "",
-          },
-          ...prevState.eng,
-          advisor: {
-            ...prevState.eng.advisor,
-            prefix: dataBeforeEdit?.data.eng?.advisor?.prefix || "",
-            first_name: dataBeforeEdit?.data.eng?.advisor?.first_name || "",
-            middle_name: dataBeforeEdit?.data.eng?.advisor?.middle_name || "",
-            last_name: dataBeforeEdit?.data.eng?.advisor?.last_name || "",
-          },
-          ...prevState.eng,
-          author: {
-            ...prevState.eng.author,
-            prefix: dataBeforeEdit?.data.eng?.author?.prefix || "",
-            first_name: dataBeforeEdit?.data.eng?.author?.first_name || "",
-            middle_name: dataBeforeEdit?.data.eng?.author?.middle_name || "",
-            last_name: dataBeforeEdit?.data.eng?.author?.last_name || "",
-          },
-        },
         thai: {
           ...prevState.thai,
           document: {
             ...prevState.thai.document,
-            title: dataBeforeEdit?.data.thai?.document?.title || "",
-            keywords: dataBeforeEdit?.data.thai?.document?.title || "",
+            title: dataBeforeEdit?.data?.thai?.document?.title || "",
             abstract: dataBeforeEdit?.data.thai?.document?.abstract || "",
+            keywords: dataBeforeEdit?.data.thai?.document?.keywords || [],
           },
-          ...prevState.thai,
-          advisor: {
-            ...prevState.thai.advisor,
-            prefix: dataBeforeEdit?.data.thai?.advisor?.prefix || "",
-            first_name: dataBeforeEdit?.data.thai?.advisor?.first_name || "",
-            middle_name: dataBeforeEdit?.data.thai?.advisor?.middle_name || "",
-            last_name: dataBeforeEdit?.data.thai?.advisor?.last_name || "",
-          },
-          ...prevState.thai,
-          author: {
-            ...prevState.thai.author,
-            prefix: dataBeforeEdit?.data.thai?.author?.prefix || "",
-            first_name: dataBeforeEdit?.data.thai?.author?.first_name || "",
-            middle_name: dataBeforeEdit?.data.thai?.author?.middle_name || "",
-            last_name: dataBeforeEdit?.data.thai?.author?.last_name || "",
-          },
-          // advisor: [],
-          // academic_year: "",
-          // degree: "",
-          // project_type: "",
-          // advisor_id: []
-          // advisor: [...dataBeforeEdit?.data.advisor] || [],
-          // academic_year: dataBeforeEdit?.data.academic_year || "",
-          // degree: dataBeforeEdit?.data.degree || "",
-          // project_type: dataBeforeEdit?.data.project_type || "",
-          // advisor_id: [...dataBeforeEdit?.data.advisor_id] || [],
+          advisor: prevState.thai.advisor.map((advisor, index) => ({
+            ...advisor,
+            prefix: dataBeforeEdit?.data?.thai?.advisor[index]?.prefix || "",
+            first_name:
+              dataBeforeEdit?.data?.thai?.advisor[index]?.first_name || "",
+            middle_name:
+              dataBeforeEdit?.data?.thai?.advisor[index]?.middle_name || "",
+            last_name:
+              dataBeforeEdit?.data?.thai?.advisor[index]?.last_name || "",
+          })),
+          author: prevState.thai.author.map((author, index) => ({
+            ...author,
+            prefix: dataBeforeEdit?.data?.thai?.author[index]?.prefix || "",
+            first_name:
+              dataBeforeEdit?.data?.thai?.author[index]?.first_name || "",
+            middle_name:
+              dataBeforeEdit?.data?.thai?.author[index]?.middle_name || "",
+            last_name:
+              dataBeforeEdit?.data?.thai?.author[index]?.last_name || "",
+          })),
         },
-        // titleEn: dataBeforeEdit?.data.eng?.document?.title || "",
-        // titleTh: dataBeforeEdit?.data.thai?.document?.title || "",
-        // abstractEn: dataBeforeEdit?.data.eng?.document?.abstract || "",
-        // abstractTh: dataBeforeEdit?.data.thai?.document?.abstract || "",
-        // degree: dataBeforeEdit?.data.degree || "",
-        // projectType: dataBeforeEdit?.data.project_type || "",
-        // keywordEn: dataBeforeEdit?.data.eng?.document?.keywords || "",
-        // keywordTh: dataBeforeEdit?.data.thai?.document?.keywords || "",
-        // academicYear: dataBeforeEdit?.data.academic_year || "",
+        eng: {
+          ...prevState.eng,
+          document: {
+            ...prevState.eng.document,
+            title: dataBeforeEdit?.data?.eng?.document?.title || "",
+            abstract: dataBeforeEdit?.data.eng?.document?.abstract || "",
+            keywords: dataBeforeEdit?.data.eng?.document?.keywords || [],
+          },
+          advisor: prevState.eng.advisor.map((advisor, index) => ({
+            ...advisor,
+            prefix: dataBeforeEdit?.data?.eng?.advisor[index]?.prefix || "",
+            first_name:
+              dataBeforeEdit?.data?.eng?.advisor[index]?.first_name || "",
+            middle_name:
+              dataBeforeEdit?.data?.eng?.advisor[index]?.middle_name || "",
+            last_name:
+              dataBeforeEdit?.data?.eng?.advisor[index]?.last_name || "",
+          })),
+          author: prevState.eng.author.map((author, index) => ({
+            ...author,
+            prefix: dataBeforeEdit?.data?.eng?.author[index]?.prefix || "",
+            first_name:
+              dataBeforeEdit?.data?.eng?.author[index]?.first_name || "",
+            middle_name:
+              dataBeforeEdit?.data?.eng?.author[index]?.middle_name || "",
+            last_name:
+              dataBeforeEdit?.data?.eng?.author[index]?.last_name || "",
+          })),
+        },
+        academic_year: dataBeforeEdit?.data.academic_year || "",
+        degree: dataBeforeEdit?.data.degree || "",
+        project_type: dataBeforeEdit?.data.project_type || "",
+        // advisor_id: [...dataBeforeEdit?.data.advisor_id] || [],
       }));
-      console.log(projectData.eng.document?.title);
-      console.log(projectData.thai.document?.title);
+
+      setAuthorNumber(authorLength);
+      //   console.log("authorLength: " + authorLength);
+      //   console.log("เช็คหลังก๊อป: " + projectData.eng.document?.title);
+      //   console.log("เช็คหลังก๊อป degree: " + projectData.degree);
+      //   console.log("เช็คหลังก๊อปth: " + projectData.thai.document?.title);
+      //   console.log("-------------------");
+      // } else {
+      //   console.log("ไม่มีไอดี");
     }
   }, [dataBeforeEdit]);
+
+  // useEffect(() => {
+  //   console.log("ก่อนเผา: " + projectData.eng.document?.title);
+  //   console.log("เผาตัวเองทำไมมม");
+  //   console.log("-------------------");
+  // }, [projectData]);
+
+  // useEffect(() => {
+  //   setTest({
+  //     IamTest: dataBeforeEdit?.data.eng?.document?.title || "",
+  //   });
+  //   console.log("เช็ค iamtest หลังก๊อป: " + test.IamTest);
+  //   console.log("-------------------");
+  // }, [dataBeforeEdit]);
 
   const handleSmallDataChange = (event) => {
     const { target } = event;
@@ -272,16 +355,16 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     const { name } = target;
 
     if (name == "title" || name == "abstract" || name == "keywords") {
-      setProjectData({
-        ...projectData,
+      setProjectData((prevState) => ({
+        ...prevState,
         eng: {
-          ...projectData.eng,
+          ...prevState.eng,
           document: {
-            ...projectData.eng.document,
+            ...prevState.eng.document,
             [name]: event.target.value,
           },
         },
-      });
+      }));
     }
   };
 
@@ -444,29 +527,43 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     const engAuthor = projectData.eng.author;
     const engAdvisor = projectData.eng.advisor;
 
-    for (let i = thaiAuthor.length - 1; i >= 0; i--) {
+    for (let i = thaiAuthor.length - 1; i >= 1; i--) {
+      console.log("testing !!");
       if (thaiAuthor[i].prefix === "") {
         thaiAuthor.splice(i, 1);
       }
     }
 
-    for (let i = thaiAdvisor.length - 1; i >= 0; i--) {
+    for (let i = thaiAdvisor.length - 1; i >= 1; i--) {
       if (thaiAdvisor[i].prefix === "") {
         thaiAdvisor.splice(i, 1);
       }
     }
 
-    for (let i = engAuthor.length - 1; i >= 0; i--) {
+    for (let i = engAuthor.length - 1; i >= 1; i--) {
       if (engAuthor[i].prefix === "") {
         engAuthor.splice(i, 1);
       }
     }
 
-    for (let i = engAdvisor.length - 1; i >= 0; i--) {
+    for (let i = engAdvisor.length - 1; i >= 1; i--) {
       if (engAdvisor[i].prefix === "") {
         engAdvisor.splice(i, 1);
       }
     }
+
+    // const handleEmpty = () => {
+    //   let fields = this.state.fields
+    //   let errors = {};
+    // let formIsValid = true;
+
+    //   if (!fields["name"]){
+    //     formIsValid = false;
+    //     errors["name"] = "Cannot be empty";
+    //   }
+    //   this.setState({ errors: errors });
+    //   return formIsValid;
+    // }
 
     setProjectData({
       ...projectData,
@@ -508,11 +605,239 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     });
   };
 
-  const handleCheckData = () => {
+  const sentOnlyEdit = () => {
+    setProjectData((prevState) => ({
+      ...prevState,
+      thai: {
+        ...prevState.thai,
+        document: {
+          ...prevState.thai.document,
+          title:
+            projectData?.thai?.document?.title !==
+            dataBeforeEdit?.data?.thai?.document?.title
+              ? projectData?.thai?.document?.title
+              : "",
+          abstract:
+            projectData?.thai?.document?.abstract !==
+            dataBeforeEdit?.data.thai?.document?.abstract
+              ? projectData?.thai?.document?.abstract
+              : "",
+          keywords:
+            projectData?.thai?.document?.keywords !==
+            dataBeforeEdit?.data.thai?.document?.keywords
+              ? projectData?.thai?.document?.keywords
+              : [],
+        },
+        advisor: prevState.thai.advisor.map((advisor, index) => ({
+          ...advisor,
+          prefix:
+            projectData?.thai?.advisor[index]?.prefix !==
+            dataBeforeEdit?.data?.thai?.advisor[index]?.prefix
+              ? projectData?.thai?.advisor[index]?.prefix
+              : "",
+          first_name:
+            projectData?.thai?.advisor[index]?.first_name !==
+            dataBeforeEdit?.data?.thai?.advisor[index]?.first_name
+              ? projectData?.thai?.advisor[index]?.first_name
+              : "",
+          middle_name:
+            projectData?.thai?.advisor[index]?.middle_name !==
+            dataBeforeEdit?.data?.thai?.advisor[index]?.middle_name
+              ? projectData?.thai?.advisor[index]?.middle_name
+              : "",
+          last_name:
+            projectData?.thai?.advisor[index]?.last_name !==
+            dataBeforeEdit?.data?.thai?.advisor[index]?.last_name
+              ? projectData?.thai?.advisor[index]?.last_name
+              : "",
+        })),
+        author: prevState.thai.author.map((author, index) => ({
+          ...author,
+          prefix:
+            projectData?.thai?.author[index]?.prefix !==
+            dataBeforeEdit?.data?.thai?.author[index]?.prefix
+              ? projectData?.thai?.author[index]?.prefix
+              : "",
+          first_name:
+            projectData?.thai?.author[index]?.first_name !==
+            dataBeforeEdit?.data?.thai?.author[index]?.first_name
+              ? projectData?.thai?.author[index]?.first_name
+              : "",
+          middle_name:
+            projectData?.thai?.author[index]?.middle_name !==
+            dataBeforeEdit?.data?.thai?.author[index]?.middle_name
+              ? projectData?.thai?.author[index]?.middle_name
+              : "",
+          last_name:
+            projectData?.thai?.author[index]?.last_name !==
+            dataBeforeEdit?.data?.thai?.author[index]?.last_name
+              ? projectData?.thai?.author[index]?.last_name
+              : "",
+        })),
+      },
+      eng: {
+        ...prevState.eng,
+        document: {
+          ...prevState.eng.document,
+          title:
+            projectData?.eng?.document?.title !==
+            dataBeforeEdit?.data?.eng?.document?.title
+              ? "แก้สิวะ"
+              : "",
+          abstract:
+            projectData?.eng?.document?.abstract !==
+            dataBeforeEdit?.data.eng?.document?.abstract
+              ? projectData?.eng?.document?.abstract
+              : "",
+          keywords:
+            projectData?.eng?.document?.keywords !==
+            dataBeforeEdit?.data.eng?.document?.keywords
+              ? projectData?.eng?.document?.keywords
+              : "",
+        },
+        advisor: prevState.eng.advisor.map((advisor, index) => ({
+          ...advisor,
+          prefix:
+            projectData?.eng?.advisor[index]?.prefix !==
+            dataBeforeEdit?.data?.eng?.advisor[index]?.prefix
+              ? projectData?.eng?.advisor[index]?.prefix
+              : "",
+          first_name:
+            projectData?.eng?.advisor[index]?.first_name !==
+            dataBeforeEdit?.data?.eng?.advisor[index]?.first_name
+              ? projectData?.eng?.advisor[index]?.first_name
+              : "",
+          middle_name:
+            projectData?.eng?.advisor[index]?.middle_name !==
+            dataBeforeEdit?.data?.eng?.advisor[index]?.middle_name
+              ? projectData?.eng?.advisor[index]?.middle_name
+              : "",
+          last_name:
+            projectData?.eng?.advisor[index]?.last_name !==
+            dataBeforeEdit?.data?.eng?.advisor[index]?.last_name
+              ? projectData?.eng?.advisor[index]?.last_name
+              : "",
+        })),
+        author: prevState.eng.author.map((author, index) => ({
+          ...author,
+          prefix:
+            projectData?.eng?.author[index]?.prefix ==
+            dataBeforeEdit?.data?.eng?.author[index]?.prefix
+              ? projectData?.eng?.author[index]?.prefix
+              : "",
+          first_name:
+            projectData?.eng?.author[index]?.first_name ==
+            dataBeforeEdit?.data?.eng?.author[index]?.first_name
+              ? projectData?.eng?.author[index]?.first_name
+              : "",
+          middle_name:
+            projectData?.eng?.author[index]?.middle_name ==
+            dataBeforeEdit?.data?.eng?.author[index]?.middle_name
+              ? projectData?.eng?.author[index]?.middle_name
+              : "",
+          last_name:
+            projectData?.eng?.author[index]?.last_name ==
+            dataBeforeEdit?.data?.eng?.author[index]?.last_name
+              ? projectData?.eng?.author[index]?.last_name
+              : "",
+        })),
+      },
+      academic_year:
+        projectData?.academic_year == dataBeforeEdit?.data.academic_year
+          ? projectData?.academic_year
+          : "",
+      degree:
+        projectData?.degree == dataBeforeEdit?.data.degree
+          ? dataBeforeEdit?.degree
+          : "",
+      project_type:
+        projectData?.project_type == dataBeforeEdit?.data.project_type
+          ? dataBeforeEdit?.project_type
+          : "",
+      // advisor_id: [...dataBeforeEdit?.data.advisor_id] || [],
+    }));
+    const diff =
+      projectData?.eng?.document?.title ==
+      dataBeforeEdit?.data?.eng?.document?.title;
+    console.log("how diff: " + diff);
+
+    // console.log("ปริ้นเวอชั่นกูเอง : " + JSON.stringify(projectData));
+  };
+
+  // useEffect(() => {
+  //   console.log("ปริ้นเวอชั่นกูเอง : " + JSON.stringify(projectData));
+  //   console.log("---------------");
+  // }, [projectData]);
+
+  const validateAndPostData = () => {
     validateArrayData();
     printAllInput();
-    // postProjectData();
+    if (addCase === true) {
+      console.log("going to post new project");
+      postProjectCreate();
+    } else {
+      sentOnlyEdit();
+      console.log("filter la");
+      printAllInput();
+      console.log("going to post edit project");
+    }
   };
+
+  const handleKeywordsStringChange = (event) => {
+    const { target } = event;
+    const { name } = target;
+
+    if (name === "keywordTh") {
+      setKeywordsStringTh(event.target.value);
+    }
+
+    if (name === "keywordEn") {
+      setKeywordsStringEn(event.target.value);
+    }
+  };
+
+  useEffect(() => {
+    const separator = "/";
+
+    if (keywordsStringEn) {
+      const trimmedKeywordEn = keywordsStringEn
+        .split(separator)
+        .map((keyword) => keyword.trim());
+      setProjectData((prevData) => {
+        return {
+          ...prevData,
+          eng: {
+            ...prevData.eng,
+            document: {
+              ...prevData.eng.document,
+              keywords: trimmedKeywordEn || [],
+            },
+          },
+        };
+      });
+    }
+    if (keywordsStringTh) {
+      const trimmedKeywordTh = keywordsStringTh
+        .split(separator)
+        .map((keyword) => keyword.trim());
+      setProjectData((prevData) => {
+        return {
+          ...prevData,
+          thai: {
+            ...prevData.thai,
+            document: {
+              ...prevData.thai.document,
+              keywords: trimmedKeywordTh || [],
+            },
+          },
+        };
+      });
+
+      console.log(
+        ".thai.document.keywords: " + projectData.thai.document.keywords
+      );
+    }
+  }, [keywordsStringEn, keywordsStringTh]);
 
   return (
     <div className="popup">
@@ -533,8 +858,14 @@ function AddEditProject({ closePopup, addCase, projectID }) {
             <button
               className="blue-button text-sm py-2 px-4 w-28"
               onClick={() => {
+                // if (projectData.eng.document?.title) {
+                //   closePopup();
+                //   validateAndSPostData();
+                // } else {
+                //   alert("Please enter a project title.");
+                // }
                 closePopup();
-                handleCheckData();
+                validateAndPostData();
               }}
             >
               Confirm
@@ -557,13 +888,14 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                     <textarea
                       className="popup-input px-3 py-1 w-full"
                       placeholder="Project Title"
-                      value={projectData.eng.document?.title}
+                      value={projectData.eng?.document.title}
                       onChange={handleEnDocumentChange}
                       name="title"
                       rows="2"
                     />
                   </div>
                 </div>
+                {test.IamTest}
                 <div className="flex items-center">
                   <div className="basis-1/4 pr-10">ชื่อโครงการ :</div>
                   <div className="basis-3/4">
@@ -621,8 +953,8 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                         type="radio"
                         id="master's degree"
                         name="degree"
-                        value="master's degree"
-                        checked={projectData.degree === "master's degree"}
+                        value="master"
+                        checked={projectData.degree === "master"}
                         onChange={handleSmallDataChange}
                       />
                       <label for="html">Master's degree</label>
@@ -632,13 +964,11 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                         type="radio"
                         id="undergraduate's degree"
                         name="degree"
-                        value="undergraduate's degree"
-                        checked={
-                          projectData.degree === "undergraduate's degree"
-                        }
+                        value="bachelor"
+                        checked={projectData.degree === "bachelor"}
                         onChange={handleSmallDataChange}
                       />
-                      <label for="html">Undergraduate's degree</label>
+                      <label for="html">Bachelor's degree</label>
                     </div>
                   </div>
                 </div>
@@ -653,8 +983,8 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                         type="radio"
                         id="Thesis"
                         name="project_type"
-                        value="Thesis"
-                        checked={projectData.project_type === "Thesis"}
+                        value="thesis"
+                        checked={projectData.project_type === "thesis"}
                         onChange={handleSmallDataChange}
                       />
                       <label for="html">Thesis</label>
@@ -664,8 +994,8 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                         type="radio"
                         id="senior"
                         name="project_type"
-                        value="Senior"
-                        checked={projectData.project_type === "Senior"}
+                        value="senior"
+                        checked={projectData.project_type === "senior"}
                         onChange={handleSmallDataChange}
                       />
                       <label for="html">Senior</label>
@@ -675,11 +1005,8 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                         type="radio"
                         id="wil"
                         name="project_type"
-                        value="Work-Integrated Learning"
-                        checked={
-                          projectData.project_type ===
-                          "Work-Integrated Learning"
-                        }
+                        value="wil"
+                        checked={projectData.project_type === "wil"}
                         onChange={handleSmallDataChange}
                       />
                       <label for="html">Work-Integrated Learning</label>
@@ -719,9 +1046,10 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                       <textarea
                         className="popup-input px-3 py-1 w-full"
                         placeholder="Keyword of project (separate word by '/' ,Ex. keyword1/ keyword2)"
-                        value={projectData.eng.document?.keywords}
-                        onChange={handleEnDocumentChange}
-                        name="keywords"
+                        value={keywordsStringEn}
+                        onChange={handleKeywordsStringChange}
+                        // name="keywords"
+                        name="keywordEn"
                         rows="4"
                       />
                     </div>
@@ -734,9 +1062,10 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                       <textarea
                         className="popup-input px-3 py-1 w-full"
                         placeholder="คำสำคัญของโครงการ (แบ่งคำด้วย '/' ,ตัวอย่าง: คำสำคัญ1/ คำสำคัญ2)"
-                        value={projectData.thai.document?.keywords}
-                        onChange={handleThDocumentChange}
-                        name="keywords"
+                        value={keywordsStringTh}
+                        onChange={handleKeywordsStringChange}
+                        // name="keywords"
+                        name="keywordTh"
                         rows="4"
                       />
                     </div>
