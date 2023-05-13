@@ -396,7 +396,7 @@ h5 {
   /* position: absolute; */
 }
 
-.view-attachment-button, .edit-attachment-button, .project-banner-menu, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-banner-menu-edit-hover, .project-banner-menu-delete-hover {
+.project-banner-menu, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-banner-menu-edit-hover, .project-banner-menu-delete-hover {
   margin: 10px;
   font-size: 12px;
   justify-content: center;
@@ -405,6 +405,16 @@ h5 {
   transition-property: color;
   transition-duration: 0.3s;
   /* opacity: 0.6; */
+}
+
+.view-attachment-button, .edit-attachment-button {
+  margin: 10px 0px 10px 0px;
+  font-size: 12px;
+  justify-content: center;
+  grid-column-gap: 8px;
+  font-weight: 600;
+  transition-property: color;
+  transition-duration: 0.3s;
 }
 
 
@@ -814,7 +824,7 @@ input[type="file"] {
 
 .border-gray-1 {
   border: 1.5px solid var(--gray1);
-  border-radius: 0px 0px 10px 10px;
+  border-radius: 10px 10px 10px 10px;
 }
 
 .project-box-top {
@@ -822,6 +832,8 @@ input[type="file"] {
   border-radius: 10px 10px 0px 0px;
   height: 10px;
   width: 100%;
+  /* padding: 0px 50px 0px 50px;
+  justify-self: left; */
 }
 
 .width-1 {

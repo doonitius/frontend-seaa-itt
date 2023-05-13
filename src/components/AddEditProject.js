@@ -8,108 +8,163 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-function AddEditProject({ closePopup, addCase, projectID }) {
+function AddEditProject({
+  closePopup,
+  addCase,
+  projectID,
+  eng,
+  thai,
+  projectInfo,
+}) {
   const academicYearChoice = [2018, 2019, 2020, 2021, 2023];
-  const [loading, setLoading] = useState(true);
+  // const [loading, setLoading] = useState(true);
   const [advisorList, setAdvisorList] = useState(null);
-  const [dataBeforeEdit, setDataBeforeEdit] = useState(null);
-  const checkLoading =
-    dataBeforeEdit?.data?.eng.document?.title || "loading...";
-  const [authorNumber, setAuthorNumber] = useState(1);
+  // const [dataBeforeEdit, setDataBeforeEdit] = useState(null);
+  // const checkLoading = eng?.document?.title || "loading...";
+  const [authorNumber, setAuthorNumber] = useState(eng?.author?.length ?? 1);
+  const [loadingResult, setLoadingResult] = useState(true);
+  const [selectedAdvisor, setSelectedAdvisor] = useState(
+    projectInfo?.advisor_id?.length > 0
+      ? JSON.stringify([
+          projectInfo.advisor_id[0],
+          eng.advisor[0].prefix,
+          eng.advisor[0].first_name,
+          eng.advisor[0].middle_name,
+          eng.advisor[0].last_name,
+          thai.advisor[0].prefix,
+          thai.advisor[0].first_name,
+          thai.advisor[0].middle_name,
+          thai.advisor[0].last_name,
+        ])
+      : ""
+  );
+  const [selectedCoAdvisor, setSelectedCoAdvisor] = useState(
+    projectInfo?.advisor_id?.length > 1 ? projectInfo?.advisor_id[1] : ""
+  );
 
-  const printAllInput = () => {
-    console.log("printAllInput : " + JSON.stringify(projectData));
-  };
   const aToken = localStorage.getItem("Access_Token");
   const rToken = localStorage.getItem("Refresh_Token");
 
   // const aTokenNoQuotes = aToken.replace(/"/g, "");
   // const rTokenNoQuotes = rToken.replace(/"/g, "");
+  const printAllInput = () => {
+    console.log("printAllInput : " + JSON.stringify(projectData));
+  };
 
   useEffect(() => {
-    axios
-      .get("https://api-seai-general.cyclic.app/general/advisor?search=", {
-        headers: {
-          access_token: aToken,
-          refresh_token: rToken,
-        },
-      })
-      .then((response) => {
-        setAdvisorList(response.data);
-        console.log("setAdvisorList success");
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    if (projectID) {
-      axios
-        .get(
-          `https://api-seai-general.cyclic.app/general/search/${projectID}`,
+    async function fetchData() {
+      try {
+        setLoadingResult(true);
+        const response = await axios.get(
+          "https://api-seai-general.cyclic.app/general/advisor?search=",
           {
             headers: {
               access_token: aToken,
               refresh_token: rToken,
             },
           }
-        )
-        .then((response) => {
-          setDataBeforeEdit(response.data);
-          console.log("projectID from edit button: " + projectID);
-        })
-        .catch((error) => console.log(error));
+        );
+
+        setAdvisorList(response.data);
+        setLoadingResult(false);
+      } catch (error) {
+        console.log(error);
+      }
     }
+    fetchData();
   }, []);
 
-  useEffect(() => {
-    if (dataBeforeEdit) {
-      setLoading(false);
-    } else {
-      setLoading(true);
-    }
-  }, [dataBeforeEdit]);
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       if (projectID) {
+  //         const response = await axios.get(
+  //           `https://api-seai-general.cyclic.app/general/search/${projectID}`,
+  //           {
+  //             headers: {
+  //               access_token: aToken,
+  //               refresh_token: rToken,
+  //             },
+  //           }
+  //         );
 
-  const postProjectCreate = () => {
-    axios
-      .post(
-        "https://api-seai-general.cyclic.app/general/project",
-        projectData,
-        {
-          headers: {
-            access_token: aToken,
-            refresh_token: rToken,
-          },
-        }
-      )
-      .then((response) => {
-        console.log("create project success");
+  //         setDataBeforeEdit(response.data.data);
+  //         console.log("projectIDDDD: " + projectID);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  const postProjectCreate = async () => {
+    async function fetchData() {
+      try {
+        setLoadingResult(true);
+        const response = await axios.post(
+          "https://api-seai-general.cyclic.app/general/project",
+          projectData,
+          {
+            headers: {
+              access_token: aToken,
+              refresh_token: rToken,
+            },
+          }
+        );
         console.log(response);
-      })
-      .catch((error) => console.log(error));
-    console.log("aT and rT: " + aToken + "\n" + rToken);
+        console.log("create project success");
+      } catch (error) {
+        console.log(error);
+        console.log("aT and rT: but im error: " + aToken + "\n" + rToken);
+      }
+    }
+    fetchData();
+    setLoadingResult(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    reloadLocation();
   };
 
-  const postProjectEdit = () => {
-    axios
-      .patch(
-        `https://api-seai-general.cyclic.app/general/project${projectID}`,
-        projectData,
-        {
+  const reloadLocation = () => {
+    window.location.reload();
+  };
+
+  const postProjectEdit = async () => {
+    async function fetchData() {
+      try {
+        setLoadingResult(true);
+        // const filteredData = compareFields(projectData, dataBeforeEdit);
+        console.log("projectData: " + JSON.stringify(projectData));
+        console.log("filteredData: " + JSON.stringify(filteredData));
+        // console.log("filteredData: " + filteredData);
+        console.log("=====================");
+        // console.log("filteredData from edit post: " + filteredData);
+        const url = `https://api-seai-general.cyclic.app/general/project/${projectID}`;
+        console.log("url: " + url);
+
+        const response = await axios.patch(url, projectData, {
           headers: {
             access_token: aToken,
             refresh_token: rToken,
           },
-        }
-      )
-      .then((response) => {
-        console.log("edit project success");
+        });
+
         console.log(response);
-      })
-      .catch((error) => console.log(error));
-    console.log("aT and rT: " + aToken + "\n" + rToken);
+
+        console.log("edit project success");
+      } catch (error) {
+        console.log(error);
+        console.log("aT and rT: but im error: " + aToken + "\n" + rToken);
+      }
+    }
+    fetchData();
+    setLoadingResult(true);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    reloadLocation();
   };
 
   const [test, setTest] = useState({ IamTest: "" });
+  const [filteredData, setFilteredData] = useState();
 
   const [keywordsStringTh, setKeywordsStringTh] = useState("");
   const [keywordsStringEn, setKeywordsStringEn] = useState("");
@@ -204,39 +259,25 @@ function AddEditProject({ closePopup, addCase, projectID }) {
   });
 
   useEffect(() => {
-    // const fruits = [
-    //   "ABC",
-    //   "การค้นหาแบบกริด",
-    //   "การค้นหาแบบสุ่ม",
-    //   "การจำแนกประเภท",
-    //   "การปรับไฮเปอร์พารามิเตอร์",
-    //   "การวิเคราะห์ความแปรปรวน",
-    // ];
     const separator = "/";
 
-    // const result = fruits.join(separator);
-
-    // console.log("re: " + result);
-
-    if (projectID && dataBeforeEdit?.data?.thai?.document?.keywords) {
-      const keywordsThString =
-        dataBeforeEdit?.data.thai.document.keywords.join(separator);
+    if (projectID && thai?.document?.keywords) {
+      const keywordsThString = thai?.document.keywords.join(separator);
 
       console.log("keywordsThString: " + keywordsThString);
 
       setKeywordsStringTh(keywordsThString);
     }
 
-    if (projectID && dataBeforeEdit?.data?.eng?.document?.keywords) {
-      const keywordsEnString =
-        dataBeforeEdit?.data.eng.document.keywords.join("/ ");
+    if (projectID && eng?.document?.keywords) {
+      const keywordsEnString = eng?.document.keywords.join("/ ");
 
       setKeywordsStringEn(keywordsEnString);
     }
 
     console.log("test th น้อง: " + keywordsStringTh);
     console.log("test eng น้อง: " + keywordsStringEn);
-  }, [dataBeforeEdit]);
+  }, [thai, eng]);
 
   // useEffect(() => {
   //   console.log("test th น้อง: " + projectData.thai.document.keywords);
@@ -246,7 +287,7 @@ function AddEditProject({ closePopup, addCase, projectID }) {
 
   useEffect(() => {
     if (projectID) {
-      const authorLength = dataBeforeEdit?.data?.eng?.author.length;
+      const authorLength = eng?.author.length;
 
       setProjectData((prevState) => ({
         ...prevState,
@@ -254,76 +295,58 @@ function AddEditProject({ closePopup, addCase, projectID }) {
           ...prevState.thai,
           document: {
             ...prevState.thai.document,
-            title: dataBeforeEdit?.data?.thai?.document?.title || "",
-            abstract: dataBeforeEdit?.data.thai?.document?.abstract || "",
-            keywords: dataBeforeEdit?.data.thai?.document?.keywords || [],
+            title: thai?.document?.title || "",
+            abstract: thai?.document?.abstract || "",
+            keywords: thai?.document?.keywords || [],
           },
           advisor: prevState.thai.advisor.map((advisor, index) => ({
             ...advisor,
-            prefix: dataBeforeEdit?.data?.thai?.advisor[index]?.prefix || "",
-            first_name:
-              dataBeforeEdit?.data?.thai?.advisor[index]?.first_name || "",
-            middle_name:
-              dataBeforeEdit?.data?.thai?.advisor[index]?.middle_name || "",
-            last_name:
-              dataBeforeEdit?.data?.thai?.advisor[index]?.last_name || "",
+            prefix: thai?.advisor[index]?.prefix || "",
+            first_name: thai?.advisor[index]?.first_name || "",
+            middle_name: thai?.advisor[index]?.middle_name || "",
+            last_name: thai?.advisor[index]?.last_name || "",
           })),
           author: prevState.thai.author.map((author, index) => ({
             ...author,
-            prefix: dataBeforeEdit?.data?.thai?.author[index]?.prefix || "",
-            first_name:
-              dataBeforeEdit?.data?.thai?.author[index]?.first_name || "",
-            middle_name:
-              dataBeforeEdit?.data?.thai?.author[index]?.middle_name || "",
-            last_name:
-              dataBeforeEdit?.data?.thai?.author[index]?.last_name || "",
+            prefix: thai?.author[index]?.prefix || "",
+            first_name: thai?.author[index]?.first_name || "",
+            middle_name: thai?.author[index]?.middle_name || "",
+            last_name: thai?.author[index]?.last_name || "",
           })),
         },
         eng: {
           ...prevState.eng,
           document: {
             ...prevState.eng.document,
-            title: dataBeforeEdit?.data?.eng?.document?.title || "",
-            abstract: dataBeforeEdit?.data.eng?.document?.abstract || "",
-            keywords: dataBeforeEdit?.data.eng?.document?.keywords || [],
+            title: eng?.document?.title || "",
+            abstract: eng?.document?.abstract || "",
+            keywords: eng?.document?.keywords || [],
           },
           advisor: prevState.eng.advisor.map((advisor, index) => ({
             ...advisor,
-            prefix: dataBeforeEdit?.data?.eng?.advisor[index]?.prefix || "",
-            first_name:
-              dataBeforeEdit?.data?.eng?.advisor[index]?.first_name || "",
-            middle_name:
-              dataBeforeEdit?.data?.eng?.advisor[index]?.middle_name || "",
-            last_name:
-              dataBeforeEdit?.data?.eng?.advisor[index]?.last_name || "",
+            prefix: eng?.advisor[index]?.prefix || "",
+            first_name: eng?.advisor[index]?.first_name || "",
+            middle_name: eng?.advisor[index]?.middle_name || "",
+            last_name: eng?.advisor[index]?.last_name || "",
           })),
           author: prevState.eng.author.map((author, index) => ({
             ...author,
-            prefix: dataBeforeEdit?.data?.eng?.author[index]?.prefix || "",
-            first_name:
-              dataBeforeEdit?.data?.eng?.author[index]?.first_name || "",
-            middle_name:
-              dataBeforeEdit?.data?.eng?.author[index]?.middle_name || "",
-            last_name:
-              dataBeforeEdit?.data?.eng?.author[index]?.last_name || "",
+            prefix: eng?.author[index]?.prefix || "",
+            first_name: eng?.author[index]?.first_name || "",
+            middle_name: eng?.author[index]?.middle_name || "",
+            last_name: eng?.author[index]?.last_name || "",
           })),
         },
-        academic_year: dataBeforeEdit?.data.academic_year || "",
-        degree: dataBeforeEdit?.data.degree || "",
-        project_type: dataBeforeEdit?.data.project_type || "",
-        // advisor_id: [...dataBeforeEdit?.data.advisor_id] || [],
+        academic_year: projectInfo?.academic_year || "",
+        degree: projectInfo?.degree || "",
+        project_type: projectInfo?.project_type || "",
       }));
 
+      console.log("eng data props before Edit: " + projectInfo);
+
       setAuthorNumber(authorLength);
-      //   console.log("authorLength: " + authorLength);
-      //   console.log("เช็คหลังก๊อป: " + projectData.eng.document?.title);
-      //   console.log("เช็คหลังก๊อป degree: " + projectData.degree);
-      //   console.log("เช็คหลังก๊อปth: " + projectData.thai.document?.title);
-      //   console.log("-------------------");
-      // } else {
-      //   console.log("ไม่มีไอดี");
     }
-  }, [dataBeforeEdit]);
+  }, [thai, eng, projectInfo]);
 
   // useEffect(() => {
   //   console.log("ก่อนเผา: " + projectData.eng.document?.title);
@@ -386,22 +409,31 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     }
   };
 
+  // advisor._id,
+  //                           advisor.eng.prefix,
+  //                           advisor.eng.first_name,
+  //                           advisor.eng.middle_name,
+  //                           advisor.eng.last_name,
+  //                           advisor.thai.prefix,
+  //                           advisor.thai.first_name,
+  //                           advisor.thai.middle_name,
+  //                           advisor.thai.last_name,
   const handleAdvisorOptionChange = (event) => {
-    console.log(advisorList?.data[event.target.value]._id);
+    const selectedValue = JSON.parse(event.target.value);
+    console.log(selectedValue[0]);
+    setSelectedAdvisor(selectedValue);
 
     setProjectData({
       ...projectData,
+      advisor_id: [selectedValue[0]],
       eng: {
         ...projectData.eng,
         advisor: [
           {
-            prefix: advisorList?.data[event.target.value].eng.prefix,
-            first_name: advisorList?.data[event.target.value].eng.first_name,
-            middle_name:
-              advisorList?.data[event.target.value].eng.middle_name !== ""
-                ? advisorList?.data[event.target.value].eng.middle_name
-                : null,
-            last_name: advisorList?.data[event.target.value].eng.last_name,
+            prefix: selectedValue[1],
+            first_name: selectedValue[2],
+            middle_name: selectedValue[3] !== "" ? selectedValue[3] : null,
+            last_name: selectedValue[4],
           },
         ],
       },
@@ -409,39 +441,37 @@ function AddEditProject({ closePopup, addCase, projectID }) {
         ...projectData.thai,
         advisor: [
           {
-            prefix: advisorList?.data[event.target.value].thai.prefix,
-            first_name: advisorList?.data[event.target.value].thai.first_name,
-            middle_name:
-              advisorList?.data[event.target.value].thai.middle_name !== ""
-                ? advisorList?.data[event.target.value].thai.middle_name
-                : null,
-            last_name: advisorList?.data[event.target.value].thai.last_name,
+            prefix: selectedValue[5],
+            first_name: selectedValue[6],
+            middle_name: selectedValue[7] !== "" ? selectedValue[7] : null,
+            last_name: selectedValue[8],
           },
         ],
       },
-      advisor_id: [advisorList?.data[event.target.value]._id],
     });
+    // console.log("test advisor name: " + projectData.eng.advisor[0].first_name);
   };
+  // useEffect(()=> {
+
+  // })
 
   const handleCoAdvisorOptionChange = (event) => {
+    const selectedValue = JSON.parse(event.target.value);
+    console.log(selectedValue[0]);
+    setSelectedCoAdvisor(selectedValue);
+
     setProjectData((prevData) => ({
       ...prevData,
-      advisor_id: [
-        projectData.advisor_id[0] ?? null,
-        advisorList?.data[event.target.value]._id,
-      ],
+      advisor_id: [projectData.advisor_id[0] ?? null, selectedValue[0]],
       eng: {
         ...prevData.eng,
         advisor: [
           ...prevData.eng.advisor.slice(0, 1),
           {
-            prefix: advisorList?.data[event.target.value].eng.prefix,
-            first_name: advisorList?.data[event.target.value].eng.first_name,
-            middle_name:
-              advisorList?.data[event.target.value].eng.middle_name !== ""
-                ? advisorList?.data[event.target.value].eng.middle_name
-                : null,
-            last_name: advisorList?.data[event.target.value].eng.last_name,
+            prefix: selectedValue[1],
+            first_name: selectedValue[2],
+            middle_name: selectedValue[3] !== "" ? selectedValue[3] : null,
+            last_name: selectedValue[4],
           },
         ],
       },
@@ -450,18 +480,32 @@ function AddEditProject({ closePopup, addCase, projectID }) {
         advisor: [
           ...prevData.thai.advisor.slice(0, 1),
           {
-            prefix: advisorList?.data[event.target.value].thai.prefix,
-            first_name: advisorList?.data[event.target.value].thai.first_name,
-            middle_name:
-              advisorList?.data[event.target.value].thai.middle_name !== ""
-                ? advisorList?.data[event.target.value].thai.middle_name
-                : null,
-            last_name: advisorList?.data[event.target.value].thai.last_name,
+            prefix: selectedValue[5],
+            first_name: selectedValue[6],
+            middle_name: selectedValue[7] !== "" ? selectedValue[7] : null,
+            last_name: selectedValue[8],
           },
         ],
       },
     }));
+    // console.log(
+    //   "check projectData.eng.advisor: " + JSON.parse(projectData.eng.advisor)
+    // );
+    // console.log(
+    //   "test co-advisor name: " + projectData.eng.advisor[1].first_name
+    // );
   };
+  // useEffect(() => {
+  //   console.log("test advisor name: " + projectData.eng.advisor[0].first_name);
+  // }, [projectData.eng.advisor[0]]);
+
+  // useEffect(() => {
+  //   if (projectData.eng.advisor[1]) {
+  //     console.log(
+  //       "test co-advisor name: " + projectData.eng.advisor[1].first_name
+  //     );
+  //   }
+  // }, [projectData.eng.advisor[1]]);
 
   const handleEnAuthorChange = (event, number, lang) => {
     const { target } = event;
@@ -514,12 +558,6 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     });
     // add array in projectData.thai.author[] and projectData.eng.autor[]
   };
-
-  const advisors = [
-    { first_name: "aa", last_name: "sss" },
-    { first_name: "", last_name: "ddd" },
-    { first_name: "fff", last_name: "mimi" },
-  ];
 
   const validateArrayData = () => {
     const thaiAuthor = projectData.thai.author;
@@ -605,163 +643,23 @@ function AddEditProject({ closePopup, addCase, projectID }) {
     });
   };
 
-  const sentOnlyEdit = () => {
-    setProjectData((prevState) => ({
-      ...prevState,
-      thai: {
-        ...prevState.thai,
-        document: {
-          ...prevState.thai.document,
-          title:
-            projectData?.thai?.document?.title !==
-            dataBeforeEdit?.data?.thai?.document?.title
-              ? projectData?.thai?.document?.title
-              : "",
-          abstract:
-            projectData?.thai?.document?.abstract !==
-            dataBeforeEdit?.data.thai?.document?.abstract
-              ? projectData?.thai?.document?.abstract
-              : "",
-          keywords:
-            projectData?.thai?.document?.keywords !==
-            dataBeforeEdit?.data.thai?.document?.keywords
-              ? projectData?.thai?.document?.keywords
-              : [],
-        },
-        advisor: prevState.thai.advisor.map((advisor, index) => ({
-          ...advisor,
-          prefix:
-            projectData?.thai?.advisor[index]?.prefix !==
-            dataBeforeEdit?.data?.thai?.advisor[index]?.prefix
-              ? projectData?.thai?.advisor[index]?.prefix
-              : "",
-          first_name:
-            projectData?.thai?.advisor[index]?.first_name !==
-            dataBeforeEdit?.data?.thai?.advisor[index]?.first_name
-              ? projectData?.thai?.advisor[index]?.first_name
-              : "",
-          middle_name:
-            projectData?.thai?.advisor[index]?.middle_name !==
-            dataBeforeEdit?.data?.thai?.advisor[index]?.middle_name
-              ? projectData?.thai?.advisor[index]?.middle_name
-              : "",
-          last_name:
-            projectData?.thai?.advisor[index]?.last_name !==
-            dataBeforeEdit?.data?.thai?.advisor[index]?.last_name
-              ? projectData?.thai?.advisor[index]?.last_name
-              : "",
-        })),
-        author: prevState.thai.author.map((author, index) => ({
-          ...author,
-          prefix:
-            projectData?.thai?.author[index]?.prefix !==
-            dataBeforeEdit?.data?.thai?.author[index]?.prefix
-              ? projectData?.thai?.author[index]?.prefix
-              : "",
-          first_name:
-            projectData?.thai?.author[index]?.first_name !==
-            dataBeforeEdit?.data?.thai?.author[index]?.first_name
-              ? projectData?.thai?.author[index]?.first_name
-              : "",
-          middle_name:
-            projectData?.thai?.author[index]?.middle_name !==
-            dataBeforeEdit?.data?.thai?.author[index]?.middle_name
-              ? projectData?.thai?.author[index]?.middle_name
-              : "",
-          last_name:
-            projectData?.thai?.author[index]?.last_name !==
-            dataBeforeEdit?.data?.thai?.author[index]?.last_name
-              ? projectData?.thai?.author[index]?.last_name
-              : "",
-        })),
-      },
-      eng: {
-        ...prevState.eng,
-        document: {
-          ...prevState.eng.document,
-          title:
-            projectData?.eng?.document?.title !==
-            dataBeforeEdit?.data?.eng?.document?.title
-              ? "แก้สิวะ"
-              : "",
-          abstract:
-            projectData?.eng?.document?.abstract !==
-            dataBeforeEdit?.data.eng?.document?.abstract
-              ? projectData?.eng?.document?.abstract
-              : "",
-          keywords:
-            projectData?.eng?.document?.keywords !==
-            dataBeforeEdit?.data.eng?.document?.keywords
-              ? projectData?.eng?.document?.keywords
-              : "",
-        },
-        advisor: prevState.eng.advisor.map((advisor, index) => ({
-          ...advisor,
-          prefix:
-            projectData?.eng?.advisor[index]?.prefix !==
-            dataBeforeEdit?.data?.eng?.advisor[index]?.prefix
-              ? projectData?.eng?.advisor[index]?.prefix
-              : "",
-          first_name:
-            projectData?.eng?.advisor[index]?.first_name !==
-            dataBeforeEdit?.data?.eng?.advisor[index]?.first_name
-              ? projectData?.eng?.advisor[index]?.first_name
-              : "",
-          middle_name:
-            projectData?.eng?.advisor[index]?.middle_name !==
-            dataBeforeEdit?.data?.eng?.advisor[index]?.middle_name
-              ? projectData?.eng?.advisor[index]?.middle_name
-              : "",
-          last_name:
-            projectData?.eng?.advisor[index]?.last_name !==
-            dataBeforeEdit?.data?.eng?.advisor[index]?.last_name
-              ? projectData?.eng?.advisor[index]?.last_name
-              : "",
-        })),
-        author: prevState.eng.author.map((author, index) => ({
-          ...author,
-          prefix:
-            projectData?.eng?.author[index]?.prefix ==
-            dataBeforeEdit?.data?.eng?.author[index]?.prefix
-              ? projectData?.eng?.author[index]?.prefix
-              : "",
-          first_name:
-            projectData?.eng?.author[index]?.first_name ==
-            dataBeforeEdit?.data?.eng?.author[index]?.first_name
-              ? projectData?.eng?.author[index]?.first_name
-              : "",
-          middle_name:
-            projectData?.eng?.author[index]?.middle_name ==
-            dataBeforeEdit?.data?.eng?.author[index]?.middle_name
-              ? projectData?.eng?.author[index]?.middle_name
-              : "",
-          last_name:
-            projectData?.eng?.author[index]?.last_name ==
-            dataBeforeEdit?.data?.eng?.author[index]?.last_name
-              ? projectData?.eng?.author[index]?.last_name
-              : "",
-        })),
-      },
-      academic_year:
-        projectData?.academic_year == dataBeforeEdit?.data.academic_year
-          ? projectData?.academic_year
-          : "",
-      degree:
-        projectData?.degree == dataBeforeEdit?.data.degree
-          ? dataBeforeEdit?.degree
-          : "",
-      project_type:
-        projectData?.project_type == dataBeforeEdit?.data.project_type
-          ? dataBeforeEdit?.project_type
-          : "",
-      // advisor_id: [...dataBeforeEdit?.data.advisor_id] || [],
-    }));
-    const diff =
-      projectData?.eng?.document?.title ==
-      dataBeforeEdit?.data?.eng?.document?.title;
-    console.log("how diff: " + diff);
+  const compareFields = (objA, objB) => {
+    const filteredData = {};
 
-    // console.log("ปริ้นเวอชั่นกูเอง : " + JSON.stringify(projectData));
+    for (const key in objA) {
+      if (typeof objA[key] === "object") {
+        const nestedFields = compareFields(objA[key], objB[key]);
+        if (Object.keys(nestedFields).length > 0) {
+          filteredData[key] = nestedFields;
+        }
+      } else {
+        if (objA[key] !== objB[key]) {
+          filteredData[key] = objA[key];
+        }
+      }
+    }
+
+    return filteredData;
   };
 
   // useEffect(() => {
@@ -770,18 +668,22 @@ function AddEditProject({ closePopup, addCase, projectID }) {
   // }, [projectData]);
 
   const validateAndPostData = () => {
-    validateArrayData();
-    printAllInput();
+    // validateArrayData(); //checkArray of Author and Advisor to delete array if it more than [1] with unnecessary
+    // printAllInwput();
     if (addCase === true) {
       console.log("going to post new project");
       postProjectCreate();
     } else {
-      sentOnlyEdit();
-      console.log("filter la");
-      printAllInput();
       console.log("going to post edit project");
+      postProjectEdit();
     }
   };
+
+  // useEffect(() => {
+  //   console.log("projectData useEffect");
+  //   printAllInput();
+  //   console.log("============================");
+  // }, [projectData]);
 
   const handleKeywordsStringChange = (event) => {
     const { target } = event;
@@ -832,11 +734,17 @@ function AddEditProject({ closePopup, addCase, projectID }) {
           },
         };
       });
-
-      console.log(
-        ".thai.document.keywords: " + projectData.thai.document.keywords
-      );
     }
+
+    // console.log(
+    //   ".eng.document.keywords: " +
+    //     JSON.stringify(projectData.eng.document.keywords)
+    // );
+
+    // console.log(
+    //   ".thai.document.keywords: " +
+    //     JSON.stringify(projectData.thai.document.keywords)
+    // );
   }, [keywordsStringEn, keywordsStringTh]);
 
   return (
@@ -858,14 +766,73 @@ function AddEditProject({ closePopup, addCase, projectID }) {
             <button
               className="blue-button text-sm py-2 px-4 w-28"
               onClick={() => {
-                // if (projectData.eng.document?.title) {
-                //   closePopup();
-                //   validateAndSPostData();
+                if (
+                  !projectData.eng.document?.title ||
+                  !projectData.thai.document?.title ||
+                  !projectData.degree ||
+                  !projectData.project_type ||
+                  !projectData.academic_year
+                ) {
+                  alert(
+                    "Please enter \nproject title (eng)\nproject title (thai)\ndegree\nproject type\nacademic year"
+                  );
+                } else if (!projectData.advisor_id[0]) {
+                  alert("Please select advisor");
+                } else if (
+                  !projectData.eng.author[0].prefix ||
+                  !projectData.eng.author[0].first_name ||
+                  !projectData.eng.author[0].last_name ||
+                  !projectData.thai.author[0].prefix ||
+                  !projectData.thai.author[0].first_name ||
+                  !projectData.thai.author[0].last_name
+                ) {
+                  alert("Please input author1 information");
+                } else if (authorNumber >= 2) {
+                  if (
+                    !projectData.eng.author[1].prefix ||
+                    !projectData.eng.author[1].first_name ||
+                    !projectData.eng.author[1].last_name ||
+                    !projectData.thai.author[1].prefix ||
+                    !projectData.thai.author[1].first_name ||
+                    !projectData.thai.author[1].last_name
+                  ) {
+                    alert(
+                      "Please input author2 information\nor delete author2 before sending data"
+                    );
+                  } else if (authorNumber >= 3) {
+                    if (
+                      !projectData.eng.author[2].prefix ||
+                      !projectData.eng.author[2].first_name ||
+                      !projectData.eng.author[2].last_name ||
+                      !projectData.thai.author[2].prefix ||
+                      !projectData.thai.author[2].first_name ||
+                      !projectData.thai.author[2].last_name
+                    ) {
+                      alert(
+                        "Please input author3 information\nor delete author3 before sending data"
+                      );
+                    } else {
+                      // console.log("เก่งมาก");
+                      validateAndPostData();
+                    }
+                  } else {
+                    // console.log("เก่งมาก");
+                    validateAndPostData();
+                  }
+                } else {
+                  // console.log("เก่งมาก");
+                  validateAndPostData();
+                }
+                // closePopup();
+                // validateAndSPostData();
+                // if (addCase === true) {
+                //   console.log("going to post new project");
+                //   postProjectCreate();
                 // } else {
-                //   alert("Please enter a project title.");
+                //   console.log("going to post edit project");
+                //   postProjectEdit();
                 // }
-                closePopup();
-                validateAndPostData();
+                // closePopup();
               }}
             >
               Confirm
@@ -873,9 +840,14 @@ function AddEditProject({ closePopup, addCase, projectID }) {
           </div>
         </div>
 
-        <div className="popup-content space-y-10" style={{ height: "75vh" }}>
-          {checkLoading == null ? (
-            <div>loading..</div>
+        <div
+          className="popup-content-small space-y-10"
+          style={{ height: "75vh" }}
+        >
+          {loadingResult ? (
+            <div className="grid justify-items-center py-36">
+              <div class="loader"></div>
+            </div>
           ) : (
             <div className="space-y-10">
               {/* <div className={`${props.addCase === false ? 'hidden' : ''}`}>
@@ -885,6 +857,7 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                 <div className="flex items-center">
                   <div className="basis-1/4 pr-10">Project Title :</div>
                   <div className="basis-3/4">
+                    {/* {isEditEnTitle ? (<div>{projectData.eng?.document.title}</div>) :(<div></div>)} */}
                     <textarea
                       className="popup-input px-3 py-1 w-full"
                       placeholder="Project Title"
@@ -895,7 +868,7 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                     />
                   </div>
                 </div>
-                {test.IamTest}
+                {/* {test.IamTest} */}
                 <div className="flex items-center">
                   <div className="basis-1/4 pr-10">ชื่อโครงการ :</div>
                   <div className="basis-3/4">
@@ -1097,18 +1070,26 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                   <div className="basis-3/4">
                     <select
                       className="custom-selector"
-                      // value={
-                      //   projectData.advisor_id.length > 0
-                      //     ? projectData.advisor_id[0]
-                      //     : ""
-                      // }
-                      // value={selectedAdvisorOption}
+                      value={JSON.stringify(selectedAdvisor)}
                       onChange={handleAdvisorOptionChange}
                       style={{ width: "400px" }}
                     >
                       <option value="">--Advisor--</option>
                       {advisorList?.data?.map((advisor, index) => (
-                        <option value={index} key={index}>
+                        <option
+                          value={JSON.stringify([
+                            advisor._id,
+                            advisor.eng.prefix,
+                            advisor.eng.first_name,
+                            advisor.eng.middle_name,
+                            advisor.eng.last_name,
+                            advisor.thai.prefix,
+                            advisor.thai.first_name,
+                            advisor.thai.middle_name,
+                            advisor.thai.last_name,
+                          ])}
+                          key={index}
+                        >
                           {advisorList?.data[index].eng.prefix +
                             " " +
                             advisorList?.data[index].eng.full_name}
@@ -1123,17 +1104,26 @@ function AddEditProject({ closePopup, addCase, projectID }) {
                   <div className="basis-3/4">
                     <select
                       className="custom-selector"
-                      // value={
-                      //   projectData.advisor_id.length > 0
-                      //     ? projectData.advisor_id[1]
-                      //     : ""
-                      // }
+                      value={JSON.stringify(selectedCoAdvisor)}
                       onChange={handleCoAdvisorOptionChange}
                       style={{ width: "400px" }}
                     >
                       <option value="">--Co-Advisor--</option>
-                      {advisorList?.data?.map((coAdvisor, index) => (
-                        <option value={index} key={index}>
+                      {advisorList?.data?.map((advisor, index) => (
+                        <option
+                          value={JSON.stringify([
+                            advisor._id,
+                            advisor.eng.prefix,
+                            advisor.eng.first_name,
+                            advisor.eng.middle_name,
+                            advisor.eng.last_name,
+                            advisor.thai.prefix,
+                            advisor.thai.first_name,
+                            advisor.thai.middle_name,
+                            advisor.thai.last_name,
+                          ])}
+                          key={index}
+                        >
                           {advisorList?.data[index].eng.prefix +
                             " " +
                             advisorList?.data[index].eng.full_name}
