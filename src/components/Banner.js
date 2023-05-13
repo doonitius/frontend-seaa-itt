@@ -159,14 +159,14 @@ function Banner({ eng, thai, year, projectId }) {
                   <div className="hightlight-gray pr-3 self-center">
                     Keywords
                   </div>{" "}
-                  <div>
+                  <div className="flex flex-wrap">
                     {
-                      <div className="flex flex-wrap space-y-1 items-center">
+                      <div className="flex flex-wrap my-1 items-center">
                         {Array.isArray(project_keyword) &&
                           project_keyword.map((keywords, index) => (
                             <div className="flex flex-wrap items-center">
                               <button
-                                className="tagsBox items-center mr-1"
+                                className="tagsBox items-center mr-1 mb-1"
                                 key={index}
                                 name="keywords"
                               >
@@ -178,12 +178,12 @@ function Banner({ eng, thai, year, projectId }) {
                       </div>
                     }
                     {
-                      <div className="flex flex-wrap space-y-1 items-center">
+                      <div className="flex flex-wrap my-1 items-center">
                         {Array.isArray(project_keywordTh) &&
                           project_keywordTh.map((keywords, index) => (
                             <div className="flex flex-wrap items-center">
                               <button
-                                className="tagsBox items-center mr-1"
+                                className="tagsBox items-center mr-1 mb-1"
                                 key={index}
                                 name="keywords"
                               >
