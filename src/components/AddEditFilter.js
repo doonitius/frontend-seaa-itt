@@ -456,10 +456,10 @@ function AddEditFilter(props) {
               </div>
             </div>
 
-            <div className="flex mb-2">
-              <div className="basis-1/4">Degree :</div>
+            <div className="handle-flex mb-2">
+              <div className="basis-1/4 handle-flex-bottom">Degree :</div>
               <div className="basis-3/4 ">
-                <div className="flex pb-2">
+                <div className="handle-flex pb-2">
                   <div className="pr-10 flex items-center">
                     <input
                       type="checkbox"
@@ -492,10 +492,10 @@ function AddEditFilter(props) {
               </div>
             </div>
 
-            <div className="flex mb-2">
-              <div className="basis-1/4">Project type :</div>
+            <div className="handle-flex mb-2">
+              <div className="basis-1/4 handle-flex-bottom">Project type :</div>
               <div className="basis-3/4 ">
-                <div className="flex pb-2">
+                <div className="handle-flex">
                   <div className="pr-10 flex items-center">
                     <input
                       type="checkbox"
@@ -525,7 +525,7 @@ function AddEditFilter(props) {
                     <label for="html">Senior project</label>
                   </div>
                 </div>
-                <div className="pr-10 flex items-center flex-warp">
+                <div className=" flex items-center flex-warp">
                   <input
                     type="checkbox"
                     id="wil"
@@ -545,8 +545,10 @@ function AddEditFilter(props) {
 
           <fieldset className="overlay-filter-area">
             <legend className="hightlight-blue text-lg">Advisor</legend>
-            <div className="flex mb-5">
-              <div className="basis-1/4">Search To Add :</div>
+            <div className="handle-flex mb-5">
+              <div className="basis-1/4 handle-flex-bottom">
+                Search To Add :
+              </div>
               <div className="basis-3/4">
                 <div className=" items-center space-x-3 w-fill">
                   <div className="items-center w-full">
@@ -600,8 +602,8 @@ function AddEditFilter(props) {
                 </div>
               </div>
             </div>
-            <div className="flex">
-              <div className="basis-2/12">Selected :</div>
+            <div className="handle-flex">
+              <div className="basis-2/12 handle-flex-bottom">Selected :</div>
               <div className="basis-10/12 selected-filter-area">
                 <div className="selected-list-area">
                   {selectedAdvisorName.map((item, index) => (
@@ -629,8 +631,10 @@ function AddEditFilter(props) {
           </fieldset>
           <fieldset className="overlay-filter-area">
             <legend className="hightlight-blue text-lg">Keywords</legend>
-            <div className="flex mb-5">
-              <div className="basis-1/4">Search To Add :</div>
+            <div className="handle-flex mb-5">
+              <div className="basis-1/4 handle-flex-bottom">
+                Search To Add :
+              </div>
               <div className="basis-3/4">
                 <div className=" items-center space-x-3 w-fill">
                   <div className="items-center w-full">
@@ -675,8 +679,8 @@ function AddEditFilter(props) {
                 </div>
               </div>
             </div>
-            <div className="flex">
-              <div className="basis-2/12">Selected :</div>
+            <div className="handle-flex">
+              <div className="basis-2/12 handle-flex-bottom">Selected :</div>
               <div className="basis-10/12 selected-filter-area">
                 <div className="selected-list-area">
                   {selectedKeywordsName.map((item, index) => (

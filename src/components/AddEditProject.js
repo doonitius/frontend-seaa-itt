@@ -7,6 +7,8 @@
 // )
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faXmarkCircle } from "@fortawesome/free-solid-svg-icons";
 
 function AddEditProject({
   closePopup,
@@ -98,6 +100,14 @@ function AddEditProject({
   //   fetchData();
   // }, []);
 
+  // Assuming you have received the response from the backend as `response`
+  const isTokenExpired = (response) => {
+    if (response.code === "expired") {
+      return true; // Access token has expired
+    }
+    return false; // Access token is still valid
+  };
+
   const postProjectCreate = async () => {
     async function fetchData() {
       try {
@@ -114,9 +124,17 @@ function AddEditProject({
         );
         console.log(response);
         console.log("create project success");
+        if (isTokenExpired(response) == true) {
+          alert("Access Token expired1");
+          localStorage.setItem("Check_admin", false);
+        }
       } catch (error) {
         console.log(error);
         console.log("aT and rT: but im error: " + aToken + "\n" + rToken);
+        if (isTokenExpired(error) == true) {
+          alert("Access Token expired2");
+          localStorage.setItem("Check_admin", false);
+        }
       }
     }
     fetchData();
@@ -155,6 +173,13 @@ function AddEditProject({
       } catch (error) {
         console.log(error);
         console.log("aT and rT: but im error: " + aToken + "\n" + rToken);
+        if (error.message == "Request failed with status code 401") {
+          alert("Access Token expired");
+          localStorage.setItem("Access_Token", "");
+          localStorage.setItem("Refresh_Token", "");
+          localStorage.setItem("User_Name", "");
+          localStorage.setItem("Check_admin", "");
+        }
       }
     }
     fetchData();
@@ -757,13 +782,19 @@ function AddEditProject({
             </span>
           </div>
           <div className="flex items-center space-x-3 p-2 w-100">
-            <div
+            <FontAwesomeIcon
+              className="fa-xl self-center"
+              icon={faXmarkCircle}
+              onClick={closePopup}
+              style={{ color: "white" }}
+            />
+            {/* <div
               className="border-2 rounded-lg px-3 py-2 text-sm"
               onClick={closePopup}
             >
-              Close without save
-            </div>
-            <button
+              Close
+            </div> */}
+            {/* <button
               className="blue-button text-sm py-2 px-4 w-28"
               onClick={() => {
                 if (
@@ -836,14 +867,11 @@ function AddEditProject({
               }}
             >
               Confirm
-            </button>
+            </button> */}
           </div>
         </div>
 
-        <div
-          className="popup-content-small space-y-10"
-          style={{ height: "75vh" }}
-        >
+        <div className="popup-content space-y-10" style={{ height: "75vh" }}>
           {loadingResult ? (
             <div className="grid justify-items-center py-36">
               <div class="loader"></div>
@@ -854,8 +882,10 @@ function AddEditProject({
                             <div>I'm add case</div>
                         </div> */}
               <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">Project Title :</div>
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex handle-flex-bottom">
+                    Project Title :
+                  </div>
                   <div className="basis-3/4">
                     {/* {isEditEnTitle ? (<div>{projectData.eng?.document.title}</div>) :(<div></div>)} */}
                     <textarea
@@ -869,8 +899,10 @@ function AddEditProject({
                   </div>
                 </div>
                 {/* {test.IamTest} */}
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">ชื่อโครงการ :</div>
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    ชื่อโครงการ :
+                  </div>
                   <div className="basis-3/4">
                     <textarea
                       className="popup-input px-3 py-1  w-full"
@@ -885,8 +917,10 @@ function AddEditProject({
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">Abstract :</div>
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    Abstract :
+                  </div>
                   <div className="basis-3/4">
                     <div className="items-center space-x-3 ">
                       <textarea
@@ -900,8 +934,10 @@ function AddEditProject({
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">ภาคผนวก :</div>
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    ภาคผนวก :
+                  </div>
                   <div className="basis-3/4">
                     <div className="items-center space-x-3 ">
                       <textarea
@@ -918,9 +954,11 @@ function AddEditProject({
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">Degree :</div>
-                  <div className="flex basis-3/4 ">
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    Degree :
+                  </div>
+                  <div className="handle-flex basis-3/4 ">
                     <div className="pr-10 flex items-center">
                       <input
                         type="radio"
@@ -948,9 +986,11 @@ function AddEditProject({
               </div>
 
               <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">Project type :</div>
-                  <div className="flex basis-3/4 ">
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    Project type :
+                  </div>
+                  <div className="handle-flex basis-3/4 ">
                     <div className="pr-10 flex flex-wrap items-center">
                       <input
                         type="radio"
@@ -1012,8 +1052,10 @@ function AddEditProject({
           </div> */}
 
               <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">Keyword :</div>
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    Keyword :
+                  </div>
                   <div className="basis-3/4">
                     <div className="items-center space-x-3 ">
                       <textarea
@@ -1028,8 +1070,10 @@ function AddEditProject({
                     </div>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">คำสำคัญ :</div>
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    คำสำคัญ :
+                  </div>
                   <div className="basis-3/4">
                     <div className="items-center space-x-3">
                       <textarea
@@ -1046,8 +1090,10 @@ function AddEditProject({
                 </div>
               </div>
 
-              <div className="flex items-center">
-                <div className="basis-1/4 pr-10">Academic Year :</div>
+              <div className="handle-flex items-center">
+                <div className="basis-1/4 pr-10 handle-flex-bottom">
+                  Academic Year :
+                </div>
                 <div className="basis-3/4">
                   <select
                     className="custom-selector"
@@ -1065,14 +1111,16 @@ function AddEditProject({
                 </div>
               </div>
               <div className="space-y-4 items-center">
-                <div className="flex pb-6 items-center">
-                  <div className="basis-1/4 pr-10">Advisor :</div>
+                <div className="handle-flex pb-6 items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    Advisor :
+                  </div>
                   <div className="basis-3/4">
                     <select
                       className="custom-selector"
                       value={JSON.stringify(selectedAdvisor)}
                       onChange={handleAdvisorOptionChange}
-                      style={{ width: "400px" }}
+                      style={{ width: "320px" }}
                     >
                       <option value="">--Advisor--</option>
                       {advisorList?.data?.map((advisor, index) => (
@@ -1099,14 +1147,16 @@ function AddEditProject({
                   </div>
                 </div>
 
-                <div className="flex items-center">
-                  <div className="basis-1/4 pr-10">Co-Advisor :</div>
+                <div className="handle-flex items-center">
+                  <div className="basis-1/4 pr-10 handle-flex-bottom">
+                    Co-Advisor :
+                  </div>
                   <div className="basis-3/4">
                     <select
                       className="custom-selector"
                       value={JSON.stringify(selectedCoAdvisor)}
                       onChange={handleCoAdvisorOptionChange}
-                      style={{ width: "400px" }}
+                      style={{ width: "320px" }}
                     >
                       <option value="">--Co-Advisor--</option>
                       {advisorList?.data?.map((advisor, index) => (
@@ -1626,6 +1676,82 @@ function AddEditProject({
               </div>
             </div>
           )}
+        </div>
+        <div className="popup-tailer justify-end items-center py-3 px-8">
+          <button
+            className="blue-button confirm-button text-sm py-2 px-4 w-28"
+            onClick={() => {
+              if (
+                !projectData.eng.document?.title ||
+                !projectData.thai.document?.title ||
+                !projectData.degree ||
+                !projectData.project_type ||
+                !projectData.academic_year
+              ) {
+                alert(
+                  "Please enter \nproject title (eng)\nproject title (thai)\ndegree\nproject type\nacademic year"
+                );
+              } else if (!projectData.advisor_id[0]) {
+                alert("Please select advisor");
+              } else if (
+                !projectData.eng.author[0].prefix ||
+                !projectData.eng.author[0].first_name ||
+                !projectData.eng.author[0].last_name ||
+                !projectData.thai.author[0].prefix ||
+                !projectData.thai.author[0].first_name ||
+                !projectData.thai.author[0].last_name
+              ) {
+                alert("Please input author1 information");
+              } else if (authorNumber >= 2) {
+                if (
+                  !projectData.eng.author[1].prefix ||
+                  !projectData.eng.author[1].first_name ||
+                  !projectData.eng.author[1].last_name ||
+                  !projectData.thai.author[1].prefix ||
+                  !projectData.thai.author[1].first_name ||
+                  !projectData.thai.author[1].last_name
+                ) {
+                  alert(
+                    "Please input author2 information\nor delete author2 before sending data"
+                  );
+                } else if (authorNumber >= 3) {
+                  if (
+                    !projectData.eng.author[2].prefix ||
+                    !projectData.eng.author[2].first_name ||
+                    !projectData.eng.author[2].last_name ||
+                    !projectData.thai.author[2].prefix ||
+                    !projectData.thai.author[2].first_name ||
+                    !projectData.thai.author[2].last_name
+                  ) {
+                    alert(
+                      "Please input author3 information\nor delete author3 before sending data"
+                    );
+                  } else {
+                    // console.log("เก่งมาก");
+                    validateAndPostData();
+                  }
+                } else {
+                  // console.log("เก่งมาก");
+                  validateAndPostData();
+                }
+              } else {
+                // console.log("เก่งมาก");
+                validateAndPostData();
+              }
+              // closePopup();
+              // validateAndSPostData();
+              // if (addCase === true) {
+              //   console.log("going to post new project");
+              //   postProjectCreate();
+              // } else {
+              //   console.log("going to post edit project");
+              //   postProjectEdit();
+              // }
+              // closePopup();
+            }}
+          >
+            Confirm
+          </button>
         </div>
       </div>
     </div>

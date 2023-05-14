@@ -22,7 +22,7 @@ import {
 function HomePage(props) {
   const [searchText, setSearchText] = useState("");
   const [pageNumber, setPageNumber] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
   const [post, setPost] = useState(null);
   const [loadingResult, setLoadingResult] = useState(true);
   // const storedFilterDataString = localStorage.getItem("filterData");

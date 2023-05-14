@@ -5,6 +5,7 @@ import '../App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import InputWIcon from "../components/InputWIcon";
+import jwt_decode from "jwt-decode";
 
 // import homePage from './HomePage.js'
 
