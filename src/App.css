@@ -391,7 +391,7 @@ h5 {
   justify-content: space-between;
 }
 
-.tagsBox, .tagsBox-sidebar, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-menu-add {
+.tagsBox, .tagsBox-sidebar, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-menu-add, .project-menu-changeLang {
   border-style: solid;
   border-radius: 15px;
   break-after: all;
@@ -513,11 +513,7 @@ h5 {
   background-color: var(--blue1);
 }
 
-.project-menu-add:hover {
-  border-color: var(--green1);
-  color: white;
-  background-color: var(--green1);
-}
+
 
 .project-banner-menu-delete:hover {
   border-color: var(--red1);
@@ -546,17 +542,39 @@ h5 {
   /* position: absolute; */
 }
 
-.project-menu-add {
+.project-menu-add, .project-menu-changeLang {
   margin: 5px 13px 5px 13px;
-  border-color: var(--green1);
-  border-width: 1px;
-  color: var(--green1);
-  font-size: 14px;
+
+  font-size: 12px;
   font-weight: 400;
   transition-property: color;
   transition-duration: 0.3s;
   padding: 5px 10px 5px 10px;
   /* width: 100; */
+}
+
+.project-menu-add {
+  border-color: var(--green1);
+  border-width: 1px;
+  color: var(--green1);
+}
+
+.project-menu-add:hover {
+  border-color: var(--green1);
+  color: white;
+  background-color: var(--green1);
+}
+
+.project-menu-changeLang {
+  border-color: var(--blue1);
+  border-width: 1px;
+  color: var(--blue1);
+}
+
+.project-menu-changeLang:hover {
+  border-color: var(--blue1);
+  color: white;
+  background-color: var(--blue1);
 }
 
 .filter-popup {
@@ -1082,4 +1100,9 @@ input[type="file"] {
   border: 1px white solid;
   border-radius: 6px;
   width: 80px;
+}
+
+.test-font {
+  font-family: 'Prompt', sans-serif;
+  font-family: 'Quicksand', sans-serif;
 }

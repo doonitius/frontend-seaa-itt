@@ -69,6 +69,7 @@ function Banner({ eng, thai, year, projectId }) {
       : "";
   const project_advisorMidname = eng.advisor[0]?.middle_name;
   const project_AdvisorLastName = eng.advisor[0]?.last_name;
+  const language = localStorage.getItem("Language");
   // const no_keyword =
   //   project_keyword === "" || project_keywordTh === "" ? "-" : "";
 
@@ -125,7 +126,14 @@ function Banner({ eng, thai, year, projectId }) {
             {/* <div className="handle-flex"> */}
             <div className="project-banner-content w-full">
               {/* <span className='hightlight-blue text-sm'>Solving Vehicle Routing Problem with Hard Time Windows by Genetic Algorithm</span> */}
-              <span className="hightlight-blue text-sm">{project_name}</span>
+              {language == "eng" ? (
+                <span className="hightlight-blue text-sm">{project_name}</span>
+              ) : (
+                <span className="hightlight-blue text-sm">
+                  {thai.document.title}
+                </span>
+              )}
+
               <div className="text-xs pt-4">
                 <div className="check-screen-width">
                   <div className="pr-10 handle-bottom">
@@ -136,24 +144,41 @@ function Banner({ eng, thai, year, projectId }) {
                     <div className="hightlight-gray handle-flex-bottom pr-3">
                       Advisor:
                     </div>
-                    <div className="">
-                      <span className="pr-2">{project_advisorPrefix}</span>
-                      <span className="pr-2">{project_advisorName}</span>
-                      <span
-                        className={
-                          project_advisorMidname === null ? "" : "pr-2"
-                        }
-                      >
-                        {project_advisorMidname}
-                      </span>
-                      <span>{project_AdvisorLastName}</span>{" "}
-                    </div>
+                    {language == "eng" ? (
+                      <div className="">
+                        <span className="pr-2">{project_advisorPrefix}</span>
+                        <span className="pr-2">{project_advisorName}</span>
+                        <span
+                          className={
+                            project_advisorMidname === null ? "" : "pr-2"
+                          }
+                        >
+                          {project_advisorMidname}
+                        </span>
+                        <span>{project_AdvisorLastName}</span>
+                      </div>
+                    ) : (
+                      <div className="">
+                        <span className="pr-2">{thai.advisor[0].prefix}</span>
+                        <span className="pr-2">
+                          {thai.advisor[0].first_name}
+                        </span>
+                        <span
+                          className={
+                            thai.advisor[0].middle_name === null ? "" : "pr-2"
+                          }
+                        >
+                          {thai.advisor[0].middle_name}
+                        </span>
+                        <span>{thai.advisor[0].last_name}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="handle-flex pt-3">
                   <div className="hightlight-gray pr-3 self-center handle-flex-bottom">
                     Keywords
-                  </div>{" "}
+                  </div>
                   <div className="flex flex-wrap">
                     {
                       <div className="flex flex-wrap  items-center ">
@@ -205,7 +230,11 @@ function Banner({ eng, thai, year, projectId }) {
                           abstractStatus ? "" : "hidden"
                         }`}
                       >
-                        <span> {project_abstract} </span>
+                        {language == "eng" ? (
+                          <span> {project_abstract} </span>
+                        ) : (
+                          <span> {thai.document.abstract} </span>
+                        )}
                       </div>
                       <button
                         className="hightlight-blue justify-start underline decoration-1 underline-offset-2 flex items-center"

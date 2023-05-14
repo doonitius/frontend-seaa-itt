@@ -17,6 +17,7 @@ import {
   faFilter,
   faPlus,
   faRightToBracket,
+  faLanguage,
 } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar(props) {
@@ -37,8 +38,24 @@ function Navbar(props) {
   const aToken = localStorage.getItem("Access_Token");
   const rToken = localStorage.getItem("Refresh_Token");
   const uName = localStorage.getItem("User_name");
+  const language = localStorage.getItem("Language");
   const [userNameDisplay, setUserNameDisplay] = useState("");
   const isMobile = useMediaQuery({ maxWidth: 650 });
+
+  const handleChangeLanguage = () => {
+    if (language == "eng" || language == "") {
+      localStorage.setItem("Language", "thai");
+    } else if (language == "thai") {
+      localStorage.setItem("Language", "eng");
+    } else {
+      localStorage.setItem("Language", "eng");
+    }
+    reloadLocation();
+  };
+
+  function handleGoHomePage() {
+    window.location.href = "/";
+  }
 
   useEffect(() => {
     setUserNameDisplay(uName);
@@ -214,6 +231,7 @@ function Navbar(props) {
             ? "w-12 object-contain self-center my-1"
             : "w-32 object-contain self-center"
         }
+        onClick={handleGoHomePage}
       />
       <div className="navBar-withSearch-menu ml-5">
         <div
@@ -301,6 +319,7 @@ function Navbar(props) {
                   className="hambergur-menu-login-button"
                   onClick={() => {
                     Login();
+                    toggleDropdown();
                     // reloadLocation();
                   }}
                 >
@@ -325,6 +344,7 @@ function Navbar(props) {
                       // Logout();
                       setPopupStatus(true);
                       setPopupComponent("logout");
+                      toggleDropdown();
                     }}
                   >
                     {/* <FontAwesomeIcon
@@ -336,11 +356,41 @@ function Navbar(props) {
                 </div>
               )}
             </div>
-            {isAdmin && (
-              <div className="pt-2">
-                <hr className="py-1" />
-                <span className="px-3 text-sm">Admin tool:</span>
+
+            <div className="pt-2">
+              <hr className="py-1" />
+              <span className="px-3 text-sm">Tool:</span>
+              <div className=" flex ">
+                <button
+                  className="project-menu-add project-menu-changeLang items-center "
+                  onClick={() => {
+                    handleChangeLanguage();
+                    toggleDropdown();
+                  }}
+                >
+                  <FontAwesomeIcon
+                    className="basis-1/6 justify-center text-sm"
+                    icon={faLanguage}
+                  />
+                  <div className="basis-5/6">Change Language</div>
+                </button>
+              </div>
+              {isAdmin && (
                 <div className=" flex ">
+                  {/* <button
+                    className="project-menu-add items-center "
+                    onClick={() => {
+                      setPopupStatus(true);
+                      setPopupComponent("addProject");
+                    }}
+                  >
+                    <FontAwesomeIcon
+                      className="basis-1/6 justify-center"
+                      icon={faLanguage}
+                    />
+                    Change Language
+                  </button> */}
+
                   <button
                     className="project-menu-add items-center "
                     onClick={() => {
@@ -355,8 +405,9 @@ function Navbar(props) {
                     <div className="basis-5/6">Add New Project</div>
                   </button>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
+
             {/* )} */}
             {/* <div
               className={"px-3 py-2 " + (loginStatus == true ? "" : "hidden")}

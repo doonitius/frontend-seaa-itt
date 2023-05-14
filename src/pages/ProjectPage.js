@@ -32,6 +32,7 @@ function ProjectPage(props) {
   const aToken = localStorage.getItem("Access_Token");
   const rToken = localStorage.getItem("Refresh_Token");
   const isAdmin = localStorage.getItem("Check_admin");
+  const language = localStorage.getItem("Language");
   const [loadingResult, setLoadingResult] = useState(true);
   const project_keyword =
     post?.data?.eng?.document.keywords &&
@@ -47,6 +48,8 @@ function ProjectPage(props) {
     post?.data?.thai?.document.keywords != []
       ? post?.data?.thai?.document.keywords
       : "";
+
+  // const lang = "thai";
 
   // const AccessToken = jwt_decode(localStorage.getItem("Access_Token"));
   // const RefreshToken = jwt_decode(localStorage.getItem("Refresh_Token"));
@@ -236,14 +239,25 @@ function ProjectPage(props) {
                   <div class="loader"></div>
                 </div>
               ) : (
-                <div className="project-info-space ">
-                  <div className="text-lg font-semibold tracking-wide pb-6">
-                    {project_name}
-                  </div>
+                <div className="project-info-space mt-3">
+                  {language == "eng" ? (
+                    <div className="text-lg font-semibold tracking-wide pb-6">
+                      {project_name}
+                    </div>
+                  ) : (
+                    <div className="text-lg font-semibold tracking-wide pb-6">
+                      {post?.data?.thai.document.title}
+                    </div>
+                  )}
+
                   <div className="space-y-5">
                     <div className="pb-5 handle-flex">
                       <div className="hightlight-gray pr-5">Abstract</div>
-                      <div className="">{project_abstract_en}</div>
+                      {language == "eng" ? (
+                        <div className="">{project_abstract_en}</div>
+                      ) : (
+                        <div className="">{post?.data?.thai?.abstract}</div>
+                      )}
                     </div>
                     <div className="project-info-other">
                       <div className="flex " style={{ width: "200px" }}>
@@ -271,56 +285,56 @@ function ProjectPage(props) {
                           <div className="hightlight-gray basis-1/5">
                             Author
                           </div>
-                          <div className="basis-4/5">
-                            {post?.data?.eng?.author?.map((author, index) => (
-                              // <div className="flex flex-wrap items-center">
-                              //   <button
-                              //     className="tagsBox items-center mr-1"
-                              //     key={index}
-                              //     name="keywords"
-                              //   >
-                              //     <span className="hightlight-blue">#</span>
-                              //     <span>{keywords}</span>
-                              //   </button>
-                              // </div>
 
-                              <div className="flex">
-                                <div className="pr-1">{author?.prefix}</div>
-                                <span className="pr-1">
-                                  {author?.first_name}
-                                </span>
-                                <span
-                                  className={
-                                    author?.middle_name === null ? "" : "pr-1 "
-                                  }
-                                >
-                                  {author?.middle_name}
-                                </span>
-                                <span className="pr-1">
-                                  {author?.last_name}
-                                </span>
-                              </div>
-                            ))}
-                            {/* <div>
-                            <div className="pr-1">
-                              {post?.data?.eng?.author[0]?.prefix}
+                          {language == "eng" ? (
+                            <div className="basis-4/5">
+                              {post?.data?.eng?.author?.map((author, index) => (
+                                <div className="flex">
+                                  <div className="pr-1">{author?.prefix}</div>
+                                  <span className="pr-1">
+                                    {author?.first_name}
+                                  </span>
+                                  <span
+                                    className={
+                                      author?.middle_name === null
+                                        ? ""
+                                        : "pr-1 "
+                                    }
+                                  >
+                                    {author?.middle_name}
+                                  </span>
+                                  <span className="pr-1">
+                                    {author?.last_name}
+                                  </span>
+                                </div>
+                              ))}
                             </div>
-                            <span className="pr-1">
-                              {post?.data?.eng?.author[0]?.first_name}
-                            </span>
-                            <span
-                              className={
-                                post?.data?.eng?.author[0]?.middle_name === null
-                                  ? ""
-                                  : "pr-1 "
-                              }
-                            >
-                              {post?.data?.eng?.author[0]?.middle_name}
-                            </span>
-                            <span className="pr-1">
-                              {post?.data?.eng?.author[0]?.last_name}
-                            </span></div> */}
-                          </div>
+                          ) : (
+                            <div className="basis-4/5">
+                              {post?.data?.thai?.author?.map(
+                                (author, index) => (
+                                  <div className="flex">
+                                    <div className="pr-1">{author?.prefix}</div>
+                                    <span className="pr-1">
+                                      {author?.first_name}
+                                    </span>
+                                    <span
+                                      className={
+                                        author?.middle_name === null
+                                          ? ""
+                                          : "pr-1 "
+                                      }
+                                    >
+                                      {author?.middle_name}
+                                    </span>
+                                    <span className="pr-1">
+                                      {author?.last_name}
+                                    </span>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )}
                         </div>
                         {/* <div className="flex">
                           <div className="hightlight-gray basis-1/5"> </div>
@@ -349,51 +363,101 @@ function ProjectPage(props) {
                       <div className=" " style={{ width: "550px" }}>
                         <div className="flex">
                           <div className="hightlight-gray pr-10">Advisor</div>
-                          <div className="flex">
-                            <div className="pr-1">
-                              {post?.data?.eng?.advisor[0]?.prefix}
-                            </div>
-                            <span className="pr-1">
-                              {post?.data?.eng?.advisor[0]?.first_name}
-                            </span>
-                            <span
-                              className={
-                                post?.data?.eng?.advisor[0]?.middle_name ===
-                                null
-                                  ? ""
-                                  : "pr-1 "
-                              }
-                            >
-                              {post?.data?.eng?.advisor[0]?.middle_name}
-                            </span>
-                            <span className="pr-1">
-                              {post?.data?.eng?.advisor[0]?.last_name}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex">
-                          <div className="hightlight-gray pr-4">Co-Advisor</div>
-                          {post?.data?.eng?.advisor[1] != null ? (
+                          {language == "eng" ? (
                             <div className="flex">
                               <div className="pr-1">
-                                {post?.data?.eng?.advisor[1]?.prefix}
+                                {post?.data?.eng?.advisor[0]?.prefix}
                               </div>
                               <span className="pr-1">
-                                {post?.data?.eng?.advisor[1]?.first_name}
+                                {post?.data?.eng?.advisor[0]?.first_name}
                               </span>
                               <span
                                 className={
-                                  post?.data?.eng?.advisor[1]?.middle_name ===
+                                  post?.data?.eng?.advisor[0]?.middle_name ===
                                   null
                                     ? ""
                                     : "pr-1 "
                                 }
                               >
-                                {post?.data?.eng?.advisor[1]?.middle_name}
+                                {post?.data?.eng?.advisor[0]?.middle_name}
                               </span>
                               <span className="pr-1">
-                                {post?.data?.eng?.advisor[1]?.last_name}
+                                {post?.data?.eng?.advisor[0]?.last_name}
                               </span>
+                            </div>
+                          ) : (
+                            <div className="flex">
+                              <div className="pr-1">
+                                {post?.data?.thai?.advisor[0]?.prefix}
+                              </div>
+                              <span className="pr-1">
+                                {post?.data?.thai?.advisor[0]?.first_name}
+                              </span>
+                              <span
+                                className={
+                                  post?.data?.thai?.advisor[0]?.middle_name ===
+                                  null
+                                    ? ""
+                                    : "pr-1 "
+                                }
+                              >
+                                {post?.data?.thai?.advisor[0]?.middle_name}
+                              </span>
+                              <span className="pr-1">
+                                {post?.data?.thai?.advisor[0]?.last_name}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex">
+                          <div className="hightlight-gray pr-4">Co-Advisor</div>
+                          {post?.data?.eng?.advisor[1] != null ? (
+                            <div>
+                              {language == "eng" ? (
+                                <div className="flex">
+                                  <div className="pr-1">
+                                    {post?.data?.eng?.advisor[1]?.prefix}
+                                  </div>
+                                  <span className="pr-1">
+                                    {post?.data?.eng?.advisor[1]?.first_name}
+                                  </span>
+                                  <span
+                                    className={
+                                      post?.data?.eng?.advisor[1]
+                                        ?.middle_name === null
+                                        ? ""
+                                        : "pr-1 "
+                                    }
+                                  >
+                                    {post?.data?.eng?.advisor[1]?.middle_name}
+                                  </span>
+                                  <span className="pr-1">
+                                    {post?.data?.eng?.advisor[1]?.last_name}
+                                  </span>
+                                </div>
+                              ) : (
+                                <div className="flex">
+                                  <div className="pr-1">
+                                    {post?.data?.thai?.advisor[1]?.prefix}
+                                  </div>
+                                  <span className="pr-1">
+                                    {post?.data?.thai?.advisor[1]?.first_name}
+                                  </span>
+                                  <span
+                                    className={
+                                      post?.data?.thai?.advisor[1]
+                                        ?.middle_name === null
+                                        ? ""
+                                        : "pr-1 "
+                                    }
+                                  >
+                                    {post?.data?.thai?.advisor[1]?.middle_name}
+                                  </span>
+                                  <span className="pr-1">
+                                    {post?.data?.thai?.advisor[1]?.last_name}
+                                  </span>
+                                </div>
+                              )}
                             </div>
                           ) : (
                             <div>&nbsp;- </div>
