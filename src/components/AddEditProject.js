@@ -76,6 +76,39 @@ function AddEditProject({
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (aToken && rToken) {
+      async function fetchData() {
+        try {
+          setLoadingResult(true);
+          const response = await axios.post(
+            "https://api-seai-general.cyclic.app/general/auth/refresh",
+            null,
+            {
+              headers: {
+                access_token: aToken,
+                refresh_token: rToken,
+              },
+            }
+          );
+          console.log("refresh access token");
+          console.log(response);
+          // localStorage.setItem("Access_Token", response.access_token);
+          // localStorage.setItem("Refresh_Token", response.refresh_token);
+          // localStorage.setItem("User_Name", response.username);
+          // const aTokenRefresh = localStorage.getItem("Access_Token");
+          // const rTokenRefresh = localStorage.getItem("Refresh_Token");
+          // console.log("Access_Token: " + aTokenRefresh);
+          // console.log("Refresh_Token: " + rTokenRefresh);
+          setLoadingResult(false);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      fetchData();
+    }
+  }, []);
+
   // useEffect(() => {
   //   async function fetchData() {
   //     try {
