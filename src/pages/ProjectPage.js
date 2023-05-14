@@ -175,12 +175,15 @@ function ProjectPage(props) {
         />
       )}
       {popupStatus && popupComponent === "deleteProject" && (
-        <DeleteProjectAlert closePopup={clickExitFromPopup} />
+        <DeleteProjectAlert
+          closePopup={clickExitFromPopup}
+          projectID={post?.data?.project_id}
+        />
       )}
       <Navbar searchFunction={false} />
       <div className="wrapper">
         <div className="w-full">
-          <div className="fixed w-full bg-white pt-2 px-5">
+          <div className="fixed w-full bg-white pt-3 px-5">
             <div className="flex justify-between">
               <div>
                 <button
@@ -192,7 +195,7 @@ function ProjectPage(props) {
                 </button>
               </div>
               {isAdmin && (
-                <div className="flex space-x-2 pr-6">
+                <div className="flex space-x-2 pr-3">
                   <div
                     className="project-banner-menu-edit items-center flex"
                     onClick={() => {
@@ -238,7 +241,7 @@ function ProjectPage(props) {
                     {project_name}
                   </div>
                   <div className="space-y-5">
-                    <div className="flex pb-5">
+                    <div className="pb-5 handle-flex">
                       <div className="hightlight-gray pr-5">Abstract</div>
                       <div className="">{project_abstract_en}</div>
                     </div>
@@ -398,10 +401,12 @@ function ProjectPage(props) {
                         </div>
                       </div>
                       <div
-                        className="flex items-center"
+                        className="handle-flex items-center"
                         style={{ width: "700px" }}
                       >
-                        <div className="hightlight-gray pr-7">Keywords</div>
+                        <div className="hightlight-gray pr-7 handle-flex-bottom">
+                          Keywords
+                        </div>
                         <div className="flex flex-wrap">
                           {
                             <div className="flex flex-wrap items-center">

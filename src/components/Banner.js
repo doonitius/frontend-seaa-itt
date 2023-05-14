@@ -119,10 +119,11 @@ function Banner({ eng, thai, year, projectId }) {
       )}
       <div>
         {/* <Link to={`/project/${props.projectId}`}> */}
-        <div className="project-banner justify-between">
-          <div className="flex">
+        <div className="project-banner">
+          <div className="flex w-full">
             <div className="project-banner-color"></div>
-            <div className="project-banner-content">
+            {/* <div className="handle-flex"> */}
+            <div className="project-banner-content w-full">
               {/* <span className='hightlight-blue text-sm'>Solving Vehicle Routing Problem with Hard Time Windows by Genetic Algorithm</span> */}
               <span className="hightlight-blue text-sm">{project_name}</span>
               <div className="text-xs pt-4">
@@ -131,42 +132,36 @@ function Banner({ eng, thai, year, projectId }) {
                     <span className="hightlight-gray pr-3">Year: </span>
                     <span>{project_year} </span>
                   </div>
-                  <div>
-                    <span className="hightlight-gray pr-3">Advisor: </span>
-                    <span className="pr-2">{project_advisorPrefix}</span>
-                    <span className="pr-2">{project_advisorName}</span>
-
-                    <span
-                      className={project_advisorMidname === null ? "" : "pr-2"}
-                    >
-                      {project_advisorMidname}
-                    </span>
-                    <span>{project_AdvisorLastName}</span>
+                  <div className="handle-flex ">
+                    <div className="hightlight-gray handle-flex-bottom pr-3">
+                      Advisor:
+                    </div>
+                    <div className="">
+                      <span className="pr-2">{project_advisorPrefix}</span>
+                      <span className="pr-2">{project_advisorName}</span>
+                      <span
+                        className={
+                          project_advisorMidname === null ? "" : "pr-2"
+                        }
+                      >
+                        {project_advisorMidname}
+                      </span>
+                      <span>{project_AdvisorLastName}</span>{" "}
+                    </div>
                   </div>
                 </div>
-                {/* <div className="flex pt-3">
-                  <span className="hightlight-gray pr-3 pt-1">Tags: </span>
-                  <div className="tagsArea">
-                    <Tags />
-                    <Tags />
-                    <Tags />
-                    <Tags />
-                    <Tags />
-                  </div>
-                </div> */}
-                {}
-                <div className="flex pt-3">
-                  <div className="hightlight-gray pr-3 self-center">
+                <div className="handle-flex pt-3">
+                  <div className="hightlight-gray pr-3 self-center handle-flex-bottom">
                     Keywords
                   </div>{" "}
                   <div className="flex flex-wrap">
                     {
-                      <div className="flex flex-wrap my-1 items-center">
+                      <div className="flex flex-wrap  items-center ">
                         {Array.isArray(project_keyword) &&
                           project_keyword.map((keywords, index) => (
                             <div className="flex flex-wrap items-center">
                               <button
-                                className="tagsBox items-center mr-1 mb-1"
+                                className="tagsBox items-center mr-1 mb-1 force-small-text"
                                 key={index}
                                 name="keywords"
                               >
@@ -178,12 +173,12 @@ function Banner({ eng, thai, year, projectId }) {
                       </div>
                     }
                     {
-                      <div className="flex flex-wrap my-1 items-center">
+                      <div className="flex flex-wrap  items-center">
                         {Array.isArray(project_keywordTh) &&
                           project_keywordTh.map((keywords, index) => (
                             <div className="flex flex-wrap items-center">
                               <button
-                                className="tagsBox items-center mr-1 mb-1"
+                                className="tagsBox items-center mr-1 mb-1 force-small-text"
                                 key={index}
                                 name="keywords"
                               >
@@ -199,73 +194,62 @@ function Banner({ eng, thai, year, projectId }) {
                   </div>
                 </div>
                 {/* <div className="flex pt-3" className={`${viewAbstractStatus ? 'popup-open' : null}`}> */}
-                <div className="flex pt-3">
-                  <span className="hightlight-gray pr-3">Abstract: </span>
-                  <div>
-                    <div
-                      className={`project-abstract ${
-                        abstractStatus ? "" : "hidden"
-                      }`}
-                    >
-                      <span> {project_abstract} </span>
+                <div className="handle-flex pt-3 handle-view-project">
+                  <div className="flex handle-flex-bottom2 handle-flex">
+                    <div className="hightlight-gray pr-3 handle-flex-bottom">
+                      Abstract:{" "}
                     </div>
-                    <button
-                      className="hightlight-blue justify-start underline decoration-1 underline-offset-2 flex items-center"
-                      onClick={() => {
-                        clickShowAbstract(true);
-                      }}
-                    >
-                      {abstractStatus ? "hide abstract" : "view abstract"}
-                      <FontAwesomeIcon
-                        icon={abstractStatus ? faEyeSlash : faEye}
-                        className="ml-1"
-                      />
-                    </button>
+                    <div className="">
+                      <div
+                        className={`project-abstract ${
+                          abstractStatus ? "" : "hidden"
+                        }`}
+                      >
+                        <span> {project_abstract} </span>
+                      </div>
+                      <button
+                        className="hightlight-blue justify-start underline decoration-1 underline-offset-2 flex items-center"
+                        onClick={() => {
+                          clickShowAbstract(true);
+                        }}
+                      >
+                        {abstractStatus ? "hide abstract" : "view abstract"}
+                        <FontAwesomeIcon
+                          icon={abstractStatus ? faEyeSlash : faEye}
+                          className="ml-1"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div className=" project-banner-menu self-end">
+                    <Link to={`/project/${projectId}`}>
+                      <div className=" project-banner-menu-viewProject inset-x-0 bottom-0 items-center">
+                        View Project
+                        <FontAwesomeIcon icon={faArrowRight} className="pl-2" />
+                      </div>
+                    </Link>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="project-banner-menu content-end grid justify-items-end">
-            {/* content-end / content-between */}
 
-            {/* {isAdmin && (
-              <div className="space-y-2">
-                <div
-                  className="project-banner-menu-edit items-center flex"
-                  onClick={() => {
-                    setPopupStatus(true);
-                    setPopupComponent("editProject");
-                  }}
-                >
-                  <FontAwesomeIcon
-                    className="justify-center"
-                    icon={faPenToSquare}
-                  />
-                  <div className="">Edit</div>
+              {/* <div className="w-full project-banner-menu grid force-end">
+                <Link to={`/project/${projectId}`}>
+                  <div className=" project-banner-menu-viewProject inset-x-0 bottom-0 items-center ">
+                    View Project
+                    <FontAwesomeIcon icon={faArrowRight} />
+                  </div>
+                </Link>
+              </div> */}
+            </div>
+            {/* <div className="w-full project-banner-menu ">
+              <Link to={`/project/${projectId}`}>
+                <div className="project-banner-menu-viewProject inset-x-0 bottom-0 items-center ">
+                  View Project
+                  <FontAwesomeIcon icon={faArrowRight} />
                 </div>
-                <div
-                  className="project-banner-menu-delete items-center flex"
-                  onClick={() => {
-                    setPopupStatus(true);
-                    setPopupComponent("deleteProject");
-                  }}
-                >
-                  <FontAwesomeIcon
-                    className="justify-center"
-                    icon={faTrashCan}
-                  />
-                  <div className="">Delete</div>
-                </div>
-              </div>
-            )} */}
-            {/* <div></div> */}
-            <Link to={`/project/${projectId}`}>
-              <div className="project-banner-menu-viewProject inset-x-0 bottom-0 items-center">
-                View Project
-                <FontAwesomeIcon icon={faArrowRight} />
-              </div>
-            </Link>
+              </Link>
+            </div> */}
+            {/* </div> */}
           </div>
         </div>
         {/* </Link> */}

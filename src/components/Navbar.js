@@ -1,4 +1,5 @@
 import logoForBlack2 from "../images/Logo_ForBlack2.png";
+import logoForBlack1 from "../images/Logo_ForBlack1.png";
 import LogoutAlert from "./LogoutAlert";
 import { useEffect, useState } from "react";
 import { Route, Link, Routes, Navigate } from "react-router-dom";
@@ -6,6 +7,7 @@ import AddEditFilter from "./AddEditFilter.js";
 import AddEditProject from "./AddEditProject.js";
 import InputWIcon from "./InputWIcon";
 import axios from "axios";
+import { useMediaQuery } from "react-responsive";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -36,6 +38,7 @@ function Navbar(props) {
   const rToken = localStorage.getItem("Refresh_Token");
   const uName = localStorage.getItem("User_name");
   const [userNameDisplay, setUserNameDisplay] = useState("");
+  const isMobile = useMediaQuery({ maxWidth: 650 });
 
   useEffect(() => {
     setUserNameDisplay(uName);
@@ -204,11 +207,18 @@ function Navbar(props) {
       {popupStatus && popupComponent === "addProject" && (
         <AddEditProject closePopup={clickExitFromPopup} addCase={true} />
       )}
-      <img src={logoForBlack2} alt="" className="w-32 object-contain" />
-      <div className="navBar-withSearch-menu">
+      <img
+        src={isMobile ? logoForBlack1 : logoForBlack2}
+        className={
+          isMobile
+            ? "w-12 object-contain self-center my-1"
+            : "w-32 object-contain self-center"
+        }
+      />
+      <div className="navBar-withSearch-menu ml-5">
         <div
           className={
-            props.searchFunction === true ? "w-3/4 items-center pr-4" : "hidden"
+            props.searchFunction === true ? "w-3/4 self-center pr-4" : "hidden"
           }
         >
           <InputWIcon
@@ -227,7 +237,7 @@ function Navbar(props) {
         <button
           className={
             props.searchFunction === true
-              ? "menu-button-filter space-x-2 items-center"
+              ? "menu-button-filter space-x-2 self-center"
               : "hidden"
           }
           onClick={() => {
@@ -297,7 +307,7 @@ function Navbar(props) {
                   Sign in
                 </button>
               )}
-              {!isLogin && (
+              {/* {!isLogin && (
                 <button
                   className="hambergur-menu-register-button"
                   onClick={() => {
@@ -306,7 +316,7 @@ function Navbar(props) {
                 >
                   Register
                 </button>
-              )}
+              )} */}
               {isLogin && (
                 <div className="flex justify-center">
                   <button

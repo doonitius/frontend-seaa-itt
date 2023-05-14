@@ -93,11 +93,16 @@
   background-color: var(--black1);
   text-align: left;
   top: 0;
-  padding: 0px 10px 0px 10px;
+  padding: 3px 10px 3px 10px;
   width: 100%;
   justify-content: space-between;
   display: flex;
   z-index: 2;
+  /* padding: 10px; */
+}
+
+.padding-input {
+  padding: 4px 4px 4px 0px;
 }
 
 .navBar-bottom {
@@ -111,7 +116,7 @@
 .navBar-withSearch-menu {
   display: flex;
   flex: 3;
-  padding: 10px 0px 10px 0px;
+  padding: 0px 0px 0px 0px;
   justify-content: end;
 }
 
@@ -219,7 +224,7 @@ button.blue-button {
 .menu-button-filter {
   border-radius: 5px;
   display: flex;
-  padding: 5px 15px 5px 15px;
+  padding: 0px 0px 0px 0px;
   font-size: 14px;
   font-weight: 600;
   color: white;
@@ -227,6 +232,10 @@ button.blue-button {
   transition-duration: 0.3s;
   background-color: var(--blue1);
   width: 100px;
+  /* margin: 8px 0px 8px 0px; */
+  /* letter-spacing: 0.050em; */
+  font-weight: 500;
+  height: 34px;
 }
 
 .menu-button-filter:hover {
@@ -247,7 +256,7 @@ button.blue-button {
 
 .wrapper {
   display: flex;
-  padding-top: 50px;
+  padding-top: 43px;
   width: 100%;
 }
 
@@ -301,12 +310,46 @@ input {
   .project-info-space {
     padding: 30px 30px 10px 30px !important;
   }
+
+  .handle-flex {
+    display: block !important;
+  }
+
+  .handle-flex-bottom {
+    padding-bottom: 10px;
+  }
+
+  .handle-flex-bottom2 {
+    padding-bottom: 20px;
+  }
+
+  .force-small-text {
+    font-size: 10px !important;
+  }
+
+  .tagsBox {
+    padding: 5px 7px 5px 7px !important;
+  }
+
+  .projectlist-space {
+    padding: 20px 20px 0px 20px !important;
+  }
+
+  .project-banner-content {
+    padding: 20px 20px 20px 25px !important;
+  }
 }
 
-/* 
-.check-screen-width {
+.handle-flex {
   display: flex;
-} */
+}
+
+.confirm-button {
+  height: 30px;
+  width: 90px;
+}
+
+
 
 
 .main {
@@ -341,7 +384,11 @@ h5 {
 }
 
 .project-banner-content {
-  padding: 20px 0px 20px 40px;
+  padding: 20px 20px 20px 40px;
+}
+
+.handle-view-project {
+  justify-content: space-between;
 }
 
 .tagsBox, .tagsBox-sidebar, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-menu-add {
@@ -396,7 +443,7 @@ h5 {
   /* position: absolute; */
 }
 
-.project-banner-menu, .project-banner-menu-viewProject, .project-banner-menu-edit, .project-banner-menu-delete, .project-banner-menu-edit-hover, .project-banner-menu-delete-hover {
+.project-banner-menu-edit-hover, .project-banner-menu-delete-hover {
   margin: 10px;
   font-size: 12px;
   justify-content: center;
@@ -405,6 +452,28 @@ h5 {
   transition-property: color;
   transition-duration: 0.3s;
   /* opacity: 0.6; */
+}
+
+.project-banner-menu-edit, .project-banner-menu-delete {
+
+  height: 30px;
+  padding: 2px;
+  font-size: 12px;
+  justify-content: center;
+  grid-column-gap: 8px;
+  font-weight: 600;
+  transition-property: color;
+  transition-duration: 0.3s;
+  align-self: center;
+}
+
+.project-banner-menu-viewProject {
+  padding: 15px 10px 15px 10px;
+  font-size: 12px;
+  justify-content: center;
+  font-weight: 600;
+  transition-property: color;
+  transition-duration: 0.3s;
 }
 
 .view-attachment-button, .edit-attachment-button {
@@ -656,13 +725,23 @@ button.orange-button {
 
 
 .loader {
-  border: 5px solid #eeeeee;
-  border-top: 5px solid var(--blue1);
+  border: 10px solid #eeeeee;
+  border-top: 10px solid var(--blue1);
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 100px;
   animation: spin 1s linear infinite;
 }
+
+/* 
+.loader {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #3498db;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+} */
 
 @keyframes spin {
   0% {
@@ -910,16 +989,6 @@ input[type="file"] {
   padding: 10px 15px 10px 15px;
 }
 
-.loader {
-  border: 16px solid #f3f3f3;
-  /* Light grey */
-  border-top: 16px solid #3498db;
-  /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-}
 
 @keyframes spin {
   0% {
