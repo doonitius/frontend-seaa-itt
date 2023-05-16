@@ -157,6 +157,9 @@ function AddEditProject({
         );
         console.log(response);
         console.log("create project success");
+        console.log(
+          "check create project data: title : " + projectData.eng.document.title
+        );
         if (isTokenExpired(response) == true) {
           alert("Access Token expired1");
           localStorage.setItem("Check_admin", false);
@@ -203,6 +206,9 @@ function AddEditProject({
         console.log(response);
 
         console.log("edit project success");
+        console.log(
+          "check edit project data: title : " + projectData.eng.document.title
+        );
       } catch (error) {
         console.log(error);
         console.log("aT and rT: but im error: " + aToken + "\n" + rToken);
@@ -904,10 +910,10 @@ function AddEditProject({
           </div>
         </div>
 
-        <div className="popup-content space-y-10" style={{ height: "75vh" }}>
+        <div className="popup-content space-y-10" style={{ height: "70vh" }}>
           {loadingResult ? (
             <div className="grid justify-items-center py-36">
-              <div class="loader"></div>
+              <div className="loader"></div>
             </div>
           ) : (
             <div className="space-y-10">

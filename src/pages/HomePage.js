@@ -143,7 +143,7 @@ function HomePage(props) {
       // } else {
       //   url = URLpage;
       // }
-      console.log("url now: " + url);
+      // console.log("url now: " + url);
       try {
         setLoadingResult(true);
         await new Promise((resolve) => setTimeout(resolve, 500));
@@ -154,6 +154,8 @@ function HomePage(props) {
           },
         });
         setPost(response.data);
+        console.log("[homepage] search project: ");
+        console.log(response);
         // console.log("response data is = " + response.data);
         setLoadingResult(false);
       } catch (error) {
@@ -172,15 +174,6 @@ function HomePage(props) {
     setPageNumber((prevPageNumber) => prevPageNumber - 1);
     // console.log("pageNumber " + pageNumber);
   };
-
-  function replaceSpaces(input) {
-    let rep = "%20";
-    for (let i = 0; i < input.length; i++) {
-      if (input[i] == " ") input = input.replace(input[i], rep);
-    }
-    document.write(input);
-    console.log("nong nong: " + input);
-  }
 
   const functionFilter = () => {
     setFilterData(JSON.parse(localStorage.getItem("filterData")));
@@ -209,7 +202,7 @@ function HomePage(props) {
           <div className="main w-full">
             {loadingResult ? (
               <div className="grid justify-items-center pt-36">
-                <div class="loader"></div>
+                <div className="loader"></div>
               </div>
             ) : (
               <div>

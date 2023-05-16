@@ -77,6 +77,21 @@ function ProjectPage(props) {
     );
   }
 
+  // async function handleViewFile() {
+  //   console.log(project_attachment_file);
+  //   try {
+  //     await fetch(
+  //       `https://api-seai-general.cyclic.app/general/search/${project_attachment_file}/preview`
+  //     );
+  //     window.open(
+  //       `https://api-seai-general.cyclic.app/general/search/${project_attachment_file}/preview`,
+  //       "_blank"
+  //     );
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // }
+
   function clickExitFromPopup() {
     setPopupStatus(!popupStatus);
   }
@@ -190,7 +205,7 @@ function ProjectPage(props) {
             <div className="flex justify-between">
               <div>
                 <button
-                  className="flex space-x-2 p-4 items-center hover-toBlue"
+                  className="flex space-x-2 py-4 items-center hover-toBlue"
                   onClick={handleGoBack}
                 >
                   <FontAwesomeIcon className="" icon={faArrowLeft} />
@@ -236,7 +251,7 @@ function ProjectPage(props) {
               {/* <div className="project-box-top"></div> */}
               {loadingResult ? (
                 <div className="grid justify-items-center py-36">
-                  <div class="loader"></div>
+                  <div className="loader"></div>
                 </div>
               ) : (
                 <div className="project-info-space mt-3">
@@ -251,12 +266,14 @@ function ProjectPage(props) {
                   )}
 
                   <div className="space-y-5">
-                    <div className="pb-5 handle-flex">
-                      <div className="hightlight-gray pr-5">Abstract</div>
+                    <div className="pb-5 handle-flex ">
+                      <div className="hightlight-gray pr-5 ">Abstract</div>
                       {language == "eng" ? (
                         <div className="">{project_abstract_en}</div>
                       ) : (
-                        <div className="">{post?.data?.thai?.abstract}</div>
+                        <div className="">
+                          {post?.data?.thai?.document.abstract}
+                        </div>
                       )}
                     </div>
                     <div className="project-info-other">
@@ -280,16 +297,14 @@ function ProjectPage(props) {
                       </div>
                     </div>
                     <div className="project-info-other">
-                      <div className=" " style={{ width: "450px" }}>
-                        <div className="flex">
-                          <div className="hightlight-gray basis-1/5">
-                            Author
-                          </div>
+                      <div className=" " style={{ width: "650px" }}>
+                        <div className="handle-flex handle-flex-bottom">
+                          <div className="hightlight-gray pr-5 ">Author</div>
 
                           {language == "eng" ? (
-                            <div className="basis-4/5">
+                            <div className="">
                               {post?.data?.eng?.author?.map((author, index) => (
-                                <div className="flex">
+                                <div className="flex flex-wrap">
                                   <div className="pr-1">{author?.prefix}</div>
                                   <span className="pr-1">
                                     {author?.first_name}
@@ -313,7 +328,7 @@ function ProjectPage(props) {
                             <div className="basis-4/5">
                               {post?.data?.thai?.author?.map(
                                 (author, index) => (
-                                  <div className="flex">
+                                  <div className="flex ">
                                     <div className="pr-1">{author?.prefix}</div>
                                     <span className="pr-1">
                                       {author?.first_name}
@@ -361,10 +376,10 @@ function ProjectPage(props) {
                         </div> */}
                       </div>
                       <div className=" " style={{ width: "550px" }}>
-                        <div className="flex">
-                          <div className="hightlight-gray pr-10">Advisor</div>
+                        <div className="handle-flex handle-flex-bottom">
+                          <div className="hightlight-gray pr-10 ">Advisor</div>
                           {language == "eng" ? (
-                            <div className="flex">
+                            <div className="flex ">
                               <div className="pr-1">
                                 {post?.data?.eng?.advisor[0]?.prefix}
                               </div>
@@ -409,8 +424,10 @@ function ProjectPage(props) {
                             </div>
                           )}
                         </div>
-                        <div className="flex">
-                          <div className="hightlight-gray pr-4">Co-Advisor</div>
+                        <div className="handle-flex handle-flex-bottom">
+                          <div className="hightlight-gray pr-4 handle-flex-bottom">
+                            Co-Advisor
+                          </div>
                           {post?.data?.eng?.advisor[1] != null ? (
                             <div>
                               {language == "eng" ? (
