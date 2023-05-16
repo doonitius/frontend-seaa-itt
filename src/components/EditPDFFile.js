@@ -33,7 +33,7 @@ function EditPDFFile(props) {
 
   useEffect(() => {
     setProjectFileData({
-      thesis_file: props.projectFile || "อะไรกันครับเนี้ย",
+      thesis_file: props.projectFile || "",
     });
     console.log("projectFile name (recent): " + projectFileData.thesis_file);
   }, [props.projectID]);
@@ -41,11 +41,18 @@ function EditPDFFile(props) {
   const handleEditFile = (event) => {
     const file = event.target.files[0];
     setIsEditFile(true);
-    setProjectFileData({
-      thesis_file: file,
-    });
-    // formFileData.append("thesis_file", file);
-    console.log("projectFile name (now): " + file.name);
+
+    if (file) {
+      setProjectFileData({
+        thesis_file: file,
+      });
+      // console.log("projectFile name (now): " + file.name);
+    } else {
+      setProjectFileData({
+        thesis_file: null,
+      });
+      console.log("No file selected");
+    }
   };
 
   // useEffect(() => {
@@ -81,14 +88,14 @@ function EditPDFFile(props) {
       );
       console.log(response.data);
       console.log("edit project file success");
-      console.log("test file name: " + projectFileData.thesis_file.name);
+      // console.log("test file name: " + projectFileData.thesis_file.name);
     } catch (error) {
       console.log("An error occurred while project file");
       console.log(error);
     }
 
-    // props.editConfirm();
-    // reloadLocation();
+    props.editConfirm();
+    reloadLocation();
   };
   return (
     <div className="popup">
