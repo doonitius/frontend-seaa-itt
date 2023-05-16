@@ -19,6 +19,7 @@ function SideBar(props) {
   });
   const aToken = localStorage.getItem("Access_Token");
   const rToken = localStorage.getItem("Refresh_Token");
+  const language = localStorage.getItem("Language");
 
   const handleKeywordsNameChange = (value) => {
     setFilterData((prevState) => ({
@@ -74,8 +75,10 @@ function SideBar(props) {
         },
       })
       .then((response) => {
+        console.log("[sidebar] map advisor: ");
+        console.log(response);
         setAdvisorList(response.data);
-        console.log(advisorList);
+        // console.log(advisorList);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -89,8 +92,10 @@ function SideBar(props) {
         },
       })
       .then((response) => {
+        console.log("[sidebar] map keywords: ");
+        console.log(response);
         setKeywordsList(response.data);
-        console.log("keywordddd " + keywordsList);
+        // console.log("keywordddd " + keywordsList);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -109,24 +114,45 @@ function SideBar(props) {
 
         <div className="pl-7">
           <span className="hightlight-blue text-lg">Advisor</span>
-          <div className="pt-2 pl-5">
-            {advisorList?.data?.map((advisor, index) => (
-              <div
-                className="quick-filter hover-sidebar"
-                key={advisor._id}
-                onClick={() => {
-                  handleAdvisorChange(advisor._id);
-                }}
-              >
-                <span className="pr-1">
-                  {advisorList?.data[index].eng.prefix}
-                </span>
-                <span className="">
-                  {advisorList?.data[index].eng.full_name}
-                </span>
-              </div>
-            ))}{" "}
-          </div>
+          {language == "eng" ? (
+            <div className="pt-2 pl-5">
+              {advisorList?.data?.map((advisor, index) => (
+                <div
+                  className="quick-filter hover-sidebar"
+                  key={advisor._id}
+                  onClick={() => {
+                    handleAdvisorChange(advisor._id);
+                  }}
+                >
+                  <span className="pr-1">
+                    {advisorList?.data[index].eng.prefix}
+                  </span>
+                  <span className="">
+                    {advisorList?.data[index].eng.full_name}
+                  </span>
+                </div>
+              ))}{" "}
+            </div>
+          ) : (
+            <div className="pt-2 pl-5">
+              {advisorList?.data?.map((advisor, index) => (
+                <div
+                  className="quick-filter hover-sidebar"
+                  key={advisor._id}
+                  onClick={() => {
+                    handleAdvisorChange(advisor._id);
+                  }}
+                >
+                  <span className="pr-1">
+                    {advisorList?.data[index].thai.prefix}
+                  </span>
+                  <span className="">
+                    {advisorList?.data[index].thai.full_name}
+                  </span>
+                </div>
+              ))}{" "}
+            </div>
+          )}
         </div>
         <div className="pl-7">
           <span className="hightlight-blue text-lg">Keyword</span>

@@ -986,7 +986,7 @@ input[type="file"] {
   transition-property: color;
   transition-duration: 0.15s;
   justify-items: start;
-  width: 100px;
+  width: 90px;
 }
 
 .hover-toBlue:hover {

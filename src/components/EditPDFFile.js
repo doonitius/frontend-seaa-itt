@@ -79,15 +79,16 @@ function EditPDFFile(props) {
           },
         }
       );
-      console.log("edit project file success");
       console.log(response.data);
+      console.log("edit project file success");
+      console.log("test file name: " + projectFileData.thesis_file.name);
     } catch (error) {
       console.log("An error occurred while project file");
       console.log(error);
     }
 
-    props.editConfirm();
-    reloadLocation();
+    // props.editConfirm();
+    // reloadLocation();
   };
   return (
     <div className="popup">

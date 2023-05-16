@@ -112,40 +112,40 @@ function Navbar(props) {
     }
   }, []);
 
-  const Register = async () => {
-    try {
-      const url = "https://api-seai-general.cyclic.app/general/auth/register";
-      console.log(
-        "username pass: " + loginData.username + " + " + loginData.password
-      );
-      const response = await axios.post(url, loginData);
-      setPost(response.data);
+  // const Register = async () => {
+  //   try {
+  //     const url = "https://api-seai-general.cyclic.app/general/auth/register";
+  //     console.log(
+  //       "username pass: " + loginData.username + " + " + loginData.password
+  //     );
+  //     const response = await axios.post(url, loginData);
+  //     setPost(response.data);
 
-      // Set localStorage immediately after setting the post state
-      const accessTokenDataString = JSON.stringify(response.data?.access_token);
-      const refreshTokenDataString = JSON.stringify(
-        response.data?.refresh_token
-      );
+  //     // Set localStorage immediately after setting the post state
+  //     const accessTokenDataString = JSON.stringify(response.data?.access_token);
+  //     const refreshTokenDataString = JSON.stringify(
+  //       response.data?.refresh_token
+  //     );
 
-      localStorage.setItem("Access_Token", accessTokenDataString);
-      localStorage.setItem("Refresh_Token", refreshTokenDataString);
-      // localStorage.setItem("Check_admin", isLogin);
+  //     localStorage.setItem("Access_Token", accessTokenDataString);
+  //     localStorage.setItem("Refresh_Token", refreshTokenDataString);
+  //     // localStorage.setItem("Check_admin", isLogin);
 
-      const aToken = localStorage.getItem("Access_Token");
-      const rToken = localStorage.getItem("Refresh_Token");
-      // const isAdmin = localStorage.getItem("Check_admin");
+  //     const aToken = localStorage.getItem("Access_Token");
+  //     const rToken = localStorage.getItem("Refresh_Token");
+  //     // const isAdmin = localStorage.getItem("Check_admin");
 
-      console.log("Access_Token: " + aToken);
-      console.log("Refresh_Token: " + rToken);
-      // console.log("check admin: " + isAdmin);
-      setIsLogin(true);
+  //     console.log("Access_Token: " + aToken);
+  //     console.log("Refresh_Token: " + rToken);
+  //     // console.log("check admin: " + isAdmin);
+  //     setIsLogin(true);
 
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-    reloadLocation();
-  };
+  //     console.log(response);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   reloadLocation();
+  // };
 
   const Login = async () => {
     try {
@@ -171,9 +171,9 @@ function Navbar(props) {
       localStorage.setItem("User_Name", userNameDataString);
       // const isAdmin = localStorage.getItem("Check_admin");
 
-      console.log("Access_Token: " + aToken);
-      console.log("Refresh_Token: " + rToken);
-      console.log("User_Name: " + uName);
+      // console.log("Access_Token: " + aToken);
+      // console.log("Refresh_Token: " + rToken);
+      // console.log("User_Name: " + uName);
       // console.log("check admin: " + isAdmin);
       setIsLogin(true);
 
@@ -188,7 +188,7 @@ function Navbar(props) {
     if (isLogin == true) {
       localStorage.setItem("Check_admin", isLogin);
       const isAdmin = localStorage.getItem("Check_admin");
-      console.log("check admin: " + isAdmin);
+      // console.log("check admin: " + isAdmin);
     }
   }, [post]);
 
@@ -274,16 +274,16 @@ function Navbar(props) {
         />
         {isOpenMenu && (
           <ul className="hambergur-menu shadow-md mt-14 py-2  items-center">
-            <button
+            {/* <button
               className="text-sm"
               onClick={() => {
                 autoEnter();
               }}
             >
               click 2 auto enter
-            </button>
+            </button> */}
 
-            <div className="px-3 py-2  items-center space-y-2">
+            <div className="px-3 pb-2  items-center space-y-2">
               {isLogin ? (
                 <div className="text-center py-3">
                   <span className="pr-1">User: </span>
@@ -307,6 +307,7 @@ function Navbar(props) {
                       className="hambergur-menu-login"
                       placeholder="password"
                       name="password"
+                      type="password"
                       value={loginData.password}
                       onChange={handleLoginData}
                     />
