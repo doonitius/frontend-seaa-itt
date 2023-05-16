@@ -9,6 +9,7 @@ import AddEditProject from "../components/AddEditProject.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
+  faCircleXmark,
   faFilePdf,
   faPenToSquare,
   faPlus,
@@ -48,6 +49,8 @@ function ProjectPage(props) {
     post?.data?.thai?.document.keywords != []
       ? post?.data?.thai?.document.keywords
       : "";
+
+  const [isNotExist, setIsNotExist] = useState(false);
 
   // const lang = "thai";
 
@@ -145,6 +148,10 @@ function ProjectPage(props) {
         console.log("pass get from project page");
         setLoadingResult(false);
       } catch (error) {
+        if (error.message == "Request failed with status code 404") {
+          setIsNotExist(true);
+          setLoadingResult(false);
+        }
         console.log("An error occurred get projectId in ProjectPage");
         console.log(error);
       }
@@ -249,109 +256,141 @@ function ProjectPage(props) {
           <div className="px-5 pb-5 pt-16 ">
             <div className="border-gray-1">
               {/* <div className="project-box-top"></div> */}
-              {loadingResult ? (
-                <div className="grid justify-items-center py-36">
-                  <div className="loader"></div>
+              {isNotExist == true ? (
+                <div className="no-project-found text-center align-middle py-28">
+                  <FontAwesomeIcon
+                    className=" self-center text-6xl"
+                    icon={faCircleXmark}
+                  />
+                  <br />
+                  <br />
+                  <span className="font-bold text-lg">
+                    Projects is not exist
+                  </span>
+                  <br />
+                  <span className="font-medium">
+                    This project does not exist. Maybe it was deleted.
+                  </span>
                 </div>
               ) : (
-                <div className="project-info-space mt-3">
-                  {language == "eng" ? (
-                    <div className="text-lg font-semibold tracking-wide pb-6">
-                      {project_name}
+                <div>
+                  {loadingResult ? (
+                    <div className="grid justify-items-center py-36">
+                      <div className="loader"></div>
                     </div>
                   ) : (
-                    <div className="text-lg font-semibold tracking-wide pb-6">
-                      {post?.data?.thai.document.title}
-                    </div>
-                  )}
-
-                  <div className="space-y-5">
-                    <div className="pb-5 handle-flex ">
-                      <div className="hightlight-gray pr-5 ">Abstract</div>
+                    <div className="project-info-space mt-3">
                       {language == "eng" ? (
-                        <div className="">{project_abstract_en}</div>
+                        <div className="text-lg font-semibold tracking-wide pb-6">
+                          {project_name}
+                        </div>
                       ) : (
-                        <div className="">
-                          {post?.data?.thai?.document.abstract}
+                        <div className="text-lg font-semibold tracking-wide pb-6">
+                          {post?.data?.thai.document.title}
                         </div>
                       )}
-                    </div>
-                    <div className="project-info-other">
-                      <div className="flex " style={{ width: "200px" }}>
-                        <div className="hightlight-gray pr-7">
-                          Academic Year
-                        </div>
-                        <div className="pr-1">{post?.data?.academic_year}</div>
-                      </div>
-                      <div className="flex flex-wrap ">
-                        <div className=" flex" style={{ width: "250px" }}>
-                          <div className="hightlight-gray pr-10">Degree</div>
-                          <div className="pr-1">{post?.data?.degree}</div>
-                        </div>
-                        <div className="flex" style={{ width: "250px" }}>
-                          <div className="hightlight-gray pr-10">
-                            project_type
-                          </div>
-                          <div className="pr-1">{post?.data?.project_type}</div>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="project-info-other">
-                      <div className=" " style={{ width: "650px" }}>
-                        <div className="handle-flex handle-flex-bottom">
-                          <div className="hightlight-gray pr-5 ">Author</div>
 
+                      <div className="space-y-5">
+                        <div className="pb-5 handle-flex ">
+                          <div className="hightlight-gray pr-5 ">Abstract</div>
                           {language == "eng" ? (
-                            <div className="">
-                              {post?.data?.eng?.author?.map((author, index) => (
-                                <div className="flex flex-wrap">
-                                  <div className="pr-1">{author?.prefix}</div>
-                                  <span className="pr-1">
-                                    {author?.first_name}
-                                  </span>
-                                  <span
-                                    className={
-                                      author?.middle_name === null
-                                        ? ""
-                                        : "pr-1 "
-                                    }
-                                  >
-                                    {author?.middle_name}
-                                  </span>
-                                  <span className="pr-1">
-                                    {author?.last_name}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
+                            <div className="">{project_abstract_en}</div>
                           ) : (
-                            <div className="basis-4/5">
-                              {post?.data?.thai?.author?.map(
-                                (author, index) => (
-                                  <div className="flex ">
-                                    <div className="pr-1">{author?.prefix}</div>
-                                    <span className="pr-1">
-                                      {author?.first_name}
-                                    </span>
-                                    <span
-                                      className={
-                                        author?.middle_name === null
-                                          ? ""
-                                          : "pr-1 "
-                                      }
-                                    >
-                                      {author?.middle_name}
-                                    </span>
-                                    <span className="pr-1">
-                                      {author?.last_name}
-                                    </span>
-                                  </div>
-                                )
-                              )}
+                            <div className="">
+                              {post?.data?.thai?.document.abstract}
                             </div>
                           )}
                         </div>
-                        {/* <div className="flex">
+                        <div className="project-info-other">
+                          <div className="flex " style={{ width: "200px" }}>
+                            <div className="hightlight-gray pr-7">
+                              Academic Year
+                            </div>
+                            <div className="pr-1">
+                              {post?.data?.academic_year}
+                            </div>
+                          </div>
+                          <div className="flex flex-wrap ">
+                            <div className=" flex" style={{ width: "250px" }}>
+                              <div className="hightlight-gray pr-10">
+                                Degree
+                              </div>
+                              <div className="pr-1">{post?.data?.degree}</div>
+                            </div>
+                            <div className="flex" style={{ width: "250px" }}>
+                              <div className="hightlight-gray pr-10">
+                                project_type
+                              </div>
+                              <div className="pr-1">
+                                {post?.data?.project_type}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="project-info-other">
+                          <div className=" " style={{ width: "650px" }}>
+                            <div className="handle-flex handle-flex-bottom">
+                              <div className="hightlight-gray pr-5 ">
+                                Author
+                              </div>
+
+                              {language == "eng" ? (
+                                <div className="">
+                                  {post?.data?.eng?.author?.map(
+                                    (author, index) => (
+                                      <div className="flex flex-wrap">
+                                        <div className="pr-1">
+                                          {author?.prefix}
+                                        </div>
+                                        <span className="pr-1">
+                                          {author?.first_name}
+                                        </span>
+                                        <span
+                                          className={
+                                            author?.middle_name === null
+                                              ? ""
+                                              : "pr-1 "
+                                          }
+                                        >
+                                          {author?.middle_name}
+                                        </span>
+                                        <span className="pr-1">
+                                          {author?.last_name}
+                                        </span>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              ) : (
+                                <div className="basis-4/5">
+                                  {post?.data?.thai?.author?.map(
+                                    (author, index) => (
+                                      <div className="flex ">
+                                        <div className="pr-1">
+                                          {author?.prefix}
+                                        </div>
+                                        <span className="pr-1">
+                                          {author?.first_name}
+                                        </span>
+                                        <span
+                                          className={
+                                            author?.middle_name === null
+                                              ? ""
+                                              : "pr-1 "
+                                          }
+                                        >
+                                          {author?.middle_name}
+                                        </span>
+                                        <span className="pr-1">
+                                          {author?.last_name}
+                                        </span>
+                                      </div>
+                                    )
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                            {/* <div className="flex">
                           <div className="hightlight-gray basis-1/5"> </div>
                           <div className="flex basis-4/5">
                             <div className="pr-1">
@@ -374,160 +413,181 @@ function ProjectPage(props) {
                             </span>
                           </div>
                         </div> */}
-                      </div>
-                      <div className=" " style={{ width: "550px" }}>
-                        <div className="handle-flex handle-flex-bottom">
-                          <div className="hightlight-gray pr-10 ">Advisor</div>
-                          {language == "eng" ? (
-                            <div className="flex ">
-                              <div className="pr-1">
-                                {post?.data?.eng?.advisor[0]?.prefix}
-                              </div>
-                              <span className="pr-1">
-                                {post?.data?.eng?.advisor[0]?.first_name}
-                              </span>
-                              <span
-                                className={
-                                  post?.data?.eng?.advisor[0]?.middle_name ===
-                                  null
-                                    ? ""
-                                    : "pr-1 "
-                                }
-                              >
-                                {post?.data?.eng?.advisor[0]?.middle_name}
-                              </span>
-                              <span className="pr-1">
-                                {post?.data?.eng?.advisor[0]?.last_name}
-                              </span>
-                            </div>
-                          ) : (
-                            <div className="flex">
-                              <div className="pr-1">
-                                {post?.data?.thai?.advisor[0]?.prefix}
-                              </div>
-                              <span className="pr-1">
-                                {post?.data?.thai?.advisor[0]?.first_name}
-                              </span>
-                              <span
-                                className={
-                                  post?.data?.thai?.advisor[0]?.middle_name ===
-                                  null
-                                    ? ""
-                                    : "pr-1 "
-                                }
-                              >
-                                {post?.data?.thai?.advisor[0]?.middle_name}
-                              </span>
-                              <span className="pr-1">
-                                {post?.data?.thai?.advisor[0]?.last_name}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="handle-flex handle-flex-bottom">
-                          <div className="hightlight-gray pr-4 handle-flex-bottom">
-                            Co-Advisor
                           </div>
-                          {post?.data?.eng?.advisor[1] != null ? (
-                            <div>
+                          <div className=" " style={{ width: "550px" }}>
+                            <div className="handle-flex handle-flex-bottom">
+                              <div className="hightlight-gray pr-10 ">
+                                Advisor
+                              </div>
                               {language == "eng" ? (
-                                <div className="flex">
+                                <div className="flex ">
                                   <div className="pr-1">
-                                    {post?.data?.eng?.advisor[1]?.prefix}
+                                    {post?.data?.eng?.advisor[0]?.prefix}
                                   </div>
                                   <span className="pr-1">
-                                    {post?.data?.eng?.advisor[1]?.first_name}
+                                    {post?.data?.eng?.advisor[0]?.first_name}
                                   </span>
                                   <span
                                     className={
-                                      post?.data?.eng?.advisor[1]
+                                      post?.data?.eng?.advisor[0]
                                         ?.middle_name === null
                                         ? ""
                                         : "pr-1 "
                                     }
                                   >
-                                    {post?.data?.eng?.advisor[1]?.middle_name}
+                                    {post?.data?.eng?.advisor[0]?.middle_name}
                                   </span>
                                   <span className="pr-1">
-                                    {post?.data?.eng?.advisor[1]?.last_name}
+                                    {post?.data?.eng?.advisor[0]?.last_name}
                                   </span>
                                 </div>
                               ) : (
                                 <div className="flex">
                                   <div className="pr-1">
-                                    {post?.data?.thai?.advisor[1]?.prefix}
+                                    {post?.data?.thai?.advisor[0]?.prefix}
                                   </div>
                                   <span className="pr-1">
-                                    {post?.data?.thai?.advisor[1]?.first_name}
+                                    {post?.data?.thai?.advisor[0]?.first_name}
                                   </span>
                                   <span
                                     className={
-                                      post?.data?.thai?.advisor[1]
+                                      post?.data?.thai?.advisor[0]
                                         ?.middle_name === null
                                         ? ""
                                         : "pr-1 "
                                     }
                                   >
-                                    {post?.data?.thai?.advisor[1]?.middle_name}
+                                    {post?.data?.thai?.advisor[0]?.middle_name}
                                   </span>
                                   <span className="pr-1">
-                                    {post?.data?.thai?.advisor[1]?.last_name}
+                                    {post?.data?.thai?.advisor[0]?.last_name}
                                   </span>
                                 </div>
                               )}
                             </div>
-                          ) : (
-                            <div>&nbsp;- </div>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className="handle-flex items-center"
-                        style={{ width: "700px" }}
-                      >
-                        <div className="hightlight-gray pr-7 handle-flex-bottom">
-                          Keywords
-                        </div>
-                        <div className="flex flex-wrap">
-                          {
-                            <div className="flex flex-wrap items-center">
-                              {Array.isArray(project_keyword) &&
-                                project_keyword.map((keywords, index) => (
-                                  <div className="flex flex-wrap items-center">
-                                    <button
-                                      className="tagsBox items-center mr-1 mb-1"
-                                      key={index}
-                                      name="keywords"
-                                    >
-                                      <span className="hightlight-blue">#</span>
-                                      <span>{keywords}</span>
-                                    </button>
-                                  </div>
-                                ))}
+                            <div className="handle-flex handle-flex-bottom">
+                              <div className="hightlight-gray pr-4 handle-flex-bottom">
+                                Co-Advisor
+                              </div>
+                              {post?.data?.eng?.advisor[1] != null ? (
+                                <div>
+                                  {language == "eng" ? (
+                                    <div className="flex">
+                                      <div className="pr-1">
+                                        {post?.data?.eng?.advisor[1]?.prefix}
+                                      </div>
+                                      <span className="pr-1">
+                                        {
+                                          post?.data?.eng?.advisor[1]
+                                            ?.first_name
+                                        }
+                                      </span>
+                                      <span
+                                        className={
+                                          post?.data?.eng?.advisor[1]
+                                            ?.middle_name === null
+                                            ? ""
+                                            : "pr-1 "
+                                        }
+                                      >
+                                        {
+                                          post?.data?.eng?.advisor[1]
+                                            ?.middle_name
+                                        }
+                                      </span>
+                                      <span className="pr-1">
+                                        {post?.data?.eng?.advisor[1]?.last_name}
+                                      </span>
+                                    </div>
+                                  ) : (
+                                    <div className="flex">
+                                      <div className="pr-1">
+                                        {post?.data?.thai?.advisor[1]?.prefix}
+                                      </div>
+                                      <span className="pr-1">
+                                        {
+                                          post?.data?.thai?.advisor[1]
+                                            ?.first_name
+                                        }
+                                      </span>
+                                      <span
+                                        className={
+                                          post?.data?.thai?.advisor[1]
+                                            ?.middle_name === null
+                                            ? ""
+                                            : "pr-1 "
+                                        }
+                                      >
+                                        {
+                                          post?.data?.thai?.advisor[1]
+                                            ?.middle_name
+                                        }
+                                      </span>
+                                      <span className="pr-1">
+                                        {
+                                          post?.data?.thai?.advisor[1]
+                                            ?.last_name
+                                        }
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <div>&nbsp;- </div>
+                              )}
                             </div>
-                          }
-                          {
-                            <div className="flex flex-wrap  items-center">
-                              {Array.isArray(project_keywordTh) &&
-                                project_keywordTh.map((keywords, index) => (
-                                  <div className="flex flex-wrap items-center">
-                                    <button
-                                      className="tagsBox items-center mr-1 mb-1"
-                                      key={index}
-                                      name="keywords"
-                                    >
-                                      <span className="hightlight-blue">#</span>
-                                      <span>{keywords}</span>
-                                    </button>
-                                  </div>
-                                ))}
+                          </div>
+                          <div
+                            className="handle-flex items-center"
+                            style={{ width: "700px" }}
+                          >
+                            <div className="hightlight-gray pr-7 handle-flex-bottom">
+                              Keywords
                             </div>
-                          }
-                          {project_keyword.length < 1 &&
-                            project_keywordTh.length < 1 && <div>-</div>}
-                        </div>
-                      </div>
-                      {/* <div className="flex " style={{ width: "550px" }}>
+                            <div className="flex flex-wrap">
+                              {
+                                <div className="flex flex-wrap items-center">
+                                  {Array.isArray(project_keyword) &&
+                                    project_keyword.map((keywords, index) => (
+                                      <div className="flex flex-wrap items-center">
+                                        <button
+                                          className="tagsBox items-center mr-1 mb-1"
+                                          key={index}
+                                          name="keywords"
+                                        >
+                                          <span className="hightlight-blue">
+                                            #
+                                          </span>
+                                          <span>{keywords}</span>
+                                        </button>
+                                      </div>
+                                    ))}
+                                </div>
+                              }
+                              {
+                                <div className="flex flex-wrap  items-center">
+                                  {Array.isArray(project_keywordTh) &&
+                                    project_keywordTh.map((keywords, index) => (
+                                      <div className="flex flex-wrap items-center">
+                                        <button
+                                          className="tagsBox items-center mr-1 mb-1"
+                                          key={index}
+                                          name="keywords"
+                                        >
+                                          <span className="hightlight-blue">
+                                            #
+                                          </span>
+                                          <span>{keywords}</span>
+                                        </button>
+                                      </div>
+                                    ))}
+                                </div>
+                              }
+                              {project_keyword.length < 1 &&
+                                project_keywordTh.length < 1 && <div>-</div>}
+                            </div>
+                          </div>
+                          {/* <div className="flex " style={{ width: "550px" }}>
                     <div className="hightlight-gray pr-7">Tags</div>
                     <div className="flex">
                       <div className="tagsArea">
@@ -539,59 +599,62 @@ function ProjectPage(props) {
                       </div>
                     </div>
                   </div> */}
-                    </div>
-
-                    <div className="flex flex-wrap items-center">
-                      <div
-                        className="flex items-center flex-wrap"
-                        style={{ width: "400px" }}
-                      >
-                        <div className="hightlight-gray pr-7">
-                          Attachment file
                         </div>
-                        {project_attachment_file != null ? (
-                          <div className="px-3 py-1">
-                            {project_attachment_file}
+
+                        <div className="flex flex-wrap items-center">
+                          <div
+                            className="flex items-center flex-wrap"
+                            style={{ width: "400px" }}
+                          >
+                            <div className="hightlight-gray pr-7">
+                              Attachment file
+                            </div>
+                            {project_attachment_file != null ? (
+                              <div className="px-3 py-1">
+                                {project_attachment_file}
+                              </div>
+                            ) : (
+                              <div className="px-3 py-1">no file</div>
+                            )}
                           </div>
-                        ) : (
-                          <div className="px-3 py-1">no file</div>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap">
-                        {project_attachment_file != null && (
-                          <div className="flex pr-5" style={{ width: "180px" }}>
-                            <button
-                              className="view-attachment-button"
-                              onClick={handleViewFile}
-                            >
-                              <FontAwesomeIcon
-                                className="pr-0 text-lg self-center"
-                                icon={faFilePdf}
-                              />
-                              View attachment file
-                            </button>
+                          <div className="flex flex-wrap">
+                            {project_attachment_file != null && (
+                              <div
+                                className="flex pr-5"
+                                style={{ width: "180px" }}
+                              >
+                                <button
+                                  className="view-attachment-button"
+                                  onClick={handleViewFile}
+                                >
+                                  <FontAwesomeIcon
+                                    className="pr-0 text-lg self-center"
+                                    icon={faFilePdf}
+                                  />
+                                  View attachment file
+                                </button>
+                              </div>
+                            )}
+                            {isAdmin && (
+                              <div className="flex" style={{ width: "160px" }}>
+                                <button
+                                  className="edit-attachment-button"
+                                  onClick={() => {
+                                    setPopupStatus(true);
+                                    setPopupComponent("editFile");
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    className="pr-0 text-lg self-center"
+                                    icon={faPenToSquare}
+                                  />
+                                  Edit attachment file
+                                </button>
+                              </div>
+                            )}
                           </div>
-                        )}
-                        {isAdmin && (
-                          <div className="flex" style={{ width: "160px" }}>
-                            <button
-                              className="edit-attachment-button"
-                              onClick={() => {
-                                setPopupStatus(true);
-                                setPopupComponent("editFile");
-                              }}
-                            >
-                              <FontAwesomeIcon
-                                className="pr-0 text-lg self-center"
-                                icon={faPenToSquare}
-                              />
-                              Edit attachment file
-                            </button>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                    {/* <div className="flex items-center">
+                        </div>
+                        {/* <div className="flex items-center">
                   <div className="hightlight-gray pr-7">Attachment file</div>
 
                   <div className="flex space-x-5 items-center">
@@ -625,18 +688,20 @@ function ProjectPage(props) {
                     </button>
                   </div>
                 </div> */}
-                    <div>
-                      {/* <iframe
+                        <div>
+                          {/* <iframe
                     src={`https://api-seai-general.cyclic.app/general/project/${project_attachment_file}/preview`}
                     width="100%"
                     height="0"
                   >
                     {" "}
                   </iframe> */}
-                      {/* ihere arai wa
+                          {/* ihere arai wa
                   {projectPDFLink} */}
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               )}
             </div>

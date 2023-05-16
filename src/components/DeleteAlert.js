@@ -12,47 +12,42 @@ function DeleteAlert(props) {
     window.location.reload();
   };
 
-  useEffect(() => {
-    if (aToken && rToken) {
-      async function fetchData() {
-        try {
-          setLoadingResult(true);
-          const response = await axios.post(
-            "https://api-seai-general.cyclic.app/general/auth/refresh",
-            null,
-            {
-              headers: {
-                access_token: aToken,
-                refresh_token: rToken,
-              },
-            }
-          );
-          console.log("refresh access token");
-          console.log(response);
-          // localStorage.setItem("Access_Token", response.access_token);
-          // localStorage.setItem("Refresh_Token", response.refresh_token);
-          // localStorage.setItem("User_Name", response.username);
-          // const aTokenRefresh = localStorage.getItem("Access_Token");
-          // const rTokenRefresh = localStorage.getItem("Refresh_Token");
-          // console.log("Access_Token: " + aTokenRefresh);
-          // console.log("Refresh_Token: " + rTokenRefresh);
-          setLoadingResult(false);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      fetchData();
-    }
-  }, []);
-
+  // useEffect(() => {
+  //   if (aToken && rToken) {
+  //     async function fetchData() {
+  //       try {
+  //         setLoadingResult(true);
+  //         const response = await axios.post(
+  //           "https://api-seai-general.cyclic.app/general/auth/refresh",
+  //           null,
+  //           {
+  //             headers: {
+  //               access_token: aToken,
+  //               refresh_token: rToken,
+  //             },
+  //           }
+  //         );
+  //         console.log("refresh access token");
+  //         console.log(response);
+  //         setLoadingResult(false);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     }
+  //     fetchData();
+  //   }
+  // }, []);
+  function handleGoBack() {
+    window.location.href = "/";
+  }
   const postDeleteProject = async () => {
     async function fetchData() {
       try {
         setLoadingResult(true);
-        const url = `https://api-seai-general.cyclic.app/general/project/${props.projectID}`;
+        const url = `https://api-seai-general.cyclic.app/general/project/delete-project/${props.projectID}`;
         console.log("url: " + url);
 
-        const response = await axios.patch(url, {
+        const response = await axios.delete(url, {
           headers: {
             access_token: aToken,
             refresh_token: rToken,
@@ -76,7 +71,7 @@ function DeleteAlert(props) {
     fetchData();
     setLoadingResult(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    reloadLocation();
+    handleGoBack();
   };
   return (
     <div className="popup">
@@ -97,7 +92,7 @@ function DeleteAlert(props) {
             <button
               className="w-28 red-button confirmation-button"
               onClick={() => {
-                // postDeleteProject();
+                postDeleteProject();
                 props.closePopup();
               }}
             >
