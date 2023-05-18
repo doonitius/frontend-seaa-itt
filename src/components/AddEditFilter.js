@@ -33,8 +33,8 @@ function AddEditFilter(props) {
   const [selectedKeywordsName, setSelectedKeywordsName] = useState([]);
   const [filterData, setFilterData] = useState({
     academic_year: "",
-    degree: "",
-    project_type: "",
+    degree: [""],
+    project_type: [""],
     advisor_id: [""],
     advisor_name: [""],
     keywords: [""],
@@ -42,12 +42,27 @@ function AddEditFilter(props) {
   });
   const aToken = localStorage.getItem("Access_Token");
   const rToken = localStorage.getItem("Refresh_Token");
+  const isFilter = localStorage.getItem("IsFilter");
   // const [applyFilter, setApplyFilter] = useState(false);
 
   const applyFilter = () => {
     // deleteSpace();
     const filterDataString = JSON.stringify(filterData);
     localStorage.setItem("filterData", filterDataString);
+    if (
+      filterData.academic_year === "" &&
+      filterData.degree.length === 0 &&
+      filterData.project_type.length === 0 &&
+      filterData.advisor_id.length === 0 &&
+      filterData.advisor_name.length === 0 &&
+      filterData.keywords.length === 0 &&
+      filterData.keywords_name.length === 0
+    ) {
+      localStorage.setItem("IsFilter", false);
+    } else {
+      localStorage.setItem("IsFilter", true);
+    }
+    props.showToastMessage();
     props.filterApply();
   };
 
@@ -158,7 +173,6 @@ function AddEditFilter(props) {
       : null;
     if (storedFilterData) {
       setFilterData(storedFilterData);
-      console.log("เข้ามาทำไมเห้ย");
       if (storedFilterData.advisor_id) {
         setSelectedAdvisor(storedFilterData.advisor_id);
       }
@@ -417,7 +431,7 @@ function AddEditFilter(props) {
 
   return (
     <div className="popup">
-      <div className="filter-popup">
+      <div className="filter-popup shadow-lg">
         <div className="popup-header justify-between items-center py-1 px-8">
           <div>
             <span className="hightlight-gray text-lg">Filter</span>

@@ -25,27 +25,43 @@ function SideBar(props) {
     setFilterData((prevState) => ({
       ...filterData,
       academic_year: "",
-      degree: [""],
-      project_type: [""],
-      advisor_id: [""],
-      advisor_name: [""],
-      keywords: [""],
-      keywords_name: value ?? [""],
+      degree: [],
+      project_type: [],
+      advisor_id: [],
+      advisor_name: [],
+      keywords: [],
+      keywords_name: [value] ?? [],
     }));
+    localStorage.setItem("IsFilter", true);
   };
 
-  const handleAdvisorChange = (value) => {
+  const handleAdvisorChange = (value_id, value_name) => {
     setFilterData((prevState) => ({
       ...filterData,
       academic_year: "",
-      degree: [""],
-      project_type: [""],
-      advisor_id: value ?? [""],
-      advisor_name: [""],
-      keywords: [""],
-      keywords_name: [""],
+      degree: [],
+      project_type: [],
+      advisor_id: [value_id] ?? [],
+      advisor_name: [value_name] ?? [],
+      keywords: [],
+      keywords_name: [],
     }));
+    localStorage.setItem("IsFilter", true);
   };
+
+  // const handleAdvisorChange = (value) => {
+  //   setFilterData((prevState) => ({
+  //     ...filterData,
+  //     academic_year: "",
+  //     degree: [],
+  //     project_type: [],
+  //     advisor_id: [value] ?? [],
+  //     advisor_name: [],
+  //     keywords: [],
+  //     keywords_name: [],
+  //   }));
+  //   localStorage.setItem("IsFilter", true);
+  // };
 
   useEffect(() => {
     const filterDataString = JSON.stringify(filterData);
@@ -57,13 +73,14 @@ function SideBar(props) {
     setFilterData((prevState) => ({
       ...filterData,
       academic_year: "",
-      degree: [""],
-      project_type: [""],
-      advisor_id: [""],
-      advisor_name: [""],
-      keywords: [""],
-      keywords_name: [""],
+      degree: [],
+      project_type: [],
+      advisor_id: [],
+      advisor_name: [],
+      keywords: [],
+      keywords_name: [],
     }));
+    localStorage.setItem("IsFilter", false);
   };
 
   useEffect(() => {
@@ -127,7 +144,11 @@ function SideBar(props) {
                   className="quick-filter hover-sidebar"
                   key={advisor._id}
                   onClick={() => {
-                    handleAdvisorChange(advisor._id);
+                    handleAdvisorChange(
+                      advisor._id,
+                      advisor.eng.prefix + advisor.eng.full_name
+                    );
+                    // handleAdvisorNameChange(advisor.eng.full_name);
                   }}
                 >
                   <span className="pr-1">
