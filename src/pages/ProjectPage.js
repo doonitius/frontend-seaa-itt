@@ -75,7 +75,7 @@ function ProjectPage(props) {
   function handleViewFile() {
     console.log(project_attachment_file);
     window.open(
-      `https://api-seai-general.cyclic.app/general/search/${project_attachment_file}/preview`,
+      `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/search/${project_attachment_file}/preview`,
       "_blank"
     );
   }
@@ -84,10 +84,10 @@ function ProjectPage(props) {
   //   console.log(project_attachment_file);
   //   try {
   //     await fetch(
-  //       `https://api-seai-general.cyclic.app/general/search/${project_attachment_file}/preview`
+  //       `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/search/${project_attachment_file}/preview`
   //     );
   //     window.open(
-  //       `https://api-seai-general.cyclic.app/general/search/${project_attachment_file}/preview`,
+  //       `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/search/${project_attachment_file}/preview`,
   //       "_blank"
   //     );
   //   } catch (error) {
@@ -135,7 +135,7 @@ function ProjectPage(props) {
       try {
         setLoadingResult(true);
         const response = await axios.get(
-          `https://api-seai-general.cyclic.app/general/search/${projectId}`,
+          `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/search/${projectId}`,
           {
             headers: {
               access_token: aToken,
@@ -167,7 +167,7 @@ function ProjectPage(props) {
   // useEffect(() => {
   //   axios
   //     .get(
-  //       `https://api-seai-general.cyclic.app/general/project/${project_attachment_file}/preview`
+  //       `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project/${project_attachment_file}/preview`
   //     )
   //     .then((response) => {
   //       setProjectPDFLink(response.data);
@@ -690,7 +690,7 @@ function ProjectPage(props) {
                 </div> */}
                         <div>
                           {/* <iframe
-                    src={`https://api-seai-general.cyclic.app/general/project/${project_attachment_file}/preview`}
+                    src={`https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project/${project_attachment_file}/preview`}
                     width="100%"
                     height="0"
                   >

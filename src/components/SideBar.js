@@ -68,12 +68,15 @@ function SideBar(props) {
 
   useEffect(() => {
     axios
-      .get("https://api-seai-general.cyclic.app/general/advisor?search=", {
-        headers: {
-          access_token: aToken,
-          refresh_token: rToken,
-        },
-      })
+      .get(
+        "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/advisor?search=",
+        {
+          headers: {
+            access_token: aToken,
+            refresh_token: rToken,
+          },
+        }
+      )
       .then((response) => {
         console.log("[sidebar] map advisor: ");
         console.log(response);
@@ -85,12 +88,15 @@ function SideBar(props) {
 
   useEffect(() => {
     axios
-      .get("https://api-seai-general.cyclic.app/general/keyword?search=", {
-        headers: {
-          access_token: aToken,
-          refresh_token: rToken,
-        },
-      })
+      .get(
+        "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/keyword?search=",
+        {
+          headers: {
+            access_token: aToken,
+            refresh_token: rToken,
+          },
+        }
+      )
       .then((response) => {
         console.log("[sidebar] map keywords: ");
         console.log(response);

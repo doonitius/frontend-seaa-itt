@@ -77,7 +77,7 @@ function Navbar(props) {
   // const Login = async () => {
   //   // const router = useRouter();
   //   try {
-  //     const url = "https://api-seai-general.cyclic.app/general/auth/login";
+  //     const url = "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/auth/login";
   //     console.log(
   //       "username pass: " + loginData.username + " + " + loginData.password
   //     );
@@ -114,7 +114,7 @@ function Navbar(props) {
 
   // const Register = async () => {
   //   try {
-  //     const url = "https://api-seai-general.cyclic.app/general/auth/register";
+  //     const url = "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/auth/register";
   //     console.log(
   //       "username pass: " + loginData.username + " + " + loginData.password
   //     );
@@ -149,7 +149,8 @@ function Navbar(props) {
 
   const Login = async () => {
     try {
-      const url = "https://api-seai-general.cyclic.app/general/auth/login";
+      const url =
+        "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/auth/login";
       console.log(
         "username pass: " + loginData.username + " + " + loginData.password
       );

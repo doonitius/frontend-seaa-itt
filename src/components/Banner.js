@@ -74,7 +74,7 @@ function Banner({ eng, thai, year, projectId }) {
   //   project_keyword === "" || project_keywordTh === "" ? "-" : "";
 
   // console.log("project_keyword: " + project_keyword);
-  // const url = `https://api-seai-general.cyclic.app/general/project/${props.projectId}`;
+  // const url = `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project/${props.projectId}`;
 
   // useEffect(() => {
   //   async function fetchData() {

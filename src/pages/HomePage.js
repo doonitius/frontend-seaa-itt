@@ -130,7 +130,7 @@ function HomePage(props) {
   //     window.removeEventListener("storage", handleStorageChange);
   //   };
   // }, [localStorage.getItem("filterData")]);
-  const URLpageWithFilter = `https://api-seai-general.cyclic.app/general/search/filter?search=${searchText}&page_no=${pageNumber}&page_size=${itemsPerPage}&academic_year=${filterData.academic_year}&degree=${filterData.degree}&project_type=${filterData.project_type}&advisor_id=${filterData.advisor_id}&keyword=${filterData.keywords_name}`;
+  const URLpageWithFilter = `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/search/filter?search=${searchText}&page_no=${pageNumber}&page_size=${itemsPerPage}&academic_year=${filterData.academic_year}&degree=${filterData.degree}&project_type=${filterData.project_type}&advisor_id=${filterData.advisor_id}&keyword=${filterData.keywords_name}`;
 
   useEffect(() => {
     async function fetchData() {

@@ -18,7 +18,7 @@ function DeleteAlert(props) {
   //       try {
   //         setLoadingResult(true);
   //         const response = await axios.post(
-  //           "https://api-seai-general.cyclic.app/general/auth/refresh",
+  //           "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/auth/refresh",
   //           null,
   //           {
   //             headers: {
@@ -44,7 +44,7 @@ function DeleteAlert(props) {
     async function fetchData() {
       try {
         setLoadingResult(true);
-        const url = `https://api-seai-general.cyclic.app/general/project/delete-project/${props.projectID}`;
+        const url = `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project/delete-project/${props.projectID}`;
         console.log("url: " + url);
 
         const response = await axios.delete(url, {
