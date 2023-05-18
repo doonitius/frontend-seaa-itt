@@ -256,7 +256,7 @@ function AddEditFilter(props) {
   useEffect(() => {
     axios
       .get(
-        `https://api-seai-general.cyclic.app/general/advisor?search=${searchAdvisorInput}`,
+        `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/advisor?search=${searchAdvisorInput}`,
         {
           headers: {
             access_token: aToken,
@@ -274,7 +274,7 @@ function AddEditFilter(props) {
   useEffect(() => {
     axios
       .get(
-        `https://api-seai-general.cyclic.app/general/keyword?search=${searchKeywordsInput}`,
+        `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/keyword?search=${searchKeywordsInput}`,
         {
           headers: {
             access_token: aToken,

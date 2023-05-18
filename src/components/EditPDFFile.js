@@ -77,7 +77,7 @@ function EditPDFFile(props) {
       updatedFormFileData.append("thesis_file", projectFileData.thesis_file);
 
       const response = await axios.post(
-        `https://api-seai-general.cyclic.app/general/project/upload/${props.projectID}`,
+        `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project/upload/${props.projectID}`,
         updatedFormFileData,
         {
           headers: {

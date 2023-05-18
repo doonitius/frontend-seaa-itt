@@ -26,7 +26,7 @@ function App() {
 
   // useEffect(() => {
   //   axios
-  //     .get(`https://api-seai-general.cyclic.app/general/project/${projectId}`)
+  //     .get(`https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project/${projectId}`)
   //     .then((response) => {
   //       setProjectId(response.data._id);
   //     })

@@ -58,7 +58,7 @@ function AddEditProject({
       try {
         setLoadingResult(true);
         const response = await axios.get(
-          "https://api-seai-general.cyclic.app/general/advisor?search=",
+          "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/advisor?search=",
           {
             headers: {
               access_token: aToken,
@@ -82,7 +82,7 @@ function AddEditProject({
         try {
           setLoadingResult(true);
           const response = await axios.post(
-            "https://api-seai-general.cyclic.app/general/auth/refresh",
+            "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/auth/refresh",
             null,
             {
               headers: {
@@ -114,7 +114,7 @@ function AddEditProject({
   //     try {
   //       if (projectID) {
   //         const response = await axios.get(
-  //           `https://api-seai-general.cyclic.app/general/search/${projectID}`,
+  //           `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/search/${projectID}`,
   //           {
   //             headers: {
   //               access_token: aToken,
@@ -146,7 +146,7 @@ function AddEditProject({
       try {
         setLoadingResult(true);
         const response = await axios.post(
-          "https://api-seai-general.cyclic.app/general/project",
+          "https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project",
           projectData,
           {
             headers: {
@@ -193,7 +193,7 @@ function AddEditProject({
         // console.log("filteredData: " + filteredData);
         console.log("=====================");
         // console.log("filteredData from edit post: " + filteredData);
-        const url = `https://api-seai-general.cyclic.app/general/project/${projectID}`;
+        const url = `https://api-seai-general-nn2mkxpf6q-as.a.run.app/general/project/${projectID}`;
         console.log("url: " + url);
 
         const response = await axios.patch(url, projectData, {
