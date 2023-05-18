@@ -41,6 +41,10 @@ function Navbar(props) {
   const language = localStorage.getItem("Language");
   const [userNameDisplay, setUserNameDisplay] = useState("");
   const isMobile = useMediaQuery({ maxWidth: 650 });
+  const storedFilterDataString = localStorage.getItem("filterData");
+  const checkIsFilter = localStorage.getItem("IsFilter");
+  const [isFilter, setIsFilter] = useState(true);
+  // const isFilter = localStorage.getItem("IsFilter");
 
   const handleChangeLanguage = () => {
     if (language == "eng" || language == "") {
@@ -111,6 +115,14 @@ function Navbar(props) {
       setIsLogin(isAdmin);
     }
   }, []);
+
+  useEffect(() => {
+    if (checkIsFilter == "true") {
+      setIsFilter(true);
+    } else {
+      setIsFilter(false);
+    }
+  }, [checkIsFilter]);
 
   // const Register = async () => {
   //   try {
@@ -220,6 +232,7 @@ function Navbar(props) {
         <AddEditFilter
           closePopup={clickExitFromPopup}
           filterApply={props.filterFunction}
+          showToastMessage={props.showToastMessage}
         />
       )}
       {popupStatus && popupComponent === "addProject" && (
@@ -253,7 +266,43 @@ function Navbar(props) {
             onChange={handleSearchInputChange}
           /> */}
         </div>
-        <button
+        {isFilter == true ? (
+          // <div>
+          <button
+            className={
+              props.searchFunction === true
+                ? "menu-button-filtered space-x-2 self-center width-handle-mobile"
+                : "hidden"
+            }
+            onClick={() => {
+              setPopupStatus(true);
+              setPopupComponent("searchFilter");
+            }}
+          >
+            {isMobile == false && <div className="">Filtered !</div>}
+            {/* <div className="hidden-handle-screen">Filtered !</div> */}
+            <FontAwesomeIcon className="fa-sm justify-center" icon={faFilter} />
+          </button>
+        ) : (
+          // </div>
+          // <div>
+          <button
+            className={
+              props.searchFunction === true
+                ? "menu-button-filter space-x-2 self-center width-handle-mobile"
+                : "hidden"
+            }
+            onClick={() => {
+              setPopupStatus(true);
+              setPopupComponent("searchFilter");
+            }}
+          >
+            {isMobile == false && <div className="">Filter</div>}
+            <FontAwesomeIcon className="fa-sm justify-center" icon={faFilter} />
+          </button>
+          // </div>
+        )}
+        {/* <button
           className={
             props.searchFunction === true
               ? "menu-button-filter space-x-2 self-center"
@@ -266,7 +315,7 @@ function Navbar(props) {
         >
           <div>Filter</div>
           <FontAwesomeIcon className="fa-sm justify-center" icon={faFilter} />
-        </button>
+        </button> */}
         <FontAwesomeIcon
           className="fa-xl self-center mr-3 ml-5"
           icon={faBars}

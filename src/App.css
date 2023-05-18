@@ -14,6 +14,7 @@
   --black3: #222222;
   --black4: #3a3a3a;
   --orange1: #FF9E0D;
+  --orange2: #ee930b;
 }
 
 .App {
@@ -242,6 +243,28 @@ button.blue-button {
   background-color: var(--blue2);
 }
 
+.menu-button-filtered {
+  border-radius: 5px;
+  display: flex;
+  padding: 0px 0px 0px 0px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  transition-property: color;
+  transition-duration: 0.3s;
+  background-color: var(--orange1);
+  width: 100px;
+  /* margin: 8px 0px 8px 0px; */
+  /* letter-spacing: 0.050em; */
+  font-weight: 500;
+  height: 34px;
+}
+
+.menu-button-filtered:hover {
+  background-color: var(--orange2);
+}
+
+
 /* .homepage-menu-space {
   padding: 30px 30px 20px 30px;
   grid-column-gap: 15px;
@@ -337,6 +360,14 @@ input {
 
   .project-banner-content {
     padding: 20px 20px 20px 25px !important;
+  }
+
+  .hidden-handle-screen {
+    visibility: hidden;
+  }
+
+  .width-handle-mobile {
+    width: 60px !important;
   }
 }
 
@@ -579,6 +610,10 @@ h5 {
 
 .filter-popup {
   /* width: 900px; */
+  width: 58vw;
+}
+
+.toast-filter {
   width: 58vw;
 }
 
@@ -1105,4 +1140,48 @@ input[type="file"] {
 .test-font {
   font-family: 'Prompt', sans-serif;
   font-family: 'Quicksand', sans-serif;
+}
+
+.toast-filter {
+  /* display: flex;
+  width: 34vw; */
+  margin: 150px 0px 0px 0px;
+  width: 210px;
+}
+
+.toast-filter-content {
+  background-color: var(--black1);
+  padding: 10px 20px 10px 20px;
+  border-radius: 10px;
+  color: white;
+  /* height: 50px; */
+  box-shadow: 0px 5px 8px 1px #4b4b4b38;
+}
+
+.toast {
+  color: white;
+  position: fixed;
+  top: 0%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+  z-index: 999;
+  /* transform: translate(-50%, -100%); */
+  transform: translateY(-100%);
+  transition: transform 0.5s ease-in-out;
+}
+
+.toast-open {
+  /* transform: translate(-50%, -50%); */
+  transform: translateY(0);
+  /* transform: translate(0%, 0%); */
+}
+
+.toast-close {
+  transform: translateY(-100%);
+  /* transform: translate(-50%, -100%); */
+}
+
+.faCircleCheck {
+  font-size: 18px;
+  color: var(--green1);
 }

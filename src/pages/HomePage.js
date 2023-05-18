@@ -3,9 +3,12 @@ import Navbar from '../components/Navbar.js';
 import Banner from '../components/Banner.js';
 import AddEditFilter from '../components/AddEditFilter.js';
 import AddEditProject from "../components/AddEditProject.js";
+import ToastFilter from "../components/ToastFilter.js";
 import SideBar from "../components/SideBar.js";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -40,6 +43,7 @@ function HomePage(props) {
   });
   const aToken = localStorage.getItem("Access_Token");
   const rToken = localStorage.getItem("Refresh_Token");
+  const [isShowToastFilter, setIsShowToastFilter] = useState(false);
 
   // const [localStorageData, setLocalStorageData] = useState(
   //   localStorage.getItem("filterData")
@@ -179,12 +183,32 @@ function HomePage(props) {
     setFilterData(JSON.parse(localStorage.getItem("filterData")));
   };
 
+  const showToastMessage = () => {
+    toast.success("Success Filter !", {
+      position: toast.POSITION.TOP_CENTER,
+      className: "toast-filter",
+    });
+  };
+
+  const handleShowToastMessage = () => {
+    setIsShowToastFilter(true);
+  };
+
+  const handleShowToastMessageClose = () => {
+    setIsShowToastFilter(false);
+  };
+
   return (
     <div className="scroll-fix">
+      {/* <ToastContainer /> */}
+      {/* {isShowToastFilter && (
+        <ToastFilter timeUp={handleShowToastMessageClose} />
+      )} */}
       <Navbar
         setSearchText={setSearchText}
         searchFunction={true}
         filterFunction={functionFilter}
+        showToastMessage={handleShowToastMessage}
       />
       {/* {
             popupStatus && popupComponent === 'searchFilter' && ( 

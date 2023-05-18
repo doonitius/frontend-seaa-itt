@@ -813,7 +813,7 @@ function AddEditProject({
 
   return (
     <div className="popup">
-      <div className="filter-popup">
+      <div className="filter-popup shadow-lg">
         <div className="popup-header justify-between items-center py-1 px-8">
           <div>
             <span className="hightlight-gray text-lg">

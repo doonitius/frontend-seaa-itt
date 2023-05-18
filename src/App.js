@@ -7,6 +7,8 @@ import "./App.css";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // import axios from 'axios';
 
 // const baseURL = "{{url}}/project/63a01bb05e3f4a14e4790d7b"
