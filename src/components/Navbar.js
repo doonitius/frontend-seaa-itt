@@ -232,7 +232,7 @@ function Navbar(props) {
         <AddEditFilter
           closePopup={clickExitFromPopup}
           filterApply={props.filterFunction}
-          showToastMessage={props.showToastMessage}
+          isEditFilter={props.isEditFilter}
         />
       )}
       {popupStatus && popupComponent === "addProject" && (
