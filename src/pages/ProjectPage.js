@@ -466,7 +466,7 @@ function ProjectPage(props) {
                               )}
                             </div>
                             <div className="handle-flex handle-flex-bottom">
-                              <div className="hightlight-gray pr-4 handle-flex-bottom">
+                              <div className="hightlight-gray pr-4">
                                 Co-Advisor
                               </div>
                               {post?.data?.eng?.advisor[1] != null ? (

@@ -62,7 +62,7 @@ function AddEditFilter(props) {
     } else {
       localStorage.setItem("IsFilter", true);
     }
-    props.showToastMessage();
+    props.isEditFilter();
     props.filterApply();
   };
 

@@ -190,12 +190,16 @@ function HomePage(props) {
     });
   };
 
-  const handleShowToastMessage = () => {
-    setIsShowToastFilter(true);
-  };
+  // const handleShowToastMessage = () => {
+  //   setIsShowToastFilter(true);
+  // };
 
-  const handleShowToastMessageClose = () => {
-    setIsShowToastFilter(false);
+  // const handleShowToastMessageClose = () => {
+  //   setIsShowToastFilter(false);
+  // };
+
+  const handleIsEditFilter = () => {
+    setPageNumber(1);
   };
 
   return (
@@ -208,7 +212,7 @@ function HomePage(props) {
         setSearchText={setSearchText}
         searchFunction={true}
         filterFunction={functionFilter}
-        showToastMessage={handleShowToastMessage}
+        isEditFilter={handleIsEditFilter}
       />
       {/* {
             popupStatus && popupComponent === 'searchFilter' && ( 
