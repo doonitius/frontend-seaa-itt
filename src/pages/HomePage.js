@@ -226,7 +226,10 @@ function HomePage(props) {
         } */}
       <div className="">
         <div className="wrapper">
-          <SideBar filterFunction={functionFilter} />
+          <SideBar
+            filterFunction={functionFilter}
+            isEditFilter={handleIsEditFilter}
+          />
           <div className="main w-full">
             {loadingResult ? (
               <div className="grid justify-items-center pt-36">

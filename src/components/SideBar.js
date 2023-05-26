@@ -46,6 +46,7 @@ function SideBar(props) {
       keywords: [],
       keywords_name: [],
     }));
+
     localStorage.setItem("IsFilter", true);
   };
 
@@ -66,6 +67,7 @@ function SideBar(props) {
   useEffect(() => {
     const filterDataString = JSON.stringify(filterData);
     localStorage.setItem("filterData", filterDataString);
+    props.isEditFilter();
     props.filterFunction();
   }, [filterData]);
 
